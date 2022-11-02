@@ -1,0 +1,16 @@
+# Development environment for PatentsView-Evaluation
+
+name: er-checks
+
+dependencies:
+  - python=3.10
+  - pip
+  - ipython
+  - ipykernel
+  - jupyter
+  - numpy
+  - pandas
+  - black
+  - pip:
+    - igraph
+    - scipy
