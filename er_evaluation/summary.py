@@ -31,8 +31,8 @@ def cluster_sizes(membership):
 def cluster_sizes_distribution(membership):
     assert ismembership(membership)
 
-    cluster_sizes = cluster_sizes(membership)
-    return cluster_sizes.groupby(cluster_sizes).count()
+    cs = cluster_sizes(membership)
+    return cs.groupby(cs).count()
 
 
 def number_of_clusters(membership):
@@ -61,7 +61,7 @@ def cluster_hill_number(membership, alpha=1):
     if alpha == np.Inf:
         return 1 / np.max(probs)
     else:
-        return np.sum(probs ** alpha) ** (1 / (1 - alpha))
+        return np.sum(probs**alpha) ** (1 / (1 - alpha))
 
 
 def homonimy_rate(membership, names):

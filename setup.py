@@ -10,6 +10,10 @@ if __name__ == "__main__":
         description="",
         url="https://github.com/OlivierBinette/er-evaluation",
         include_package_data=True,
-        packages=find_packages(),
-        install_requires=["pandas", "numpy", "scipy",],
+        packages=["er_evaluation"],
+        install_requires=[
+            "pandas",
+            "numpy",
+            "scipy",
+        ],
     )

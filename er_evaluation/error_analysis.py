@@ -84,7 +84,7 @@ def splitting_entropy(prediction, sample, alpha=1):
         if alpha == 1:
             return np.exp(-np.sum(u * np.log(u)))
         else:
-            return (np.sum(u ** alpha)) ** (1 / (1 - alpha))
+            return (np.sum(u**alpha)) ** (1 / (1 - alpha))
 
     result = outer.groupby("sample").apply(lambd)
     result.rename("proportion_extra_links", inplace=True)
