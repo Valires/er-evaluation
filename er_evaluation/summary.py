@@ -61,7 +61,7 @@ def cluster_hill_number(membership, alpha=1):
     if alpha == np.Inf:
         return 1 / np.max(probs)
     else:
-        return np.sum(probs**alpha) ** (1 / (1 - alpha))
+        return np.sum(probs ** alpha) ** (1 / (1 - alpha))
 
 
 def homonimy_rate(membership, names):
@@ -69,11 +69,15 @@ def homonimy_rate(membership, names):
     assert isinstance(names, pd.Series)
     assert membership.index.equals(names.index)
 
-    df = pd.concat({"membership": membership, "name": names}, axis=1, copy=False)
+    df = pd.concat(
+        {"membership": membership, "name": names}, axis=1, copy=False
+    )
 
     names_count = names.groupby(names).count().reset_index(name="total_count")
     name_count_per_cluster = (
-        df.groupby(["name", "membership"]).size().reset_index(name="cluster_count")
+        df.groupby(["name", "membership"])
+        .size()
+        .reset_index(name="cluster_count")
     )
     merged = name_count_per_cluster.merge(
         names_count,
@@ -92,50 +96,8 @@ def name_variation_rate(membership, names):
     assert isinstance(names, pd.Series)
     assert membership.index.equals(names.index)
 
-    df = pd.concat({"membership": membership, "name": names}, axis=1, copy=False)
-
-    return (df.groupby("membership").nunique() > 1).mean()
-
-
-def pairwise_precision(prediction, reference):
-    assert ismembership(prediction) and ismembership(reference)
-
-    inner = pd.concat(
-        {"prediction": prediction, "reference": reference},
-        axis=1,
-        join="inner",
-        copy=False,
-    )
-    TP_cluster_sizes = inner.groupby(["prediction", "reference"]).size().values
-
-    TP = np.sum(comb(TP_cluster_sizes, 2))
-    P = number_of_links(inner.prediction).sum()
-
-    if P == 0:
-        return 1.0
-    else:
-        return TP / P
-
-
-def pairwise_recall(prediction, reference):
-    return pairwise_precision(reference, prediction)
-
-
-def cluster_precision(prediction, reference):
-    assert ismembership(prediction) and ismembership(reference)
-
-    inner = pd.concat(
-        {"prediction": prediction, "reference": reference},
-        axis=1,
-        join="inner",
-        copy=False,
-    )
-    n_correct_clusters = np.sum(
-        inner.groupby(["prediction"]).nunique()["reference"].values == 1
+    joined = pd.concat(
+        {"membership": membership, "name": names}, axis=1, copy=False
     )
 
-    return n_correct_clusters / number_of_clusters(inner.prediction)
-
-
-def cluster_recall(prediction, reference):
-    return cluster_precision(reference, prediction)
+    return (joined.groupby("membership").nunique() > 1).mean()

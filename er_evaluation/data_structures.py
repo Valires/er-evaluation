@@ -1,6 +1,5 @@
 """
-Clustering data structures: graph, membership vector, clusters list,
-pairwise links.
+Clustering data structures: graph, membership vector, clusters list, and pairwise links.
 """
 
 import numpy as np
@@ -27,7 +26,9 @@ def isclusters(obj):
         [
             isinstance(obj, dict),
             all(isinstance(value, np.array) for value in obj.values()),
-            ismembership(clusters_to_membership(obj)),  # Check for nans and duplicates
+            ismembership(
+                clusters_to_membership(obj)
+            ),  # Check for nans and duplicates
         ]
     )
 
@@ -64,7 +65,9 @@ def clusters_to_pairs(clusters):
     def single_cluster_to_pairs(c):
         """
         References:
-            - Carlos Gameiro (2021) Fast pairwise combinations in NumPy. Accessed online on November 1, 2022. https://carlostgameiro.medium.com/fast-pairwise-combinations-in-numpy-c29b977c33e2
+            - Carlos Gameiro (2021) Fast pairwise combinations in NumPy.
+                Accessed online on November 1, 2022.
+                https://carlostgameiro.medium.com/fast-pairwise-combinations-in-numpy-c29b977c33e2
         """
         I = np.stack(np.triu_indices(len(c), k=1), axis=-1)
         return c[I]

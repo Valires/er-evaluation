@@ -7,7 +7,7 @@
 ## 		help:		Show this help message.
 ##		env: 		Create or update conda environment "pv-evaluation"
 ## 		black:		Format Python files.
-ENV?=er-checks
+ENV?=er-evaluation
 
 .PHONY: help env black
 
@@ -19,4 +19,4 @@ env: environment.yml
 	|| (echo "Updating ${ENV} environment...\n"; conda env update -f $<)
 
 black:
-	black . --line-length=88
+	black . --line-length=80
