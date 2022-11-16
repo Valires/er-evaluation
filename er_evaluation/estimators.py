@@ -1,3 +1,24 @@
+"""
+Entity Resolution Performance Estimators
+
+Copyright (C) 2022  Olivier Binette
+
+This file is part of the ER-Evaluation Python package (er-evaluation).
+
+er-evaluation is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
 import pandas as pd
 import numpy as np
 from scipy.special import comb
@@ -6,6 +27,17 @@ from .data_structures import ismembership
 
 
 def validate_estimator_arguments(prediction, sample, weights):
+    """
+    Validate inputs to estimators.
+
+    Args:
+        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities).
+    
+    Raises:
+        AssertionError
+    """
     assert ismembership(prediction) and ismembership(sample)
     assert isinstance(weights, pd.Series)
     assert not weights.index.has_duplicates and all(
@@ -14,6 +46,25 @@ def validate_estimator_arguments(prediction, sample, weights):
 
 
 def pairwise_precision_design_estimate(prediction, sample, weights):
+    """
+    Design estimator for pairwise precision.
+
+    Given a predicted disambiguation `prediction`, a set of ground truth clusters `sample`, and a set of cluster sampling weights `weights` (e.g., inverse probability weights for each cluster), this returns a pairwise precision estimate together with its estimated standard deviation.
+
+    Note: 
+        This is the precision estimator corresponding to cluster block sampling in [1].
+
+    Args:
+        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities).
+
+    Returns:
+        tuple: Precision estimate and standard deviation estimate.
+    
+    References:
+        [1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230
+    """
     validate_estimator_arguments(prediction, sample, weights)
 
     inner = pd.concat(
@@ -54,6 +105,25 @@ def pairwise_precision_design_estimate(prediction, sample, weights):
 
 
 def pairwise_recall_design_estimate(prediction, sample, weights):
+    """
+    Design estimator for pairwise recall.
+
+    Given a predicted disambiguation `prediction`, a set of ground truth clusters `sample`, and a set of cluster sampling weights `weights` (e.g., inverse probability weights for each cluster), this returns a pairwise recall estimate together with its estimated standard deviation.
+
+    Note: 
+        This is the recall estimator corresponding to cluster block sampling in [1].
+
+    Args:
+        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities).
+
+    Returns:
+        tuple: Recall estimate and standard deviation estimate.
+    
+    References:
+        [1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230
+    """
     validate_estimator_arguments(prediction, sample, weights)
 
     inner = pd.concat(
@@ -124,5 +194,5 @@ def std_dev(B, A):
         ) / (n * (n - 1))
         if op < 0:
             return np.nan
-        else:
-            return (B_mean / A_mean) * np.sqrt(op)
+
+        return (B_mean / A_mean) * np.sqrt(op)

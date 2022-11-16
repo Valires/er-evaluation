@@ -1,9 +1,30 @@
+"""
+Entity Resolution Evaluation Metrics
+
+Copyright (C) 2022  Olivier Binette
+
+This file is part of the ER-Evaluation Python package (er-evaluation).
+
+er-evaluation is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
 import pandas as pd
 import numpy as np
 from scipy.special import comb
 
 from .data_structures import ismembership
-from .summary import number_of_links, number_of_clusters
+from .summary import number_of_links
 
 
 def pairwise_precision(prediction, reference):
@@ -28,23 +49,3 @@ def pairwise_precision(prediction, reference):
 
 def pairwise_recall(prediction, reference):
     return pairwise_precision(reference, prediction)
-
-
-def cluster_precision(prediction, reference):
-    assert ismembership(prediction) and ismembership(reference)
-
-    inner = pd.concat(
-        {"prediction": prediction, "reference": reference},
-        axis=1,
-        join="inner",
-        copy=False,
-    )
-    n_correct_clusters = np.sum(
-        inner.groupby(["prediction"]).nunique()["reference"].values == 1
-    )
-
-    return n_correct_clusters / number_of_clusters(inner.prediction)
-
-
-def cluster_recall(prediction, reference):
-    return cluster_precision(reference, prediction)

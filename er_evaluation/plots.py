@@ -1,3 +1,24 @@
+"""
+Entity Resolution Summary Plots
+
+Copyright (C) 2022  Olivier Binette
+
+This file is part of the ER-Evaluation Python package (er-evaluation).
+
+er-evaluation is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
 import pandas as pd
 import numpy as np
 import plotly.express as px
@@ -72,10 +93,16 @@ def plot_entropy_curve(membership, q_range=None, groupby=None, name=None):
         assert isinstance(groupby, pd.Series)
         assert groupby.index.equals(membership.index)
 
-        hill_numbers = membership.groupby(groupby).apply(
-            lambda x: pd.Series([cluster_hill_number(x, q) for q in q_range], index=q_range)
-        ).reset_index(name="hill_numbers")
-        
+        hill_numbers = (
+            membership.groupby(groupby)
+            .apply(
+                lambda x: pd.Series(
+                    [cluster_hill_number(x, q) for q in q_range], index=q_range
+                )
+            )
+            .reset_index(name="hill_numbers")
+        )
+
         fig = px.line(
             x=hill_numbers.level_1,
             y=hill_numbers.hill_numbers,
