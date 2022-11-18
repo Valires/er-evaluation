@@ -81,7 +81,7 @@ def count_extra_links(prediction, sample):
 
     Returns:
         Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the count of extraneous links.
-    
+
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
@@ -137,7 +137,7 @@ def expected_extra_links(prediction, sample):
 
     Returns:
         Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the expected number of extraneous links.
-    
+
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
@@ -172,7 +172,7 @@ def count_missing_links(prediction, sample):
 
     Returns:
         Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the count of extraneous links.
-    
+
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
@@ -225,7 +225,7 @@ def expected_missing_links(prediction, sample):
 
     Returns:
         Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the expected number of missing links.
-    
+
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
@@ -264,7 +264,7 @@ def splitting_entropy(prediction, sample, alpha=1):
 
     Returns:
         Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the splitting entropy.
-    
+
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])

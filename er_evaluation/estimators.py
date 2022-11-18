@@ -1,4 +1,4 @@
-"""
+r"""
 Performance Estimators Based on Ground Truth Clusters
 """
 
@@ -44,6 +44,13 @@ def pairwise_precision_design_estimate(prediction, sample, weights):
 
     Returns:
         tuple: Precision estimate and standard deviation estimate.
+
+    Examples:
+        >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
+        >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
+        >>> weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights
+        >>> pairwise_precision_design_estimate(prediction, sample, weights)
+        (0.3888888888888889, 0.2545875386086578)
 
     References:
         [1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230
@@ -103,6 +110,13 @@ def pairwise_recall_design_estimate(prediction, sample, weights):
 
     Returns:
         tuple: Recall estimate and standard deviation estimate.
+
+    Examples:
+        >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
+        >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
+        >>> weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights
+        >>> pairwise_recall_design_estimate(prediction, sample, weights)
+        (0.4027777777777778, 0.21245914639969934)
 
     References:
         [1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230

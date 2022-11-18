@@ -18,7 +18,7 @@ def number_of_clusters(membership):
 
     Returns:
         int: number of unique cluster identifiers. Note that NAs are not counted.
-    
+
     Examples:
         >>> membership = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> number_of_clusters(membership)
@@ -38,7 +38,7 @@ def number_of_links(membership):
 
     Returns:
         int: Number of pairs of elements belonging to the same cluster. Note that clusters identified by NA values are excluded.
-    
+
     Examples:
         >>> membership = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> number_of_links(membership)
@@ -62,7 +62,7 @@ def matching_rate(membership):
 
     Returns:
         int: Number of pairs of elements belonging to the same cluster. Note that clusters identified by NA values are excluded.
-    
+
     Examples:
         >>> membership = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> matching_rate(membership)
@@ -84,13 +84,14 @@ def average_cluster_size(membership):
 
     Returns:
         float: Average cluster size.
-    
+
     Examples:
         >>> membership = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> average_cluster_size(membership)
         2.0
     """
     return cluster_sizes(membership).mean()
+
 
 def cluster_sizes(membership):
     r"""
@@ -101,7 +102,7 @@ def cluster_sizes(membership):
 
     Returns:
         Series: Series indexed by cluster identifier and with values corresponding to cluster size. Note that NA cluster identifiers are excluded.
-    
+
     Examples:
         >>> membership = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> cluster_sizes(membership)
@@ -200,7 +201,7 @@ def homonimy_rate(membership, names):
 
     Returns:
         float: Homonimy rate
-    
+
     Examples:
         >>> membership = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> names = pd.Series(index=[1,2,3,4,5,6,7,8], data=["n1", "n2", "n3", "n4", "n3", "n1", "n2", "n8"])
@@ -230,7 +231,9 @@ def homonimy_rate(membership, names):
     )
     merged["diff"] = merged.total_count - merged.cluster_count
 
-    return (merged.groupby("membership").agg({"diff": max}) > 0).mean().values[0]
+    return (
+        (merged.groupby("membership").agg({"diff": max}) > 0).mean().values[0]
+    )
 
 
 def name_variation_rate(membership, names):

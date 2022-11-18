@@ -29,7 +29,7 @@ def pairwise_precision(prediction, reference):
 
     Returns:
         float: Pairwise precision for the inner join of `prediction` and `reference`.
-    
+
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
@@ -75,7 +75,7 @@ def pairwise_recall(prediction, reference):
 
     Returns:
         float: Pairwise recall computed on the inner join of `predicted` and `reference`.
-    
+
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])

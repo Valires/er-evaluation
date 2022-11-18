@@ -37,6 +37,17 @@ def compare_plots(*figs, names=None, marker="color", marker_values=None):
 
 
 def plot_cluster_sizes_distribution(membership, groupby=None, name=None):
+    r"""
+    Plot the cluster size distribution
+
+    Args:
+        membership (_type_): Membership vector.
+        groupby (_type_, optional): Series to group by. Defaults to None.
+        name (Series, optional): Name of the plot (useful when combining multiple plots together). Defaults to None.
+
+    Returns:
+        Figure: Cluster size distribution plot.
+    """
     if groupby is not None:
         assert isinstance(groupby, pd.Series)
         assert groupby.index.equals(membership.index)
@@ -72,6 +83,18 @@ def plot_cluster_sizes_distribution(membership, groupby=None, name=None):
 
 
 def plot_entropy_curve(membership, q_range=None, groupby=None, name=None):
+    r"""
+    Plot the Hill number entropy curve
+
+    Args:
+        membership (_type_): Membership vector.
+        groupby (_type_, optional): Series to group by. Defaults to None.
+        name (Series, optional): Name of the plot (useful when combining multiple plots together). Defaults to None.
+
+    Returns:
+        Figure: Hill number entropy curve.
+    """
+
     if q_range is None:
         q_range = np.linspace(0, 2)
 
