@@ -15,3 +15,11 @@ dependencies:
   - pip:
     - igraph
     - plotly
+    - sphinx-autoapi
+    - Sphinx
+    - myst_parser
+    - pydata-sphinx-theme
+    - m2r2
+    - sphinx-lesson
+    - sphinx-design
+    - parse

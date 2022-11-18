@@ -7,9 +7,13 @@ if __name__ == "__main__":
         version="0.0.1",
         author="Olivier Binette",
         author_email="olivier.binette@gmail.com",
-        description="An end-to-end evaluation framework for entity resolution systems ",
+        description="An end-to-end evaluation framework for entity resolution systems.",
         url="https://github.com/OlivierBinette/er-evaluation",
         include_package_data=True,
         packages=["er_evaluation"],
-        install_requires=["pandas", "numpy", "scipy",],
+        install_requires=[
+            "pandas",
+            "numpy",
+            "scipy",
+        ],
     )

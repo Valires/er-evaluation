@@ -1,22 +1,5 @@
 """
-Entity Resolution Performance Estimators
-
-Copyright (C) 2022  Olivier Binette
-
-This file is part of the ER-Evaluation Python package (er-evaluation).
-
-er-evaluation is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
+Performance Estimators Based on Ground Truth Clusters
 """
 
 import pandas as pd
@@ -27,14 +10,14 @@ from .data_structures import ismembership
 
 
 def validate_estimator_arguments(prediction, sample, weights):
-    """
+    r"""
     Validate inputs to estimators.
 
     Args:
         prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
         sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
         weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities).
-    
+
     Raises:
         AssertionError
     """
@@ -46,12 +29,12 @@ def validate_estimator_arguments(prediction, sample, weights):
 
 
 def pairwise_precision_design_estimate(prediction, sample, weights):
-    """
+    r"""
     Design estimator for pairwise precision.
 
     Given a predicted disambiguation `prediction`, a set of ground truth clusters `sample`, and a set of cluster sampling weights `weights` (e.g., inverse probability weights for each cluster), this returns a pairwise precision estimate together with its estimated standard deviation.
 
-    Note: 
+    Note:
         This is the precision estimator corresponding to cluster block sampling in [1].
 
     Args:
@@ -61,7 +44,7 @@ def pairwise_precision_design_estimate(prediction, sample, weights):
 
     Returns:
         tuple: Precision estimate and standard deviation estimate.
-    
+
     References:
         [1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230
     """
@@ -105,12 +88,12 @@ def pairwise_precision_design_estimate(prediction, sample, weights):
 
 
 def pairwise_recall_design_estimate(prediction, sample, weights):
-    """
+    r"""
     Design estimator for pairwise recall.
 
     Given a predicted disambiguation `prediction`, a set of ground truth clusters `sample`, and a set of cluster sampling weights `weights` (e.g., inverse probability weights for each cluster), this returns a pairwise recall estimate together with its estimated standard deviation.
 
-    Note: 
+    Note:
         This is the recall estimator corresponding to cluster block sampling in [1].
 
     Args:
@@ -120,7 +103,7 @@ def pairwise_recall_design_estimate(prediction, sample, weights):
 
     Returns:
         tuple: Recall estimate and standard deviation estimate.
-    
+
     References:
         [1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230
     """
@@ -153,7 +136,7 @@ def pairwise_recall_design_estimate(prediction, sample, weights):
 
 
 def ratio_estimator(B, A):
-    """Ratio estimator for mean(B)/mean(A) with bias adjustment."""
+    r"""Ratio estimator for mean(B)/mean(A) with bias adjustment."""
     assert len(A) == len(B)
 
     A_mean = np.mean(A)
@@ -174,7 +157,7 @@ def ratio_estimator(B, A):
 
 
 def std_dev(B, A):
-    """Standard deviation estimate for ratio estimator."""
+    r"""Standard deviation estimate for ratio estimator."""
     assert len(A) == len(B)
 
     A_mean = np.mean(A)
