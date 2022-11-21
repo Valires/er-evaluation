@@ -16,5 +16,7 @@ if __name__ == "__main__":
             "pandas",
             "numpy",
             "scipy",
+            "plotly",
+            "igraph",
         ],
     )
