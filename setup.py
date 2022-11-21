@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 if __name__ == "__main__":
     setup(
         name="er_evaluation",
-        version="0.0.1",
+        version="1.0.0",
         author="Olivier Binette",
         author_email="olivier.binette@gmail.com",
         description="An end-to-end evaluation framework for entity resolution systems.",
