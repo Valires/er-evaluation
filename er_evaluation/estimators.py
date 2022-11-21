@@ -7,6 +7,58 @@ import numpy as np
 from scipy.special import comb
 
 from .data_structures import ismembership
+from .utils import expand_grid
+
+
+def estimates_table(predictions, samples_weights, estimators):
+    """
+    Create table of estimates applied to all combinations of predictions and (sample, weights) pairs.
+
+    Args:
+        predictions (Dict): Dictionary of membership vectors.
+        samples_weights (Dict): Dictionary of dictionaries of the form {"sample": sample, "weights": weights}, where `sample` is the sample membership vector and `weights` is the pandas Series of sampling weights. See estimators definitions for more information.
+        estimators (Dict): Dictionary of estimator functions. Each estimator is expected to return a pair (estimate, std).
+
+    Returns:
+        DataFrame: Pandas DataFrame with columns "predition", "sample_weights", "estimator", "value", and "std", where value and std are the point estimate and standard deviation estimate for the estimator applied to the given prediction, sample and sampling weights.
+
+    Examples:
+        >>> import pandas as pd
+        >>> from er_evaluation.estimators import *
+        >>> predictions = {"prediction_1": pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])}
+        >>> samples_weights = {"sample_1": {"sample": pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"]), "weights": pd.Series(1, index=["c1", "c2", "c4"])}}
+        >>> estimators = {"precision": pairwise_precision_design_estimate, "recall": pairwise_recall_design_estimate}
+        >>> estimates_table(predictions, samples_weights, estimators) # doctest: +NORMALIZE_WHITESPACE
+            prediction	    sample_weights	estimator	value	    std
+        0	prediction_1	sample_1	    precision	0.388889	0.254588
+        1	prediction_1	sample_1	    recall	    0.296875	0.108253
+    """
+    params = expand_grid(
+        prediction=predictions,
+        sample_weights=samples_weights,
+        estimator=estimators,
+    )
+
+    def lambd(pred_key, ref_key, est_key):
+        ests = estimators[est_key](
+            predictions[pred_key],
+            samples_weights[ref_key]["sample"],
+            samples_weights[ref_key]["weights"],
+        )
+
+        return ests
+
+    params[["value", "std"]] = pd.DataFrame(
+        params.apply(
+            lambda x: lambd(
+                x["prediction"], x["sample_weights"], x["estimator"]
+            ),
+            axis=1,
+        ).tolist(),
+        index=params.index,
+    )
+
+    return params
 
 
 def validate_estimator_arguments(prediction, sample, weights):
