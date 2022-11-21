@@ -116,7 +116,7 @@ def pairwise_recall_design_estimate(prediction, sample, weights):
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
         >>> weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights
         >>> pairwise_recall_design_estimate(prediction, sample, weights)
-        (0.4027777777777778, 0.21245914639969934)
+        (0.296875, 0.10825317547305482)
 
     References:
         [1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230
