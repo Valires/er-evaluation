@@ -9,6 +9,10 @@ Install the development version from Github using:
 pip install git+https://github.com/OlivierBinette/ER-Evaluation.git
 ```
 
+## Documentation
+
+Please refer to the documentation website [olivierbinette.ca/er-evaluation](http://olivierbinette.ca/er-evaluation/build/html/index.html).
+
 ## Acknowledgements
 
 **ER-Evaluation** is an extension of the [PatentsView/PatentsView-Evaluation](https://github.com/PatentsView/PatentsView-Evaluation/) project sponsored by the American Institutes for Research and the U.S. Patents and Trademarks Office. We aim to provide a unified source of evaluation tools for entity resolution systems which are maintained as an open source academic project.
