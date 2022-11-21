@@ -11,6 +11,7 @@ Contents
    
    pairwise_precision_design_estimate
    pairwise_recall_design_estimate
+   estimates_table
    
 
 Documentation

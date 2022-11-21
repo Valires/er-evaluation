@@ -11,6 +11,7 @@ Contents
    
    pairwise_precision
    pairwise_recall
+   metrics_table
 
 Documentation
 -------------
