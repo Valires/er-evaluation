@@ -1,4 +1,5 @@
 [![Python package](https://github.com/OlivierBinette/er-evaluation/actions/workflows/python-package.yml/badge.svg)](https://github.com/OlivierBinette/er-evaluation/actions/workflows/python-package.yml)
+[![PyPI version](https://badge.fury.io/py/er-evaluation.svg)](https://badge.fury.io/py/er-evaluation)
 
 # 🔎 ER-Evaluation: An End-to-End Evaluation Framework for Entity Resolution Systems
 
