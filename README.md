@@ -6,9 +6,9 @@
 
 ## Installation
 
-Install the development version from Github using:
+Install the released version from PyPI using:
 ```bash
-pip install git+https://github.com/OlivierBinette/ER-Evaluation.git
+pip install er-evaluation
 ```
 
 ## Documentation

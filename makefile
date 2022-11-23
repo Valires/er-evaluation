@@ -9,7 +9,7 @@
 ## 		black:		Format Python files.
 ENV?=er-evaluation
 
-.PHONY: help env black docs
+.PHONY: help env black docs build
 
 help: makefile
 	@sed -n "s/^##//p" $<
@@ -23,3 +23,6 @@ black:
 
 docs:
 	$(MAKE) html -C docs
+
+build:
+	python3 -m build .
