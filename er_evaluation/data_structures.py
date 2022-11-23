@@ -78,7 +78,6 @@ Contents
     graph_to_clusters()
     graph_to_pairs()
 """
-
 import numpy as np
 import pandas as pd
 from igraph import Graph

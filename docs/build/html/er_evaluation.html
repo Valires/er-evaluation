@@ -294,6 +294,8 @@
               
   <section id="api-doc">
 <h1>API Doc<a class="headerlink" href="#api-doc" title="Permalink to this heading">#</a></h1>
+<section id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Permalink to this heading">#</a></h2>
 <table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="er_evaluation.data_structures.html#module-er_evaluation.data_structures" title="er_evaluation.data_structures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data_structures</span></code></a></p></td>
@@ -306,7 +308,7 @@
 <td><p>Evaluation Metrics (Precision, Recall, etc)</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="er_evaluation.error_analysis.html#module-er_evaluation.error_analysis" title="er_evaluation.error_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">error_analysis</span></code></a></p></td>
-<td><p>Tools for Error Analysis Based on Ground Truth Clusters</p></td>
+<td><p>Error Analysis: Analyze Errors Based on Ground Truth Clusters</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="er_evaluation.plots.html#module-er_evaluation.plots" title="er_evaluation.plots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plots</span></code></a></p></td>
 <td><p>Helper Plots and Visualizations</p></td>
@@ -316,8 +318,136 @@
 </tr>
 </tbody>
 </table>
+</section>
+<section id="all-functions">
+<h2>All Functions<a class="headerlink" href="#all-functions" title="Permalink to this heading">#</a></h2>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ismembership</span></code></p></td>
+<td><p>Check if given object is a membership vector.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">isclusters</span></code></p></td>
+<td><p>Check if given object is a clusters dictionary.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ispairs</span></code></p></td>
+<td><p>Check if given object is a pairs list.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">isgraph</span></code></p></td>
+<td><p>Check if given object is an iGraph <code class="xref py py-class docutils literal notranslate"><span class="pre">Graph</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">membership_to_clusters</span></code></p></td>
+<td><p>Transform membership vector into clusters dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">membership_to_graph</span></code></p></td>
+<td><p>Transform membership vector into Graph.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">membership_to_pairs</span></code></p></td>
+<td><p>Transform membership vector into pairs list.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clusters_to_graph</span></code></p></td>
+<td><p>Transform clusters dictionary into Graph.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clusters_to_membership</span></code></p></td>
+<td><p>Transform clusters dictionary into membership vector.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clusters_to_pairs</span></code></p></td>
+<td><p>Transform clusters dictionary into pairs list.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairs_to_clusters</span></code></p></td>
+<td><p>Transform pairs list into clusters dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairs_to_graph</span></code></p></td>
+<td><p>Transform pairs list into Graph.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairs_to_membership</span></code></p></td>
+<td><p>Transform pairs list into membership vector.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_to_clusters</span></code></p></td>
+<td><p>Transform Graph into clusters dictionary.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_to_membership</span></code></p></td>
+<td><p>Transform Graph into membership vector.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_to_pairs</span></code></p></td>
+<td><p>Transform Graph into pairs list.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_extra_links</span></code></p></td>
+<td><p>Count number of extraneous links to sampled clusters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_missing_links</span></code></p></td>
+<td><p>Count number of missing links to sampled clusters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">expected_extra_links</span></code></p></td>
+<td><p>Expected number of extraneous links to records in sampled clusters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">expected_missing_links</span></code></p></td>
+<td><p>Expected number of missing links to records in sampled clusters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">splitting_entropy</span></code></p></td>
+<td><p>Splitting entropy of true clusters</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairwise_precision_design_estimate</span></code></p></td>
+<td><p>Design estimator for pairwise precision.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairwise_recall_design_estimate</span></code></p></td>
+<td><p>Design estimator for pairwise recall.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">estimates_table</span></code></p></td>
+<td><p>Create table of estimates applied to all combinations of predictions and (sample, weights) pairs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairwise_precision</span></code></p></td>
+<td><p>Pairwise precision for the inner join of two clusterings.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairwise_recall</span></code></p></td>
+<td><p>Pairwise recall for the inner join of two clusterings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">metrics_table</span></code></p></td>
+<td><p>Apply a set of metrics to all combinations of prediction and reference membership vectors.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_cluster_sizes_distribution</span></code></p></td>
+<td><p>Plot the cluster size distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_entropy_curve</span></code></p></td>
+<td><p>Plot the Hill number entropy curve</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare_plots</span></code></p></td>
+<td><p>Combine multiple figures into one.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_clusters</span></code></p></td>
+<td><p>Number of clusters in a given clustering.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_links</span></code></p></td>
+<td><p>Number of pairwise links associated with a given clustering.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cluster_sizes</span></code></p></td>
+<td><p>Compute the size of each cluster.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cluster_sizes_distribution</span></code></p></td>
+<td><p>Compute the cluster size distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">average_cluster_size</span></code></p></td>
+<td><p>Compute the average cluster size.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cluster_hill_number</span></code></p></td>
+<td><p>Compute Hill number of a given order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">matching_rate</span></code></p></td>
+<td><p>Compute the <strong>matching rate</strong> for a given clustering.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">homonimy_rate</span></code></p></td>
+<td><p>Compute the homonimy rate of a given clustering with a set of associated names.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name_variation_rate</span></code></p></td>
+<td><p>Compute the name variation rate of a given clustering with a set of associated names.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">expand_grid</span></code></p></td>
+<td><p>Create DataFrame from all combination of elements.</p></td>
+</tr>
+</tbody>
+</table>
 <div class="toctree-wrapper compound">
 </div>
+</section>
 </section>
 
 
@@ -351,6 +481,28 @@
           
             <div class="bd-sidebar-secondary bd-toc">
               
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#modules">
+   Modules
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#all-functions">
+   All Functions
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
 <div class="toc-item">
   
 <div id="searchbox"></div>
