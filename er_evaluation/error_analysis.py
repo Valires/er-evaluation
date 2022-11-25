@@ -129,7 +129,7 @@ def expected_extra_links(prediction, sample):
     Given a predicted disambiguation `prediction` and a sample of true clusters `sample`, both represented as membership vectors, this functions returns the expected number of extraneous links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of extraneous links.
 
     Expected Number of Extraneous Links
-        For a given sampled cluster :math:`c` with records :math:`r \in c`, let :math:`A_r` be the set of records which are erroneously linked to :math:`r` in the predicted clustering. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`A_r = \hat c(r) \backslash c` Then the expected number of extraneous links for :math:`c` is :math:` \frac{1}{\lvert c \rvert}\sum_{r\in c} \lvert A_r \rvert :math:`. This is the expected number of erroneous links to a random record :math:`r \in c`.
+        For a given sampled cluster :math:`c` with records :math:`r \in c`, let :math:`A_r` be the set of records which are erroneously linked to :math:`r` in the predicted clustering. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`A_r = \hat c(r) \backslash c` Then the expected number of extraneous links for :math:`c` is :math:` \frac{1}{\lvert c \rvert}\sum_{r\in c} \lvert A_r \rvert`. This is the expected number of erroneous links to a random record :math:`r \in c`.
 
     Args:
         prediction (Series): Membership vector representing a predicted disambiguation.
