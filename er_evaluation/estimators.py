@@ -54,6 +54,7 @@ def estimates_table(predictions, samples_weights, estimators):
                 x["prediction"], x["sample_weights"], x["estimator"]
             ),
             axis=1,
+            result_type="expand",
         ).tolist(),
         index=params.index,
     )
@@ -108,6 +109,9 @@ def pairwise_precision_design_estimate(prediction, sample, weights):
         [1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230
     """
     validate_estimator_arguments(prediction, sample, weights)
+
+    sample = sample[sample.index.isin(prediction.values)]
+    weights = weights[weights.index.isin(prediction.values)]
 
     inner = pd.concat(
         {"prediction": prediction, "reference": sample},
@@ -174,6 +178,9 @@ def pairwise_recall_design_estimate(prediction, sample, weights):
         [1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230
     """
     validate_estimator_arguments(prediction, sample, weights)
+
+    sample = sample[sample.index.isin(prediction.values)]
+    weights = weights[weights.index.isin(prediction.values)]
 
     inner = pd.concat(
         {"prediction": prediction, "reference": sample},
