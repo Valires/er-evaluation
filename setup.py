@@ -8,7 +8,7 @@ long_description = (this_directory / "README.md").read_text()
 if __name__ == "__main__":
     setup(
         name="er_evaluation",
-        version="1.0.0.post0",
+        version="1.0.1",
         author="Olivier Binette",
         author_email="olivier.binette@gmail.com",
         description="An end-to-end evaluation framework for entity resolution systems.",
