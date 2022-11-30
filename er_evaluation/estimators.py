@@ -53,8 +53,7 @@ def estimates_table(predictions, samples_weights, estimators):
             lambda x: lambd(
                 x["prediction"], x["sample_weights"], x["estimator"]
             ),
-            axis=1,
-            result_type="expand",
+            axis=1
         ).tolist(),
         index=params.index,
     )
@@ -110,8 +109,8 @@ def pairwise_precision_design_estimate(prediction, sample, weights):
     """
     validate_estimator_arguments(prediction, sample, weights)
 
-    sample = sample[sample.index.isin(prediction.values)]
-    weights = weights[weights.index.isin(prediction.values)]
+    sample = sample[sample.index.isin(prediction.index.values)]
+    weights = weights[weights.index.isin(sample.values)]
 
     inner = pd.concat(
         {"prediction": prediction, "reference": sample},
@@ -179,8 +178,8 @@ def pairwise_recall_design_estimate(prediction, sample, weights):
     """
     validate_estimator_arguments(prediction, sample, weights)
 
-    sample = sample[sample.index.isin(prediction.values)]
-    weights = weights[weights.index.isin(prediction.values)]
+    sample = sample[sample.index.isin(prediction.index.values)]
+    weights = weights[weights.index.isin(sample.values)]
 
     inner = pd.concat(
         {"prediction": prediction, "reference": sample},
