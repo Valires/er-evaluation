@@ -4,27 +4,27 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>er_evaluation.data_structures &#8212; ER-Evaluation  documentation</title>
-  <script>
+  
+  
+  
+  <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
-<link href="_static/styles/pydata-sphinx-theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+  <link href="_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
 
   
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/6.1.2/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -35,7 +35,8 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536">
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -52,7 +53,6 @@
     <script src="_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="er_evaluation.summary" href="er_evaluation.summary.html" />
@@ -63,6 +63,10 @@
   
   
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   
   <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
@@ -125,18 +129,18 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="readme.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="readme.html">
                         README
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="er_evaluation.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="er_evaluation.html">
                         API Doc
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -145,12 +149,14 @@
     </div>
 
     <div id="navbar-end">
-      <div class="navbar-end-item navbar-end__search-button-container">
-        
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
   <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-      </div>
+        </div>
+      
       
       <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
@@ -173,11 +179,13 @@
 
 
   
-  <div class="search-button-container--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
   <i class="fa-solid fa-magnifying-glass"></i>
 </button>
-  </div>
+    </div>
+  
 
   
   <label class="sidebar-toggle secondary-toggle" for="__secondary">
@@ -207,18 +215,18 @@
     </p>
     <ul id="navbar-main-elements" class="navbar-nav">
         
-                <li class="nav-item">
-                    <a class="nav-link" href="readme.html">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="readme.html">
                         README
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="er_evaluation.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="er_evaluation.html">
                         API Doc
-                    </a>
-                </li>
+                      </a>
+                    </li>
                 
     </ul>
 </nav>
@@ -279,8 +287,11 @@
     </div>
   </div>
 
+  
+  <div id="rtd-footer-container"></div>
+
       </div>
-      <main class="bd-main">
+      <main id="main-content" class="bd-main">
         
         
         <div class="bd-content">
@@ -299,583 +310,11 @@
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this heading">#</a></h2>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.data_structures.ismembership" title="er_evaluation.data_structures.ismembership"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ismembership</span></code></a></p></td>
-<td><p>Check if given object is a membership vector.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#er_evaluation.data_structures.isclusters" title="er_evaluation.data_structures.isclusters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isclusters</span></code></a></p></td>
-<td><p>Check if given object is a clusters dictionary.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.data_structures.ispairs" title="er_evaluation.data_structures.ispairs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ispairs</span></code></a></p></td>
-<td><p>Check if given object is a pairs list.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#er_evaluation.data_structures.isgraph" title="er_evaluation.data_structures.isgraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isgraph</span></code></a></p></td>
-<td><p>Check if given object is an iGraph <code class="xref py py-class docutils literal notranslate"><span class="pre">Graph</span></code>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.data_structures.membership_to_clusters" title="er_evaluation.data_structures.membership_to_clusters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">membership_to_clusters</span></code></a></p></td>
-<td><p>Transform membership vector into clusters dictionary.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#er_evaluation.data_structures.membership_to_pairs" title="er_evaluation.data_structures.membership_to_pairs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">membership_to_pairs</span></code></a></p></td>
-<td><p>Transform membership vector into pairs list.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.data_structures.membership_to_graph" title="er_evaluation.data_structures.membership_to_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">membership_to_graph</span></code></a></p></td>
-<td><p>Transform membership vector into Graph.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#er_evaluation.data_structures.clusters_to_membership" title="er_evaluation.data_structures.clusters_to_membership"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clusters_to_membership</span></code></a></p></td>
-<td><p>Transform clusters dictionary into membership vector.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.data_structures.clusters_to_pairs" title="er_evaluation.data_structures.clusters_to_pairs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clusters_to_pairs</span></code></a></p></td>
-<td><p>Transform clusters dictionary into pairs list.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#er_evaluation.data_structures.clusters_to_graph" title="er_evaluation.data_structures.clusters_to_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clusters_to_graph</span></code></a></p></td>
-<td><p>Transform clusters dictionary into Graph.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.data_structures.pairs_to_membership" title="er_evaluation.data_structures.pairs_to_membership"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairs_to_membership</span></code></a></p></td>
-<td><p>Transform pairs list into membership vector.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#er_evaluation.data_structures.pairs_to_clusters" title="er_evaluation.data_structures.pairs_to_clusters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairs_to_clusters</span></code></a></p></td>
-<td><p>Transform pairs list into clusters dictionary.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.data_structures.pairs_to_graph" title="er_evaluation.data_structures.pairs_to_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairs_to_graph</span></code></a></p></td>
-<td><p>Transform pairs list into Graph.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#er_evaluation.data_structures.graph_to_membership" title="er_evaluation.data_structures.graph_to_membership"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_to_membership</span></code></a></p></td>
-<td><p>Transform Graph into membership vector.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.data_structures.graph_to_clusters" title="er_evaluation.data_structures.graph_to_clusters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_to_clusters</span></code></a></p></td>
-<td><p>Transform Graph into clusters dictionary.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#er_evaluation.data_structures.graph_to_pairs" title="er_evaluation.data_structures.graph_to_pairs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_to_pairs</span></code></a></p></td>
-<td><p>Transform Graph into pairs list.</p></td>
-</tr>
 </tbody>
 </table>
 </section>
-<section id="module-er_evaluation.data_structures">
-<span id="documentation"></span><h2>Documentation<a class="headerlink" href="#module-er_evaluation.data_structures" title="Permalink to this heading">#</a></h2>
-<section id="clustering-data-structures">
-<h3>Clustering Data Structures<a class="headerlink" href="#clustering-data-structures" title="Permalink to this heading">#</a></h3>
-<p>This module contains utilities defining clustering data structures (graph, membership vector, clusters dictionary, and pairwise links list) and allowing transformation between them.</p>
-<section id="definitions">
-<h4>Definitions<a class="headerlink" href="#definitions" title="Permalink to this heading">#</a></h4>
-<p>A clustering of a set of elements <span class="math notranslate nohighlight">\(E\)</span> is a partition of <span class="math notranslate nohighlight">\(E\)</span> into a set of disjoint clusters <span class="math notranslate nohighlight">\(C\)</span>. For example, the following diagram represents a clustering of elements <span class="math notranslate nohighlight">\(\{0,1,2,3,4,5\}\)</span> into the three clusters “c1”, “c2”, and “c3”:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌───────┐  ┌─────┐  ┌───┐
-│ 0   1 │  │  3  │  │   │
-│       │  │     │  │ 5 │
-│   2   │  │  4  │  │   │
-└───────┘  └─────┘  └───┘
-   c1        c2      c3
-</pre></div>
-</div>
-<p>We use the following data structures to represent clusterings:</p>
-<dl>
-<dt>Membership vector</dt><dd><p>A membership vector is a pandas <code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code> indexed by the elements of <span class="math notranslate nohighlight">\(E\)</span> and with values corresponding to cluster identifiers. That is, the memebership vector maps elements to clusters. Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
-<span class="go">0    c1</span>
-<span class="go">1    c1</span>
-<span class="go">2    c1</span>
-<span class="go">3    c2</span>
-<span class="go">4    c2</span>
-<span class="go">5    c3</span>
-<span class="go">dtype: object</span>
-</pre></div>
-</div>
-</dd>
-<dt>Clusters dictionary</dt><dd><p>A clusters dictionary is a Python <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> with keys corresponding to cluster identifiers and values being list of cluster elements. Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;c1&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="s1">&#39;c2&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span> <span class="s1">&#39;c3&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">])}</span>
-</pre></div>
-</div>
-</dd>
-<dt>Pairwise links list</dt><dd><p>A pairwise links list is an array of pairwise links between elements of the clustering, where each element of a cluster is linked to every other element of the same cluster. Note that clusters are unnamed in pairwise links lists. Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
-       <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
-       <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
-</pre></div>
-</div>
-</dd>
-<dt>Graph</dt><dd><p>A graph is an igraph <code class="xref py py-class docutils literal notranslate"><span class="pre">Graph</span></code> object with vertices representing clustering elements and with edges between all elements belonging to the same cluster. Note that clusters are unnamed in graphs. Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>1───2       4
-│   │       │       6
-└─3─┘       5
-</pre></div>
-</div>
-</dd>
-</dl>
-</section>
-<section id="id1">
-<h4>Contents<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
-<ul>
-<li><p>Check that objects satisfy representation definitions using:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ismembership</span><span class="p">()</span>
-<span class="n">isclusters</span><span class="p">()</span>
-<span class="n">ispairs</span><span class="p">()</span>
-<span class="n">isgraph</span><span class="p">()</span>
-</pre></div>
-</div>
-</li>
-<li><p>Transform between representations using the following functions:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">membership_to_clusters</span><span class="p">()</span>
-<span class="n">membership_to_pairs</span><span class="p">()</span>
-<span class="n">membership_to_graph</span><span class="p">()</span>
-<span class="n">clusters_to_membership</span><span class="p">()</span>
-<span class="n">clusters_to_pairs</span><span class="p">()</span>
-<span class="n">clusters_to_graph</span><span class="p">()</span>
-<span class="n">pairs_to_membership</span><span class="p">()</span>
-<span class="n">pairs_to_clusters</span><span class="p">()</span>
-<span class="n">pairs_to_graph</span><span class="p">()</span>
-<span class="n">graph_to_membership</span><span class="p">()</span>
-<span class="n">graph_to_clusters</span><span class="p">()</span>
-<span class="n">graph_to_pairs</span><span class="p">()</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</section>
-</section>
-<dl class="py function">
-<dt class="sig sig-object py" id="er_evaluation.data_structures.clusters_to_graph">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.data_structures.</span></span><span class="sig-name descname"><span class="pre">clusters_to_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clusters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/data_structures.html#clusters_to_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.data_structures.clusters_to_graph" title="Permalink to this definition">#</a></dt>
-<dd><p>Transform clusters dictionary into Graph.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>clusters</strong> (<em>dictionary</em>) – Dictionary mapping cluster identifiers to numpy array of cluster elements.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Membership vector.</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clusters</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="mi">2</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]),</span> <span class="mi">3</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">]),</span> <span class="mi">4</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">clusters_to_graph</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="er_evaluation.data_structures.clusters_to_membership">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.data_structures.</span></span><span class="sig-name descname"><span class="pre">clusters_to_membership</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clusters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/data_structures.html#clusters_to_membership"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.data_structures.clusters_to_membership" title="Permalink to this definition">#</a></dt>
-<dd><p>Transform clusters dictionary into membership vector.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>clusters</strong> (<em>dictionary</em>) – Dictionary mapping cluster identifiers to numpy array of cluster elements.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Membership vector.</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clusters</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="mi">2</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]),</span> <span class="mi">3</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">]),</span> <span class="mi">4</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clusters_to_membership</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span>
-<span class="go">1    1</span>
-<span class="go">2    1</span>
-<span class="go">3    2</span>
-<span class="go">5    2</span>
-<span class="go">4    3</span>
-<span class="go">6    4</span>
-<span class="go">7    4</span>
-<span class="go">8    4</span>
-<span class="go">dtype: int64</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="er_evaluation.data_structures.clusters_to_pairs">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.data_structures.</span></span><span class="sig-name descname"><span class="pre">clusters_to_pairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clusters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/data_structures.html#clusters_to_pairs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.data_structures.clusters_to_pairs" title="Permalink to this definition">#</a></dt>
-<dd><p>Transform clusters dictionary into pairs list.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>clusters</strong> (<em>dictionary</em>) – Dictionary mapping cluster identifiers to numpy array of cluster elements.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Pairs list.</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clusters</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="mi">2</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]),</span> <span class="mi">3</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">]),</span> <span class="mi">4</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clusters_to_pairs</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span>
-<span class="go">array([[1, 2],</span>
-<span class="go">       [3, 5],</span>
-<span class="go">       [6, 7],</span>
-<span class="go">       [6, 8],</span>
-<span class="go">       [7, 8]])</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="er_evaluation.data_structures.graph_to_clusters">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.data_structures.</span></span><span class="sig-name descname"><span class="pre">graph_to_clusters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/data_structures.html#graph_to_clusters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.data_structures.graph_to_clusters" title="Permalink to this definition">#</a></dt>
-<dd><p>Transform Graph into clusters dictionary.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>graph</strong> (<em>Graph</em>) – igraph Graph object.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Membership vector</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clusters</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="mi">2</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]),</span> <span class="mi">3</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">]),</span> <span class="mi">4</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">clusters_to_graph</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">graph_to_clusters</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span> 
-<span class="go">{0: array([&#39;1&#39;, &#39;2&#39;], dtype=object),</span>
-<span class="go"> 1: array([&#39;3&#39;, &#39;5&#39;], dtype=object),</span>
-<span class="go"> 2: array([&#39;4&#39;], dtype=object),</span>
-<span class="go"> 3: array([&#39;6&#39;, &#39;7&#39;, &#39;8&#39;], dtype=object)}</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="er_evaluation.data_structures.graph_to_membership">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.data_structures.</span></span><span class="sig-name descname"><span class="pre">graph_to_membership</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/data_structures.html#graph_to_membership"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.data_structures.graph_to_membership" title="Permalink to this definition">#</a></dt>
-<dd><p>Transform Graph into membership vector.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>graph</strong> (<em>Graph</em>) – igraph Graph object.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Membership vector</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">membership</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">membership_to_graph</span><span class="p">(</span><span class="n">membership</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">graph_to_membership</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span> <span class="c1"># Note that cluster identifiers are arbitrary.</span>
-<span class="go">1    0</span>
-<span class="go">2    0</span>
-<span class="go">3    1</span>
-<span class="go">4    2</span>
-<span class="go">5    1</span>
-<span class="go">6    3</span>
-<span class="go">7    3</span>
-<span class="go">8    3</span>
-<span class="go">dtype: int64</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="er_evaluation.data_structures.graph_to_pairs">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.data_structures.</span></span><span class="sig-name descname"><span class="pre">graph_to_pairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/data_structures.html#graph_to_pairs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.data_structures.graph_to_pairs" title="Permalink to this definition">#</a></dt>
-<dd><p>Transform Graph into pairs list.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>graph</strong> (<em>Graph</em>) – igraph Graph object.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Membership vector</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pairs</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">indices</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">pairs_to_graph</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">graph_to_pairs</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
-<span class="go">array([[&#39;1&#39;, &#39;2&#39;],</span>
-<span class="go">       [&#39;3&#39;, &#39;5&#39;],</span>
-<span class="go">       [&#39;6&#39;, &#39;7&#39;],</span>
-<span class="go">       [&#39;6&#39;, &#39;8&#39;],</span>
-<span class="go">       [&#39;7&#39;, &#39;8&#39;]], dtype=&#39;&lt;U1&#39;)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="er_evaluation.data_structures.isclusters">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.data_structures.</span></span><span class="sig-name descname"><span class="pre">isclusters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/data_structures.html#isclusters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.data_structures.isclusters" title="Permalink to this definition">#</a></dt>
-<dd><p>Check if given object is a clusters dictionary.</p>
-<dl>
-<dt>Clusters dictionary:</dt><dd><p>A clusters dictionary is a Python <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code> with keys corresponding to cluster identifiers and values being list of cluster elements. Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;c1&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="s1">&#39;c2&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span> <span class="s1">&#39;c3&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">])}</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if clusters dictionary, False otherwise.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;c1&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="s1">&#39;c2&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span> <span class="s1">&#39;c3&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">])}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">isclusters</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<p>Dictionary values should be numpy arrays:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;c1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;c2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;c3&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">]}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">isclusters</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-<span class="go">False</span>
-</pre></div>
-</div>
-<p>⚠️ Warning: Clustering validity is not checked.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;c1&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">]),</span> <span class="s1">&#39;c2&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">])}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">isclusters</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<p class="rubric">Notes</p>
-<ul class="simple">
-<li><p>This function does not verify that clusters are non-overlapping with unique non-NaN elements.</p></li>
-</ul>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="er_evaluation.data_structures.isgraph">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.data_structures.</span></span><span class="sig-name descname"><span class="pre">isgraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/data_structures.html#isgraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.data_structures.isgraph" title="Permalink to this definition">#</a></dt>
-<dd><p>Check if given object is an iGraph <code class="xref py py-class docutils literal notranslate"><span class="pre">Graph</span></code>.</p>
-<dl>
-<dt>Graph:</dt><dd><p>A graph is an igraph <code class="xref py py-class docutils literal notranslate"><span class="pre">Graph</span></code> object with vertices representing clustering elements and with edges between all elements belonging to the same cluster. Note that clusters are unnamed in graphs. Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>1───2       4
-│   │       │       6
-└─3─┘       5
-</pre></div>
-</div>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if Graph, False otherwise.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">igraph</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">igraph</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">isgraph</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="er_evaluation.data_structures.ismembership">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.data_structures.</span></span><span class="sig-name descname"><span class="pre">ismembership</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/data_structures.html#ismembership"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.data_structures.ismembership" title="Permalink to this definition">#</a></dt>
-<dd><p>Check if given object is a membership vector.</p>
-<dl>
-<dt>Membership vector:</dt><dd><p>A membership vector is a pandas <code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code> indexed by the elements of <span class="math notranslate nohighlight">\(E\)</span> and with values corresponding to cluster identifiers. That is, the memebership vector maps elements to clusters. Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
-<span class="go">0    c1</span>
-<span class="go">1    c1</span>
-<span class="go">2    c1</span>
-<span class="go">3    c2</span>
-<span class="go">4    c2</span>
-<span class="go">5    c3</span>
-<span class="go">dtype: object</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if membership vector, False otherwise.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ismembership</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ismembership</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
-<span class="go">False</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="er_evaluation.data_structures.ispairs">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.data_structures.</span></span><span class="sig-name descname"><span class="pre">ispairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/data_structures.html#ispairs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.data_structures.ispairs" title="Permalink to this definition">#</a></dt>
-<dd><p>Check if given object is a pairs list.</p>
-<p>A pairwise links list is an array of pairwise links between elements of the clustering, where each element of a cluster is linked to every other element of the same cluster. Note that clusters are unnamed in pairwise links lists. Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
-       <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
-       <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if a pairs list, False otherwise.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ispairs</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ispairs</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-<span class="go">False</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="er_evaluation.data_structures.membership_to_clusters">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.data_structures.</span></span><span class="sig-name descname"><span class="pre">membership_to_clusters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">membership</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/data_structures.html#membership_to_clusters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.data_structures.membership_to_clusters" title="Permalink to this definition">#</a></dt>
-<dd><p>Transform membership vector into clusters dictionary.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>membership</strong> (<em>Series</em>) – Membership vector.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Cluters dictionary.</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">membership</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">membership_to_clusters</span><span class="p">(</span><span class="n">membership</span><span class="p">)</span>
-<span class="go">{1: array([1, 2]), 2: array([3, 5]), 3: array([4]), 4: array([6, 7, 8])}</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="er_evaluation.data_structures.membership_to_graph">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.data_structures.</span></span><span class="sig-name descname"><span class="pre">membership_to_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">membership</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/data_structures.html#membership_to_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.data_structures.membership_to_graph" title="Permalink to this definition">#</a></dt>
-<dd><p>Transform membership vector into Graph.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>membership</strong> (<em>Series</em>) – Membership vector.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Graph, with all elements converted to string.</p>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>All elements are converted to string before creating the graph.</p>
-</div>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">membership</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">membership_to_graph</span><span class="p">(</span><span class="n">membership</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="er_evaluation.data_structures.membership_to_pairs">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.data_structures.</span></span><span class="sig-name descname"><span class="pre">membership_to_pairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">membership</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/data_structures.html#membership_to_pairs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.data_structures.membership_to_pairs" title="Permalink to this definition">#</a></dt>
-<dd><p>Transform membership vector into pairs list.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>membership</strong> (<em>Series</em>) – Membership vector.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Pairs list.</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">membership</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">membership_to_pairs</span><span class="p">(</span><span class="n">membership</span><span class="p">)</span>
-<span class="go">array([[1, 2],</span>
-<span class="go">       [3, 5],</span>
-<span class="go">       [6, 7],</span>
-<span class="go">       [6, 8],</span>
-<span class="go">       [7, 8]])</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="er_evaluation.data_structures.pairs_to_clusters">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.data_structures.</span></span><span class="sig-name descname"><span class="pre">pairs_to_clusters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pairs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/data_structures.html#pairs_to_clusters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.data_structures.pairs_to_clusters" title="Permalink to this definition">#</a></dt>
-<dd><p>Transform pairs list into clusters dictionary.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>pairs</strong> (<em>ndarray</em>) – array of paired elements.</p></li>
-<li><p><strong>indices</strong> (<em>ndarray</em>) – flat array of all elements to consider (paired and non-paired), including singletons.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="er_evaluation.data_structures.pairs_to_graph">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.data_structures.</span></span><span class="sig-name descname"><span class="pre">pairs_to_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pairs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/data_structures.html#pairs_to_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.data_structures.pairs_to_graph" title="Permalink to this definition">#</a></dt>
-<dd><p>Transform pairs list into Graph.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>pairs</strong> (<em>ndarray</em>) – array of paired elements.</p></li>
-<li><p><strong>indices</strong> (<em>ndarray</em>) – flat array of all elements to consider (paired and non-paired), including singletons.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Graph corresponding to the pairs list with given indices as vertices. Note that all elements are converted to string before creating the graph.</p>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>All elements are converted to string before creating the graph.</p>
-</div>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pairs</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">indices</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">pairs_to_graph</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="er_evaluation.data_structures.pairs_to_membership">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.data_structures.</span></span><span class="sig-name descname"><span class="pre">pairs_to_membership</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pairs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/data_structures.html#pairs_to_membership"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.data_structures.pairs_to_membership" title="Permalink to this definition">#</a></dt>
-<dd><p>Transform pairs list into membership vector.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>pairs</strong> (<em>ndarray</em>) – array of paired elements.</p></li>
-<li><p><strong>indices</strong> (<em>ndarray</em>) – flat array of all elements to consider (paired and non-paired), including singletons.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Membership vector</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pairs</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">indices</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pairs_to_membership</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
-<span class="go">1    0</span>
-<span class="go">2    0</span>
-<span class="go">3    1</span>
-<span class="go">4    2</span>
-<span class="go">5    1</span>
-<span class="go">6    3</span>
-<span class="go">7    3</span>
-<span class="go">8    3</span>
-<span class="go">dtype: int64</span>
-</pre></div>
-</div>
-</dd></dl>
-
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">#</a></h2>
 </section>
 </section>
 
@@ -923,172 +362,9 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-er_evaluation.data_structures">
+  <a class="reference internal nav-link" href="#documentation">
    Documentation
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#clustering-data-structures">
-     Clustering Data Structures
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#definitions">
-       Definitions
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#id1">
-       Contents
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#er_evaluation.data_structures.clusters_to_graph">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       clusters_to_graph()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#er_evaluation.data_structures.clusters_to_membership">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       clusters_to_membership()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#er_evaluation.data_structures.clusters_to_pairs">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       clusters_to_pairs()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#er_evaluation.data_structures.graph_to_clusters">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       graph_to_clusters()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#er_evaluation.data_structures.graph_to_membership">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       graph_to_membership()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#er_evaluation.data_structures.graph_to_pairs">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       graph_to_pairs()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#er_evaluation.data_structures.isclusters">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       isclusters()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#er_evaluation.data_structures.isgraph">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       isgraph()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#er_evaluation.data_structures.ismembership">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ismembership()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#er_evaluation.data_structures.ispairs">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ispairs()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#er_evaluation.data_structures.membership_to_clusters">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       membership_to_clusters()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#er_evaluation.data_structures.membership_to_graph">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       membership_to_graph()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#er_evaluation.data_structures.membership_to_pairs">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       membership_to_pairs()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#er_evaluation.data_structures.pairs_to_clusters">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       pairs_to_clusters()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#er_evaluation.data_structures.pairs_to_graph">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       pairs_to_graph()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#er_evaluation.data_structures.pairs_to_membership">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       pairs_to_membership()
-      </span>
-     </code>
-    </a>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -1131,7 +407,8 @@
   
     
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536"></script>
+  <script src="_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
   <footer class="bd-footer"><div class="bd-footer__inner container">
   
@@ -1143,6 +420,16 @@
 
 </p>
 
+  </div>
+  
+  <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
   </div>
   
   <div class="footer-item">

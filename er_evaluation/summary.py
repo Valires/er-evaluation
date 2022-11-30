@@ -197,7 +197,7 @@ def homonimy_rate(membership, names):
 
     Args:
         membership (Series): Membership vector representation of a clustering.
-        names (Series): Series indexed by cluster elements and with values corresponding to the associated name. Note that the index of `names` should exactly match the index of `membership`.
+        names (Series): Series indexed by cluster elements and with values corresponding to the associated name. Note that the index of `membership` should be included in the index of `names`.
 
     Returns:
         float: Homonimy rate
@@ -210,13 +210,13 @@ def homonimy_rate(membership, names):
     """
     assert ismembership(membership)
     assert isinstance(names, pd.Series)
-    assert membership.index.equals(names.index)
+    assert all(membership.index.isin(names.index))
 
     df = pd.concat(
-        {"membership": membership, "name": names}, axis=1, copy=False
+        {"membership": membership, "name": names}, axis=1, join="inner", copy=False
     )
 
-    names_count = names.groupby(names).count().reset_index(name="total_count")
+    names_count = df.name.groupby(df.name).count().reset_index(name="total_count")
     name_count_per_cluster = (
         df.groupby(["name", "membership"])
         .size()
@@ -224,8 +224,7 @@ def homonimy_rate(membership, names):
     )
     merged = name_count_per_cluster.merge(
         names_count,
-        left_on="name",
-        right_on="index",
+        on="name",
         copy=False,
         validate="m:1",
     )
@@ -258,10 +257,10 @@ def name_variation_rate(membership, names):
     """
     assert ismembership(membership)
     assert isinstance(names, pd.Series)
-    assert membership.index.equals(names.index)
+    assert all(membership.index.isin(names.index))
 
     joined = pd.concat(
-        {"membership": membership, "name": names}, axis=1, copy=False
+        {"membership": membership, "name": names}, axis=1, join="inner", copy=False
     )
 
     return (joined.groupby("membership").nunique() > 1).mean().values[0]
