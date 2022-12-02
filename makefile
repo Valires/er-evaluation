@@ -23,6 +23,7 @@ black:
 
 docs:
 	$(MAKE) html -C docs
+	git add docs/build/html/* -f
 
 build:
 	python3 -m build .
