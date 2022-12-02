@@ -36,7 +36,7 @@ def compare_plots(*figs, names=None, marker="color", marker_values=None):
     return combined
 
 
-def plot_cluster_sizes_distribution(membership, groupby=None, name=None):
+def plot_cluster_sizes_distribution(membership, groupby=None, name=None, normalize=False):
     r"""
     Plot the cluster size distribution
 
@@ -44,6 +44,7 @@ def plot_cluster_sizes_distribution(membership, groupby=None, name=None):
         membership (_type_): Membership vector.
         groupby (_type_, optional): Series to group by. Defaults to None.
         name (Series, optional): Name of the plot (useful when combining multiple plots together). Defaults to None.
+        normalize: Wether or not to normalize
 
     Returns:
         Figure: Cluster size distribution plot.
@@ -57,22 +58,31 @@ def plot_cluster_sizes_distribution(membership, groupby=None, name=None):
             .apply(cluster_sizes_distribution)
             .reset_index(name="cs_size")
         )
+        if normalize:
+            cs_dist.cs_size = cs_dist.cs_size / cs_dist.cs_size.sum()
+            y_label = "proportion"
+        else:
+            y_label = "count"
 
         fig = px.bar(
             x=cs_dist.level_1,
             y=cs_dist.cs_size,
             color=cs_dist.level_0,
-            labels={"x": "Cluster size", "y": "count"},
+            labels={"x": "Cluster size", "y": y_label},
             barmode="group",
         )
     else:
         cs_dist = cluster_sizes_distribution(membership)
+        if normalize:
+            cs_dist = cs_dist / cs_dist.sum()
+            y_label = "proportion"
+        else:
+            y_label = "count"
 
         fig = px.bar(
             x=cs_dist.index,
             y=cs_dist.values,
-            color=groupby,
-            labels={"x": "Cluster size", "y": "count"},
+            labels={"x": "Cluster size", "y": y_label},
             barmode="group",
         )
 
