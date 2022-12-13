@@ -309,11 +309,156 @@
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this heading">#</a></h2>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.estimators.pairwise_precision_design_estimate" title="er_evaluation.estimators.pairwise_precision_design_estimate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairwise_precision_design_estimate</span></code></a></p></td>
+<td><p>Design estimator for pairwise precision.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#er_evaluation.estimators.pairwise_recall_design_estimate" title="er_evaluation.estimators.pairwise_recall_design_estimate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairwise_recall_design_estimate</span></code></a></p></td>
+<td><p>Design estimator for pairwise recall.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.estimators.estimates_table" title="er_evaluation.estimators.estimates_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">estimates_table</span></code></a></p></td>
+<td><p>Create table of estimates applied to all combinations of predictions and (sample, weights) pairs.</p></td>
+</tr>
 </tbody>
 </table>
 </section>
-<section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">#</a></h2>
+<section id="module-er_evaluation.estimators">
+<span id="documentation"></span><h2>Documentation<a class="headerlink" href="#module-er_evaluation.estimators" title="Permalink to this heading">#</a></h2>
+<p>Performance Estimators Based on Ground Truth Clusters</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.estimators.estimates_table">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.estimators.</span></span><span class="sig-name descname"><span class="pre">estimates_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samples_weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">estimators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/estimators.html#estimates_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.estimators.estimates_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Create table of estimates applied to all combinations of predictions and (sample, weights) pairs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>predictions</strong> (<em>Dict</em>) – Dictionary of membership vectors.</p></li>
+<li><p><strong>samples_weights</strong> (<em>Dict</em>) – Dictionary of dictionaries of the form {“sample”: sample, “weights”: weights}, where <cite>sample</cite> is the sample membership vector and <cite>weights</cite> is the pandas Series of sampling weights. See estimators definitions for more information.</p></li>
+<li><p><strong>estimators</strong> (<em>Dict</em>) – Dictionary of estimator functions. Each estimator is expected to return a pair (estimate, std).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pandas DataFrame with columns “predition”, “sample_weights”, “estimator”, “value”, and “std”, where value and std are the point estimate and standard deviation estimate for the estimator applied to the given prediction, sample and sampling weights.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">er_evaluation.estimators</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">predictions</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;prediction_1&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">samples_weights</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;sample_1&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;sample&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c4&quot;</span><span class="p">]),</span> <span class="s2">&quot;weights&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c4&quot;</span><span class="p">])}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">estimators</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;precision&quot;</span><span class="p">:</span> <span class="n">pairwise_precision_design_estimate</span><span class="p">,</span> <span class="s2">&quot;recall&quot;</span><span class="p">:</span> <span class="n">pairwise_recall_design_estimate</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">estimates_table</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">samples_weights</span><span class="p">,</span> <span class="n">estimators</span><span class="p">)</span> 
+<span class="go">    prediction      sample_weights      estimator       value       std</span>
+<span class="go">0       prediction_1    sample_1            precision   0.388889        0.254588</span>
+<span class="go">1       prediction_1    sample_1            recall          0.296875    0.108253</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.estimators.pairwise_precision_design_estimate">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.estimators.</span></span><span class="sig-name descname"><span class="pre">pairwise_precision_design_estimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/estimators.html#pairwise_precision_design_estimate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.estimators.pairwise_precision_design_estimate" title="Permalink to this definition">#</a></dt>
+<dd><p>Design estimator for pairwise precision.</p>
+<p>Given a predicted disambiguation <cite>prediction</cite>, a set of ground truth clusters <cite>sample</cite>, and a set of cluster sampling weights <cite>weights</cite> (e.g., inverse probability weights for each cluster), this returns a pairwise precision estimate together with its estimated standard deviation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is the precision estimator corresponding to cluster block sampling in [1].</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
+<li><p><strong>sample</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
+<li><p><strong>weights</strong> (<em>Series</em>) – Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Precision estimate and standard deviation estimate.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c4&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="c1"># Uniform cluster weights</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pairwise_precision_design_estimate</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+<span class="go">(0.3888888888888889, 0.2545875386086578)</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<p>[1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.estimators.pairwise_recall_design_estimate">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.estimators.</span></span><span class="sig-name descname"><span class="pre">pairwise_recall_design_estimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/estimators.html#pairwise_recall_design_estimate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.estimators.pairwise_recall_design_estimate" title="Permalink to this definition">#</a></dt>
+<dd><p>Design estimator for pairwise recall.</p>
+<p>Given a predicted disambiguation <cite>prediction</cite>, a set of ground truth clusters <cite>sample</cite>, and a set of cluster sampling weights <cite>weights</cite> (e.g., inverse probability weights for each cluster), this returns a pairwise recall estimate together with its estimated standard deviation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is the recall estimator corresponding to cluster block sampling in [1].</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
+<li><p><strong>sample</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
+<li><p><strong>weights</strong> (<em>Series</em>) – Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Recall estimate and standard deviation estimate.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c4&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="c1"># Uniform cluster weights</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pairwise_recall_design_estimate</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+<span class="go">(0.296875, 0.10825317547305482)</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<p>[1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.estimators.ratio_estimator">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.estimators.</span></span><span class="sig-name descname"><span class="pre">ratio_estimator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/estimators.html#ratio_estimator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.estimators.ratio_estimator" title="Permalink to this definition">#</a></dt>
+<dd><p>Ratio estimator for mean(B)/mean(A) with bias adjustment.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.estimators.std_dev">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.estimators.</span></span><span class="sig-name descname"><span class="pre">std_dev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/estimators.html#std_dev"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.estimators.std_dev" title="Permalink to this definition">#</a></dt>
+<dd><p>Standard deviation estimate for ratio estimator.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.estimators.validate_estimator_arguments">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.estimators.</span></span><span class="sig-name descname"><span class="pre">validate_estimator_arguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/estimators.html#validate_estimator_arguments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.estimators.validate_estimator_arguments" title="Permalink to this definition">#</a></dt>
+<dd><p>Validate inputs to estimators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
+<li><p><strong>sample</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
+<li><p><strong>weights</strong> (<em>Series</em>) – Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>AssertionError</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 
@@ -354,9 +499,65 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#documentation">
+  <a class="reference internal nav-link" href="#module-er_evaluation.estimators">
    Documentation
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.estimators.estimates_table">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       estimates_table()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.estimators.pairwise_precision_design_estimate">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       pairwise_precision_design_estimate()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.estimators.pairwise_recall_design_estimate">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       pairwise_recall_design_estimate()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.estimators.ratio_estimator">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       ratio_estimator()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.estimators.std_dev">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       std_dev()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.estimators.validate_estimator_arguments">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       validate_estimator_arguments()
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 

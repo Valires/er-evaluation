@@ -53,6 +53,7 @@
     <script src="_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="er_evaluation.error_analysis" href="er_evaluation.error_analysis.html" />
@@ -310,11 +311,120 @@
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this heading">#</a></h2>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.metrics.pairwise_precision" title="er_evaluation.metrics.pairwise_precision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairwise_precision</span></code></a></p></td>
+<td><p>Pairwise precision for the inner join of two clusterings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#er_evaluation.metrics.pairwise_recall" title="er_evaluation.metrics.pairwise_recall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairwise_recall</span></code></a></p></td>
+<td><p>Pairwise recall for the inner join of two clusterings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.metrics.metrics_table" title="er_evaluation.metrics.metrics_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metrics_table</span></code></a></p></td>
+<td><p>Apply a set of metrics to all combinations of prediction and reference membership vectors.</p></td>
+</tr>
 </tbody>
 </table>
 </section>
-<section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">#</a></h2>
+<section id="module-er_evaluation.metrics">
+<span id="documentation"></span><h2>Documentation<a class="headerlink" href="#module-er_evaluation.metrics" title="Permalink to this heading">#</a></h2>
+<p>Evaluation Metrics (Precision, Recall, etc)</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.metrics.metrics_table">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.metrics.</span></span><span class="sig-name descname"><span class="pre">metrics_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">references</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/metrics.html#metrics_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.metrics.metrics_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply a set of metrics to all combinations of prediction and reference membership vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>predictions</strong> (<em>Dict</em>) – Dictionary of membership vectors.</p></li>
+<li><p><strong>references</strong> (<em>Dict</em>) – Dictionary of membership vectors.</p></li>
+<li><p><strong>metrics</strong> (<em>Dict</em>) – Dictionary of metrics to apply to the prediction and reference pairs.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataframe with columns “prediction”, “reference”, “metric”, and “value”, containing the value of the given metric applied to the corresponding prediction and reference membership vector.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">predictions</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;prediction_1&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">references</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;reference_1&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">,</span> <span class="s2">&quot;c4&quot;</span><span class="p">])}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;precision&quot;</span><span class="p">:</span> <span class="n">pairwise_precision</span><span class="p">,</span> <span class="s2">&quot;recall&quot;</span><span class="p">:</span> <span class="n">pairwise_recall</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metrics_table</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">references</span><span class="p">,</span> <span class="n">metrics</span><span class="p">)</span> 
+<span class="go">    prediction      reference   metric      value</span>
+<span class="go">0       prediction_1    reference_1     precision       0.4</span>
+<span class="go">1       prediction_1    reference_1     recall      0.4</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.metrics.pairwise_precision">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.metrics.</span></span><span class="sig-name descname"><span class="pre">pairwise_precision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/metrics.html#pairwise_precision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.metrics.pairwise_precision" title="Permalink to this definition">#</a></dt>
+<dd><p>Pairwise precision for the inner join of two clusterings.</p>
+<dl>
+<dt>Pairwise precision:</dt><dd><p>Consider two clusterings of a set of records, refered to as the <em>predicted</em> and <em>reference</em> clusterings. Let $T$ be the set of record pairs which appear in the same reference cluster, and let $P$ be the set of record pairs which appear in the same predicted clusters. Pairwise precision is then defined as</p>
+<div class="math notranslate nohighlight">
+\[P = \frac{\lvert T \cap P \rvert}{\lvert P \rvert}\]</div>
+<p>This is the proportion of correctly predicted links among all predicted links.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<em>Series</em>) – Membership vector for the predicted clustering.</p></li>
+<li><p><strong>reference</strong> (<em>Series</em>) – Membership vector for the reference clustering.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pairwise precision for the inner join of <cite>prediction</cite> and <cite>reference</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reference</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">,</span> <span class="s2">&quot;c4&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pairwise_precision</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
+<span class="go">0.4</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.metrics.pairwise_recall">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.metrics.</span></span><span class="sig-name descname"><span class="pre">pairwise_recall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/metrics.html#pairwise_recall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.metrics.pairwise_recall" title="Permalink to this definition">#</a></dt>
+<dd><p>Pairwise recall for the inner join of two clusterings.</p>
+<dl>
+<dt>Pairwise recall:</dt><dd><p>Consider two clusterings of a set of records, refered to as the <em>predicted</em> and <em>reference</em> clusterings. Let $T$ be the set of record pairs which appear in the same reference cluster, and let $P$ be the set of record pairs which appear in the same predicted clusters. Pairwise recall is then defined as</p>
+<div class="math notranslate nohighlight">
+\[R = \frac{\lvert T \cap P \rvert}{\lvert T \rvert}\]</div>
+<p>This is the proportion of correctly predicted links among all true links.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<em>Series</em>) – Membership vector for the predicted clustering.</p></li>
+<li><p><strong>reference</strong> (<em>Series</em>) – Membership vector for the reference clustering.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pairwise recall computed on the inner join of <cite>predicted</cite> and <cite>reference</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reference</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">,</span> <span class="s2">&quot;c4&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pairwise_recall</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
+<span class="go">0.4</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </section>
 </section>
 
@@ -362,9 +472,38 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#documentation">
+  <a class="reference internal nav-link" href="#module-er_evaluation.metrics">
    Documentation
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.metrics.metrics_table">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       metrics_table()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.metrics.pairwise_precision">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       pairwise_precision()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.metrics.pairwise_recall">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       pairwise_recall()
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
