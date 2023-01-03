@@ -68,7 +68,7 @@ from scipy.special import comb
 
 def count_extra_links(prediction, sample):
     r"""
-    Count number of extraneous links to sampled clusters.
+    Count the number of extraneous links to sampled clusters.
 
     Given a predicted disambiguation `prediction` and a sample of true clusters `sample`, both represented as membership vectors, this functions returns the count of extraneous links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the counts of extraneous links.
 
@@ -156,10 +156,68 @@ def expected_extra_links(prediction, sample):
 
     return result
 
+def expected_relative_extra_links(prediction, sample):
+    r"""
+    Expected relative number of extraneous links to records in sampled clusters.
+
+    Given a predicted disambiguation `prediction` and a sample of true clusters `sample`, both represented as membership vectors, this functions returns the expected number of relative extraneous links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of relative extraneous links.
+
+    Expected Relative Number of Extraneous Links
+        For a given sampled cluster :math:`c` with records :math:`r \in c`, let :math:`A_r` be the set of records which are erroneously linked to :math:`r` in the predicted clustering. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`A_r = \hat c(r) \backslash c` Then the expected number of extraneous links for :math:`c` is :math:` \frac{1}{\lvert c \rvert}\sum_{r\in c} \lvert A_r \rvert / \lvert \hat c(r) \rvert`. This is the expected relative number of erroneous links to a random record :math:`r \in c`.
+
+    Args:
+        prediction (Series): Membership vector representing a predicted disambiguation.
+        sample (Series): Membership vector representing a set of true clusters.
+
+    Returns:
+        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the expected number of extraneous links.
+
+    Examples:
+        >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
+        >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
+        >>> expected_relative_extra_links(prediction, sample)
+        sample
+        c1    0.166667
+        c2    0.250000
+        c4    0.666667
+        Name: expected_relative_extra_links, dtype: float64
+    """
+    I = prediction.isin(prediction[prediction.index.isin(sample.index)])
+    relevant_predictions = prediction[I]
+
+    outer = pd.concat(
+        {"prediction": relevant_predictions, "sample": sample},
+        axis=1,
+        copy=False,
+        join="outer",
+    )
+
+    def lambd(sample_cluster):
+        # Number of elements within sampled cluster split across predicted clusters:
+        p = pd.value_counts(sample_cluster)
+        # Number of elements within predicted clusters (restricted to current sampled cluster):
+        u = outer.prediction.value_counts()[p.index].values
+
+        n_links = np.sum(p * (u - p)) + np.sum(comb(u, 2))
+
+        if n_links == 0:
+            return 0
+
+        return np.sum(p * (u - p) / u)
+
+    outer.groupby("sample").agg(lambd)
+
+    result = outer.groupby("sample").agg(lambd).prediction
+    sizes = sample.groupby(sample).size()
+    result = result / sizes
+    result.rename("expected_relative_extra_links", inplace=True)
+
+    return result
+
 
 def count_missing_links(prediction, sample):
     r"""
-    Count number of missing links to sampled clusters.
+    Count the number of missing links to sampled clusters.
 
     Given a predicted disambiguation `prediction` and a sample of true clusters `sample`, both represented as membership vectors, this functions returns the count of missing links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the counts of missing links.
 
@@ -214,10 +272,10 @@ def expected_missing_links(prediction, sample):
     r"""
     Expected number of missing links to records in sampled clusters.
 
-    Given a predicted disambiguation `prediction` and a sample of true clusters `sample`, both represented as membership vectors, this functions returns the expected number of missing links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of missing links.
+    Given a predicted disambiguation `prediction` and a sample of true clusters `sample`, both represented as membership vectors, this functions returns the expected relative number of missing links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of missing links.
 
     Expected Number of Missing Links
-        For a given sampled cluster  :math:`c` with records  :math:`r \in c`, let :math:`B_r` be the set of records which are missing from the predicted cluster containing :math:`r`. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`B_r = c \backslash \hat c(r)`. Then the expected number of missing links for :math:`c` is :math:`\sum_{r\in c} \lvert B_r \rvert / \lvert c \rvert :math:`.
+        For a given sampled cluster  :math:`c` with records  :math:`r \in c`, let :math:`B_r` be the set of records which are missing from the predicted cluster containing :math:`r`. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`B_r = c \backslash \hat c(r)`. Then the expected number of missing links for :math:`c` is :math:`\frac{1}{\lvert c \rvert}\sum_{r\in c} \lvert B_r \rvert :math:`.
 
     Args:
         prediction (Series): Membership vector representing a predicted disambiguation.
@@ -245,9 +303,93 @@ def expected_missing_links(prediction, sample):
     return result
 
 
+def expected_relative_missing_links(prediction, sample):
+    r"""
+    Expected relative number of missing links to records in sampled clusters.
+
+    Given a predicted disambiguation `prediction` and a sample of true clusters `sample`, both represented as membership vectors, this functions returns the expected number of missing links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected relative number of missing links.
+
+    Expected Relative Number of Missing Links
+        For a given sampled cluster  :math:`c` with records  :math:`r \in c`, let :math:`B_r` be the set of records which are missing from the predicted cluster containing :math:`r`. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`B_r = c \backslash \hat c(r)`. Then the expected number of missing links for :math:`c` is :math:`\frac{1}{\lvert c \rvert}\sum_{r\in c} \lvert B_r \rvert / \lvert c \rvert :math:`.
+
+    Args:
+        prediction (Series): Membership vector representing a predicted disambiguation.
+        sample (Series): Membership vector representing a set of true clusters.
+
+    Returns:
+        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the expected relative number of missing links.
+
+    Examples:
+        >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
+        >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
+        >>> expected_relative_missing_links(prediction, sample)
+        sample
+        c1    0.444444
+        c2    0.500000
+        c4    0.000000
+        Name: expected_relative_missing_links, dtype: float64
+    """
+    result = count_missing_links(prediction, sample)
+    sizes = sample.groupby(sample).size()
+
+    result = result / sizes**2
+    result.rename("expected_missing_links", inplace=True)
+
+    return result
+
+
+def error_indicator(prediction, sample):
+    r"""
+    Error indicator metric.
+
+    Given a predicted disambiguation `prediction` and a sample of true clusters `sample`, both represented as membership vectors, this functions returns an indicator whether each true cluster matches a predicted cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to 0 or 1, depending on whether or not the true cluster matches a predicted cluster.
+
+    Args:
+        prediction (Series): Membership vector representing a predicted disambiguation.
+        sample (Series): Membership vector representing a set of true clusters.
+
+    Returns:
+        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the error indicator.
+    
+    Examples:
+        >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,5])
+        >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
+        >>> error_indicator(prediction, sample)
+        sample
+        c1    1
+        c2    1
+        c4    0
+        Name: splitting_entropy_1, dtype: int64
+
+    """
+    I = prediction.isin(prediction[prediction.index.isin(sample.index)])
+    relevant_predictions = prediction[I]
+
+    outer = pd.concat(
+        {"prediction": relevant_predictions, "sample": sample},
+        axis=1,
+        copy=False,
+        join="outer",
+    )
+
+    def lambd(sample_cluster):
+        p = pd.value_counts(sample_cluster)
+        u = outer.prediction.value_counts()[p.index].values
+
+        if len(p) == 1 and p.values[0] == sum(u):
+            return 0
+        else:
+            return 1
+
+    result = outer.groupby("sample").agg(lambd).prediction
+    result.rename(f"error_indicator", inplace=True)
+
+    return result
+
+
 def splitting_entropy(prediction, sample, alpha=1):
     r"""
-    Splitting entropy of true clusters
+    Splitting entropy of true clusters.
 
     This function returns the splitting entropy, defined below, of each entity represented in the sampled clusters `sample`.
 
