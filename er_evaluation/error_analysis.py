@@ -156,6 +156,7 @@ def expected_extra_links(prediction, sample):
 
     return result
 
+
 def expected_relative_extra_links(prediction, sample):
     r"""
     Expected relative number of extraneous links to records in sampled clusters.
@@ -332,7 +333,7 @@ def expected_relative_missing_links(prediction, sample):
     result = count_missing_links(prediction, sample)
     sizes = sample.groupby(sample).size()
 
-    result = result / sizes**2
+    result = result / sizes ** 2
     result.rename("expected_missing_links", inplace=True)
 
     return result
@@ -439,7 +440,7 @@ def splitting_entropy(prediction, sample, alpha=1):
         if alpha == 1:
             return np.exp(-np.sum(u * np.log(u)))
 
-        return (np.sum(u**alpha)) ** (1 / (1 - alpha))
+        return (np.sum(u ** alpha)) ** (1 / (1 - alpha))
 
     result = outer.groupby("sample").agg(lambd).prediction
     result.rename(f"splitting_entropy_{alpha}", inplace=True)

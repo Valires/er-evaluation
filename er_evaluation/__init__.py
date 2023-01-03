@@ -55,9 +55,7 @@ from .summary import (
     name_variation_rate,
 )
 
-from .utils import (
-    expand_grid,
-)
+from .utils import expand_grid
 
 __all__ = [
     # data_structures

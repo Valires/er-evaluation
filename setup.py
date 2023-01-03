@@ -2,6 +2,7 @@
 from setuptools import setup, find_packages
 
 from pathlib import Path
+
 this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
@@ -13,16 +14,10 @@ if __name__ == "__main__":
         author_email="olivier.binette@gmail.com",
         description="An end-to-end evaluation framework for entity resolution systems.",
         long_description=long_description,
-        long_description_content_type='text/markdown',
+        long_description_content_type="text/markdown",
         license_files=("LICENSE.txt",),
         url="https://github.com/OlivierBinette/er-evaluation",
         include_package_data=True,
         packages=find_packages(),
-        install_requires=[
-            "pandas",
-            "numpy",
-            "scipy",
-            "plotly",
-            "igraph",
-        ],
+        install_requires=["pandas", "numpy", "scipy", "plotly", "igraph",],
     )

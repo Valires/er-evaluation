@@ -185,7 +185,7 @@ def cluster_hill_number(membership, alpha=1):
     if alpha == np.Inf:
         return 1 / np.max(probs)
     else:
-        return np.sum(probs**alpha) ** (1 / (1 - alpha))
+        return np.sum(probs ** alpha) ** (1 / (1 - alpha))
 
 
 def homonimy_rate(membership, names):
@@ -213,20 +213,22 @@ def homonimy_rate(membership, names):
     assert all(membership.index.isin(names.index))
 
     df = pd.concat(
-        {"membership": membership, "name": names}, axis=1, join="inner", copy=False
+        {"membership": membership, "name": names},
+        axis=1,
+        join="inner",
+        copy=False,
     )
 
-    names_count = df.name.groupby(df.name).count().reset_index(name="total_count")
+    names_count = (
+        df.name.groupby(df.name).count().reset_index(name="total_count")
+    )
     name_count_per_cluster = (
         df.groupby(["name", "membership"])
         .size()
         .reset_index(name="cluster_count")
     )
     merged = name_count_per_cluster.merge(
-        names_count,
-        on="name",
-        copy=False,
-        validate="m:1",
+        names_count, on="name", copy=False, validate="m:1",
     )
     merged["diff"] = merged.total_count - merged.cluster_count
 
@@ -260,7 +262,10 @@ def name_variation_rate(membership, names):
     assert all(membership.index.isin(names.index))
 
     joined = pd.concat(
-        {"membership": membership, "name": names}, axis=1, join="inner", copy=False
+        {"membership": membership, "name": names},
+        axis=1,
+        join="inner",
+        copy=False,
     )
 
     return (joined.groupby("membership").nunique() > 1).mean().values[0]

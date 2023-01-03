@@ -53,7 +53,7 @@ def estimates_table(predictions, samples_weights, estimators):
             lambda x: lambd(
                 x["prediction"], x["sample_weights"], x["estimator"]
             ),
-            axis=1
+            axis=1,
         ).tolist(),
         index=params.index,
     )

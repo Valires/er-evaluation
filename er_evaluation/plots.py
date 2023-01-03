@@ -36,7 +36,9 @@ def compare_plots(*figs, names=None, marker="color", marker_values=None):
     return combined
 
 
-def plot_cluster_sizes_distribution(membership, groupby=None, name=None, normalize=False):
+def plot_cluster_sizes_distribution(
+    membership, groupby=None, name=None, normalize=False
+):
     r"""
     Plot the cluster size distribution
 
