@@ -334,7 +334,7 @@ def expected_relative_missing_links(prediction, sample):
     sizes = sample.groupby(sample).size()
 
     result = result / sizes ** 2
-    result.rename("expected_missing_links", inplace=True)
+    result.rename("expected_relative_missing_links", inplace=True)
 
     return result
 
@@ -360,7 +360,7 @@ def error_indicator(prediction, sample):
         c1    1
         c2    1
         c4    0
-        Name: splitting_entropy_1, dtype: int64
+        Name: error_indicator, dtype: int64
 
     """
     I = prediction.isin(prediction[prediction.index.isin(sample.index)])
@@ -383,7 +383,7 @@ def error_indicator(prediction, sample):
             return 1
 
     result = outer.groupby("sample").agg(lambd).prediction
-    result.rename(f"error_indicator", inplace=True)
+    result.rename("error_indicator", inplace=True)
 
     return result
 
