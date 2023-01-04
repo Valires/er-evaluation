@@ -13,6 +13,8 @@ Contents
    count_missing_links
    expected_extra_links
    expected_missing_links
+   expected_relative_extra_links
+   expected_relative_missing_links
    splitting_entropy
 
 
