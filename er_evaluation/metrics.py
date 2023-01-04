@@ -151,7 +151,7 @@ def pairwise_f(prediction, reference, beta=1.0):
     Pairwise F score for the inner join of two clusterings.
 
     Pairwise F score:
-        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let :math:`T` be the set of record pairs which appear in the same reference cluster, and let :math:`P` be the set of record pairs which appear in the same predicted clusters. Pairwise F score is then defined as the weighted harmonic mean of pairwise precision and pairwise recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F1 score is the harmonic mean of precision and recall. When :math:`\beta < 1`, the F1 score is weighted towards precision. When :math:`\beta > 1`, the F score is weighted towards recall.
+        Pairwise F score is defined as the weighted harmonic mean of pairwise precision and pairwise recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F1 score is the harmonic mean of precision and recall. When :math:`\beta < 1`, the F1 score is weighted towards precision. When :math:`\beta > 1`, the F score is weighted towards recall.
 
     Args:
         prediction (Series): Membership vector for the predicted clustering.
@@ -245,7 +245,7 @@ def cluster_f(prediction, reference, beta=1.0):
     Cluster F score for the inner join of two clusterings.
 
     Cluster F score:
-        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let :math:`T` be the set of reference clusters, and let :math:`P` be the set of predicted clusters. Cluster F score is then defined as the weighted harmonic mean of cluster precision and cluster recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F score is the harmonic mean of precision and recall. When :math:`\beta < 1`, the F score is weighted towards precision. When :math:`\beta > 1`, the F score is weighted towards recall.
+        Cluster F score is defined as the weighted harmonic mean of cluster precision and cluster recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F score is the harmonic mean of precision and recall. When :math:`\beta < 1`, the F score is weighted towards precision. When :math:`\beta > 1`, the F score is weighted towards recall.
 
     Args:
         prediction (Series): Membership vector for the predicted clustering.

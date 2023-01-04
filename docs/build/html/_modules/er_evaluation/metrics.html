@@ -315,10 +315,6 @@
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; _f_score(0.5, 0.5, beta=1.0)</span>
 <span class="sd">        0.5</span>
-<span class="sd">        &gt;&gt;&gt; _f_score(0.5, 0.5, beta=0.5)</span>
-<span class="sd">        0.6666666666666666</span>
-<span class="sd">        &gt;&gt;&gt; _f_score(0.5, 0.5, beta=2.0)</span>
-<span class="sd">        0.4</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">D</span> <span class="o">=</span> <span class="n">beta</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">P</span> <span class="o">+</span> <span class="n">R</span>
     <span class="k">if</span> <span class="n">D</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -441,7 +437,7 @@
 <span class="sd">    Pairwise F score for the inner join of two clusterings.</span>
 
 <span class="sd">    Pairwise F score:</span>
-<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let :math:`T` be the set of record pairs which appear in the same reference cluster, and let :math:`P` be the set of record pairs which appear in the same predicted clusters. Pairwise F score is then defined as the weighted harmonic mean of pairwise precision and pairwise recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F1 score is the harmonic mean of precision and recall. When :math:`\beta &lt; 1`, the F1 score is weighted towards precision. When :math:`\beta &gt; 1`, the F score is weighted towards recall.</span>
+<span class="sd">        Pairwise F score is defined as the weighted harmonic mean of pairwise precision and pairwise recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F1 score is the harmonic mean of precision and recall. When :math:`\beta &lt; 1`, the F1 score is weighted towards precision. When :math:`\beta &gt; 1`, the F score is weighted towards recall.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        prediction (Series): Membership vector for the predicted clustering.</span>
@@ -455,7 +451,7 @@
 <span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
 <span class="sd">        &gt;&gt;&gt; reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;, &quot;c4&quot;])</span>
 <span class="sd">        &gt;&gt;&gt; pairwise_f(prediction, reference)</span>
-<span class="sd">        0.4</span>
+<span class="sd">        0.4000000000000001</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">P</span> <span class="o">=</span> <span class="n">pairwise_precision</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
     <span class="n">R</span> <span class="o">=</span> <span class="n">pairwise_recall</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
@@ -524,7 +520,7 @@
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,5])</span>
 <span class="sd">        &gt;&gt;&gt; reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;, &quot;c4&quot;])</span>
-<span class="sd">        &gt;&gt;&gt; cluster_precision(prediction, reference)</span>
+<span class="sd">        &gt;&gt;&gt; cluster_recall(prediction, reference)</span>
 <span class="sd">        0.5</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">cluster_precision</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">prediction</span><span class="p">)</span></div>
@@ -535,7 +531,7 @@
 <span class="sd">    Cluster F score for the inner join of two clusterings.</span>
 
 <span class="sd">    Cluster F score:</span>
-<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let :math:`T` be the set of reference clusters, and let :math:`P` be the set of predicted clusters. Cluster F score is then defined as the weighted harmonic mean of cluster precision and cluster recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F score is the harmonic mean of precision and recall. When :math:`\beta &lt; 1`, the F score is weighted towards precision. When :math:`\beta &gt; 1`, the F score is weighted towards recall.</span>
+<span class="sd">        Cluster F score is defined as the weighted harmonic mean of cluster precision and cluster recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F score is the harmonic mean of precision and recall. When :math:`\beta &lt; 1`, the F score is weighted towards precision. When :math:`\beta &gt; 1`, the F score is weighted towards recall.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        prediction (Series): Membership vector for the predicted clustering.</span>
@@ -546,7 +542,7 @@
 <span class="sd">        float: Cluster F score for the inner join of `prediction` and `reference`.</span>
 <span class="sd">    </span>
 <span class="sd">    Examples:</span>
-<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,5])</span>
 <span class="sd">        &gt;&gt;&gt; reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;, &quot;c4&quot;])</span>
 <span class="sd">        &gt;&gt;&gt; cluster_f(prediction, reference)</span>
 <span class="sd">        0.4444444444444445</span>
