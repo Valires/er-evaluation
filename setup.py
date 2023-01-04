@@ -19,5 +19,5 @@ if __name__ == "__main__":
         url="https://github.com/OlivierBinette/er-evaluation",
         include_package_data=True,
         packages=find_packages(),
-        install_requires=["pandas", "numpy", "scipy", "plotly", "igraph",],
+        install_requires=["pandas", "numpy", "scipy", "plotly", "igraph", "sklearn"],
     )
