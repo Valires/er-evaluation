@@ -354,7 +354,7 @@
 
 <div class="viewcode-block" id="count_extra_links"><a class="viewcode-back" href="../../er_evaluation.error_analysis.html#er_evaluation.error_analysis.count_extra_links">[docs]</a><span class="k">def</span> <span class="nf">count_extra_links</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Count number of extraneous links to sampled clusters.</span>
+<span class="sd">    Count the number of extraneous links to sampled clusters.</span>
 
 <span class="sd">    Given a predicted disambiguation `prediction` and a sample of true clusters `sample`, both represented as membership vectors, this functions returns the count of extraneous links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the counts of extraneous links.</span>
 
@@ -443,9 +443,68 @@
     <span class="k">return</span> <span class="n">result</span></div>
 
 
+<div class="viewcode-block" id="expected_relative_extra_links"><a class="viewcode-back" href="../../er_evaluation.error_analysis.html#er_evaluation.error_analysis.expected_relative_extra_links">[docs]</a><span class="k">def</span> <span class="nf">expected_relative_extra_links</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Expected relative number of extraneous links to records in sampled clusters.</span>
+
+<span class="sd">    Given a predicted disambiguation `prediction` and a sample of true clusters `sample`, both represented as membership vectors, this functions returns the expected number of relative extraneous links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of relative extraneous links.</span>
+
+<span class="sd">    Expected Relative Number of Extraneous Links</span>
+<span class="sd">        For a given sampled cluster :math:`c` with records :math:`r \in c`, let :math:`A_r` be the set of records which are erroneously linked to :math:`r` in the predicted clustering. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`A_r = \hat c(r) \backslash c` Then the expected number of extraneous links for :math:`c` is :math:` \frac{1}{\lvert c \rvert}\sum_{r\in c} \lvert A_r \rvert / \lvert \hat c(r) \rvert`. This is the expected relative number of erroneous links to a random record :math:`r \in c`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series): Membership vector representing a predicted disambiguation.</span>
+<span class="sd">        sample (Series): Membership vector representing a set of true clusters.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the expected number of extraneous links.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5,8], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c4&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; expected_relative_extra_links(prediction, sample)</span>
+<span class="sd">        sample</span>
+<span class="sd">        c1    0.166667</span>
+<span class="sd">        c2    0.250000</span>
+<span class="sd">        c4    0.666667</span>
+<span class="sd">        Name: expected_relative_extra_links, dtype: float64</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="n">prediction</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="n">prediction</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">index</span><span class="p">)])</span>
+    <span class="n">relevant_predictions</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="n">I</span><span class="p">]</span>
+
+    <span class="n">outer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">relevant_predictions</span><span class="p">,</span> <span class="s2">&quot;sample&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="p">},</span>
+        <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">join</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">lambd</span><span class="p">(</span><span class="n">sample_cluster</span><span class="p">):</span>
+        <span class="c1"># Number of elements within sampled cluster split across predicted clusters:</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">sample_cluster</span><span class="p">)</span>
+        <span class="c1"># Number of elements within predicted clusters (restricted to current sampled cluster):</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">outer</span><span class="o">.</span><span class="n">prediction</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()[</span><span class="n">p</span><span class="o">.</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+        <span class="n">n_links</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="n">u</span> <span class="o">-</span> <span class="n">p</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">comb</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">n_links</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="n">u</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span> <span class="o">/</span> <span class="n">u</span><span class="p">)</span>
+
+    <span class="n">outer</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;sample&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">lambd</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">outer</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;sample&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">lambd</span><span class="p">)</span><span class="o">.</span><span class="n">prediction</span>
+    <span class="n">sizes</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">/</span> <span class="n">sizes</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;expected_relative_extra_links&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
 <div class="viewcode-block" id="count_missing_links"><a class="viewcode-back" href="../../er_evaluation.error_analysis.html#er_evaluation.error_analysis.count_missing_links">[docs]</a><span class="k">def</span> <span class="nf">count_missing_links</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Count number of missing links to sampled clusters.</span>
+<span class="sd">    Count the number of missing links to sampled clusters.</span>
 
 <span class="sd">    Given a predicted disambiguation `prediction` and a sample of true clusters `sample`, both represented as membership vectors, this functions returns the count of missing links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the counts of missing links.</span>
 
@@ -500,10 +559,10 @@
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Expected number of missing links to records in sampled clusters.</span>
 
-<span class="sd">    Given a predicted disambiguation `prediction` and a sample of true clusters `sample`, both represented as membership vectors, this functions returns the expected number of missing links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of missing links.</span>
+<span class="sd">    Given a predicted disambiguation `prediction` and a sample of true clusters `sample`, both represented as membership vectors, this functions returns the expected relative number of missing links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of missing links.</span>
 
 <span class="sd">    Expected Number of Missing Links</span>
-<span class="sd">        For a given sampled cluster  :math:`c` with records  :math:`r \in c`, let :math:`B_r` be the set of records which are missing from the predicted cluster containing :math:`r`. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`B_r = c \backslash \hat c(r)`. Then the expected number of missing links for :math:`c` is :math:`\sum_{r\in c} \lvert B_r \rvert / \lvert c \rvert :math:`.</span>
+<span class="sd">        For a given sampled cluster  :math:`c` with records  :math:`r \in c`, let :math:`B_r` be the set of records which are missing from the predicted cluster containing :math:`r`. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`B_r = c \backslash \hat c(r)`. Then the expected number of missing links for :math:`c` is :math:`\frac{1}{\lvert c \rvert}\sum_{r\in c} \lvert B_r \rvert :math:`.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        prediction (Series): Membership vector representing a predicted disambiguation.</span>
@@ -531,9 +590,93 @@
     <span class="k">return</span> <span class="n">result</span></div>
 
 
+<div class="viewcode-block" id="expected_relative_missing_links"><a class="viewcode-back" href="../../er_evaluation.error_analysis.html#er_evaluation.error_analysis.expected_relative_missing_links">[docs]</a><span class="k">def</span> <span class="nf">expected_relative_missing_links</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Expected relative number of missing links to records in sampled clusters.</span>
+
+<span class="sd">    Given a predicted disambiguation `prediction` and a sample of true clusters `sample`, both represented as membership vectors, this functions returns the expected number of missing links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected relative number of missing links.</span>
+
+<span class="sd">    Expected Relative Number of Missing Links</span>
+<span class="sd">        For a given sampled cluster  :math:`c` with records  :math:`r \in c`, let :math:`B_r` be the set of records which are missing from the predicted cluster containing :math:`r`. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`B_r = c \backslash \hat c(r)`. Then the expected number of missing links for :math:`c` is :math:`\frac{1}{\lvert c \rvert}\sum_{r\in c} \lvert B_r \rvert / \lvert c \rvert :math:`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series): Membership vector representing a predicted disambiguation.</span>
+<span class="sd">        sample (Series): Membership vector representing a set of true clusters.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the expected relative number of missing links.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5,8], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c4&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; expected_relative_missing_links(prediction, sample)</span>
+<span class="sd">        sample</span>
+<span class="sd">        c1    0.444444</span>
+<span class="sd">        c2    0.500000</span>
+<span class="sd">        c4    0.000000</span>
+<span class="sd">        Name: expected_relative_missing_links, dtype: float64</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">count_missing_links</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+    <span class="n">sizes</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">/</span> <span class="n">sizes</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;expected_relative_missing_links&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="error_indicator"><a class="viewcode-back" href="../../er_evaluation.error_analysis.html#er_evaluation.error_analysis.error_indicator">[docs]</a><span class="k">def</span> <span class="nf">error_indicator</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Error indicator metric.</span>
+
+<span class="sd">    Given a predicted disambiguation `prediction` and a sample of true clusters `sample`, both represented as membership vectors, this functions returns an indicator whether each true cluster matches a predicted cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to 0 or 1, depending on whether or not the true cluster matches a predicted cluster.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series): Membership vector representing a predicted disambiguation.</span>
+<span class="sd">        sample (Series): Membership vector representing a set of true clusters.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the error indicator.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,5])</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5,8], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c4&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; error_indicator(prediction, sample)</span>
+<span class="sd">        sample</span>
+<span class="sd">        c1    1</span>
+<span class="sd">        c2    1</span>
+<span class="sd">        c4    0</span>
+<span class="sd">        Name: error_indicator, dtype: int64</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="n">prediction</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="n">prediction</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">index</span><span class="p">)])</span>
+    <span class="n">relevant_predictions</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="n">I</span><span class="p">]</span>
+
+    <span class="n">outer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">relevant_predictions</span><span class="p">,</span> <span class="s2">&quot;sample&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="p">},</span>
+        <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">join</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">lambd</span><span class="p">(</span><span class="n">sample_cluster</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">sample_cluster</span><span class="p">)</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">outer</span><span class="o">.</span><span class="n">prediction</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()[</span><span class="n">p</span><span class="o">.</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="nb">sum</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">outer</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;sample&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">lambd</span><span class="p">)</span><span class="o">.</span><span class="n">prediction</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;error_indicator&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
 <div class="viewcode-block" id="splitting_entropy"><a class="viewcode-back" href="../../er_evaluation.error_analysis.html#er_evaluation.error_analysis.splitting_entropy">[docs]</a><span class="k">def</span> <span class="nf">splitting_entropy</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Splitting entropy of true clusters</span>
+<span class="sd">    Splitting entropy of true clusters.</span>
 
 <span class="sd">    This function returns the splitting entropy, defined below, of each entity represented in the sampled clusters `sample`.</span>
 
@@ -583,7 +726,7 @@
         <span class="k">if</span> <span class="n">alpha</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">u</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">u</span><span class="p">)))</span>
 
-        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">u</span><span class="o">**</span><span class="n">alpha</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">u</span> <span class="o">**</span> <span class="n">alpha</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">))</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">outer</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;sample&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">lambd</span><span class="p">)</span><span class="o">.</span><span class="n">prediction</span>
     <span class="n">result</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;splitting_entropy_</span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

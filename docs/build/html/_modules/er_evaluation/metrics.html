@@ -291,10 +291,40 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">comb</span>
+<span class="kn">import</span> <span class="nn">sklearn.metrics</span> <span class="k">as</span> <span class="nn">sm</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 
 <span class="kn">from</span> <span class="nn">.data_structures</span> <span class="kn">import</span> <span class="n">ismembership</span>
 <span class="kn">from</span> <span class="nn">.summary</span> <span class="kn">import</span> <span class="n">number_of_links</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">expand_grid</span>
+<span class="kn">from</span> <span class="nn">.error_analysis</span> <span class="kn">import</span> <span class="n">error_indicator</span>
+
+
+<span class="k">def</span> <span class="nf">_f_score</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the weighted F1 score for a given precision and recall.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        P (float): Precision.</span>
+<span class="sd">        R (float): Recall.</span>
+<span class="sd">        beta (float): Weighting factor.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Weighted F1 score.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; _f_score(0.5, 0.5, beta=1.0)</span>
+<span class="sd">        0.5</span>
+<span class="sd">        &gt;&gt;&gt; _f_score(0.5, 0.5, beta=0.5)</span>
+<span class="sd">        0.6666666666666666</span>
+<span class="sd">        &gt;&gt;&gt; _f_score(0.5, 0.5, beta=2.0)</span>
+<span class="sd">        0.4</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">beta</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">P</span> <span class="o">+</span> <span class="n">R</span>
+    <span class="k">if</span> <span class="n">D</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">beta</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">P</span> <span class="o">*</span> <span class="n">R</span> <span class="o">/</span> <span class="n">D</span>
 
 
 <div class="viewcode-block" id="metrics_table"><a class="viewcode-back" href="../../er_evaluation.metrics.html#er_evaluation.metrics.metrics_table">[docs]</a><span class="k">def</span> <span class="nf">metrics_table</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">references</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
@@ -358,7 +388,6 @@
 <span class="sd">        &gt;&gt;&gt; pairwise_precision(prediction, reference)</span>
 <span class="sd">        0.4</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="k">assert</span> <span class="n">ismembership</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ismembership</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
 
     <span class="n">inner</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
@@ -405,6 +434,357 @@
 <span class="sd">        0.4</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pairwise_precision</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">prediction</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="pairwise_f"><a class="viewcode-back" href="../../er_evaluation.metrics.html#er_evaluation.metrics.pairwise_f">[docs]</a><span class="k">def</span> <span class="nf">pairwise_f</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pairwise F score for the inner join of two clusterings.</span>
+
+<span class="sd">    Pairwise F score:</span>
+<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let $T$ be the set of record pairs which appear in the same reference cluster, and let $P$ be the set of record pairs which appear in the same predicted clusters. Pairwise F score is then defined as the weighted harmonic mean of pairwise precision and pairwise recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F1 score is the harmonic mean of precision and recall. When :math:`\beta &lt; 1`, the F1 score is weighted towards precision. When :math:`\beta &gt; 1`, the F score is weighted towards recall.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series): Membership vector for the predicted clustering.</span>
+<span class="sd">        reference (Series): Membership vector for the reference clustering.</span>
+<span class="sd">        beta (float): Weight of precision in the F score.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Pairwise F score for the inner join of `prediction` and `reference`.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;, &quot;c4&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; pairwise_f(prediction, reference)</span>
+<span class="sd">        0.4</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">pairwise_precision</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">pairwise_recall</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_f_score</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">beta</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cluster_precision"><a class="viewcode-back" href="../../er_evaluation.metrics.html#er_evaluation.metrics.cluster_precision">[docs]</a><span class="k">def</span> <span class="nf">cluster_precision</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cluster precision for the inner join of two clusterings.</span>
+
+<span class="sd">    Cluster precision:</span>
+<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let $T$ be the set of reference clusters, and let $P$ be the set of predicted clusters. Cluster precision is then defined as</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            P = \frac{\lvert T \cap P \rvert}{\lvert P \rvert}</span>
+
+<span class="sd">        This is the proportion of correctly predicted clusters among all predicted clusters.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series): Membership vector for the predicted clustering.</span>
+<span class="sd">        reference (Series): Membership vector for the reference clustering.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Cluster precision for the inner join of `prediction` and `reference`.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,5])</span>
+<span class="sd">        &gt;&gt;&gt; reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;, &quot;c4&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; cluster_precision(prediction, reference)</span>
+<span class="sd">        0.4</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">ismembership</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ismembership</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+    <span class="n">inner</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">prediction</span><span class="p">,</span> <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="n">reference</span><span class="p">},</span>
+        <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">join</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">,</span>
+        <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">error_indicator</span><span class="p">(</span><span class="n">inner</span><span class="o">.</span><span class="n">prediction</span><span class="p">,</span> <span class="n">inner</span><span class="o">.</span><span class="n">reference</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">errors</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">inner</span><span class="o">.</span><span class="n">prediction</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="cluster_recall"><a class="viewcode-back" href="../../er_evaluation.metrics.html#er_evaluation.metrics.cluster_recall">[docs]</a><span class="k">def</span> <span class="nf">cluster_recall</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cluster recall for the inner join of two clusterings.</span>
+
+<span class="sd">    Cluster recall:</span>
+<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let $T$ be the set of reference clusters, and let $P$ be the set of predicted clusters. Cluster recall is then defined as</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            R = \frac{\lvert T \cap P \rvert}{\lvert T \rvert}</span>
+
+<span class="sd">        This is the proportion of correctly predicted clusters among all reference clusters.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series): Membership vector for the predicted clustering.</span>
+<span class="sd">        reference (Series): Membership vector for the reference clustering.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Cluster recall for the inner join of `prediction` and `reference`.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,5])</span>
+<span class="sd">        &gt;&gt;&gt; reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;, &quot;c4&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; cluster_precision(prediction, reference)</span>
+<span class="sd">        0.5</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">cluster_precision</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">prediction</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cluster_f"><a class="viewcode-back" href="../../er_evaluation.metrics.html#er_evaluation.metrics.cluster_f">[docs]</a><span class="k">def</span> <span class="nf">cluster_f</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cluster F score for the inner join of two clusterings.</span>
+
+<span class="sd">    Cluster F score:</span>
+<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let $T$ be the set of reference clusters, and let $P$ be the set of predicted clusters. Cluster F score is then defined as the weighted harmonic mean of cluster precision and cluster recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F score is the harmonic mean of precision and recall. When :math:`\beta &lt; 1`, the F score is weighted towards precision. When :math:`\beta &gt; 1`, the F score is weighted towards recall.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series): Membership vector for the predicted clustering.</span>
+<span class="sd">        reference (Series): Membership vector for the reference clustering.</span>
+<span class="sd">        beta (float): Weight of precision in the F score.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Cluster F score for the inner join of `prediction` and `reference`.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;, &quot;c4&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; cluster_f(prediction, reference)</span>
+<span class="sd">        0.4444444444444445</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">cluster_precision</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">cluster_recall</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_f_score</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">beta</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="b_cubed_precision"><a class="viewcode-back" href="../../er_evaluation.metrics.html#er_evaluation.metrics.b_cubed_precision">[docs]</a><span class="k">def</span> <span class="nf">b_cubed_precision</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    B-cubed precision for the inner join of two clusterings.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series): Membership vector for the predicted clustering.</span>
+<span class="sd">        reference (Series): Membership vector for the reference clustering.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: B-cubed precision for the inner join of `prediction` and `reference`.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;, &quot;c4&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; b_cubed_precision(prediction, reference)</span>
+<span class="sd">        0.6458333333333333</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">ismembership</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ismembership</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+
+    <span class="n">inner</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">prediction</span><span class="p">,</span> <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="n">reference</span><span class="p">},</span>
+        <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">join</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">,</span>
+        <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">intersection_sizes</span> <span class="o">=</span> <span class="n">inner</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+    <span class="n">ref_cluster_sizes</span> <span class="o">=</span> <span class="n">inner</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+    <span class="n">ref_cluster_sizes</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;reference&quot;</span>
+    <span class="n">pred_cluster_sizes</span> <span class="o">=</span> <span class="n">inner</span><span class="o">.</span><span class="n">prediction</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+    <span class="n">pred_cluster_sizes</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;prediction&quot;</span>
+
+    <span class="n">n_clusters</span> <span class="o">=</span> <span class="n">inner</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">inner</span>
+        <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">intersection_sizes</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;intersection_size&quot;</span><span class="p">),</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">ref_cluster_sizes</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;ref_cluster_size&quot;</span><span class="p">),</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">pred_cluster_sizes</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;pred_cluster_size&quot;</span><span class="p">),</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">intersection_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">intersection_size</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ref_cluster_size</span> <span class="o">*</span> <span class="n">df</span><span class="o">.</span><span class="n">pred_cluster_size</span> <span class="o">*</span> <span class="n">n_clusters</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="b_cubed_recall"><a class="viewcode-back" href="../../er_evaluation.metrics.html#er_evaluation.metrics.b_cubed_recall">[docs]</a><span class="k">def</span> <span class="nf">b_cubed_recall</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    B-cubed recall for the inner join of two clusterings.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series): Membership vector for the predicted clustering.</span>
+<span class="sd">        reference (Series): Membership vector for the reference clustering.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        float: B-cubed recall for the inner join of `prediction` and `reference`.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;, &quot;c4&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; b_cubed_recall(prediction, reference)</span>
+<span class="sd">        0.7638888888888888</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">ismembership</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ismembership</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+
+    <span class="n">inner</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">prediction</span><span class="p">,</span> <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="n">reference</span><span class="p">},</span>
+        <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">join</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">,</span>
+        <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">intersection_sizes</span> <span class="o">=</span> <span class="n">inner</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+    <span class="n">ref_cluster_sizes</span> <span class="o">=</span> <span class="n">inner</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+    <span class="n">ref_cluster_sizes</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;reference&quot;</span>
+    <span class="n">pred_cluster_sizes</span> <span class="o">=</span> <span class="n">inner</span><span class="o">.</span><span class="n">prediction</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+    <span class="n">pred_cluster_sizes</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;prediction&quot;</span>
+
+    <span class="n">n_clusters</span> <span class="o">=</span> <span class="n">inner</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">inner</span>
+        <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">intersection_sizes</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;intersection_size&quot;</span><span class="p">),</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">ref_cluster_sizes</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;ref_cluster_size&quot;</span><span class="p">),</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">pred_cluster_sizes</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;pred_cluster_size&quot;</span><span class="p">),</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">intersection_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">intersection_size</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ref_cluster_size</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n_clusters</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="b_cubed_f"><a class="viewcode-back" href="../../er_evaluation.metrics.html#er_evaluation.metrics.b_cubed_f">[docs]</a><span class="k">def</span> <span class="nf">b_cubed_f</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    B-cubed F score for the inner join of two clusterings.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series): Membership vector for the predicted clustering.</span>
+<span class="sd">        reference (Series): Membership vector for the reference clustering.</span>
+<span class="sd">        beta (float): Weight of precision in the F score.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        float: B-cubed F score for the inner join of `prediction` and `reference`.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;, &quot;c4&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; b_cubed_f1(prediction, reference)</span>
+<span class="sd">        0.6999178981937603</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">b_cubed_precision</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">b_cubed_recall</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_f_score</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">beta</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="wrap_sklearn_metric"><a class="viewcode-back" href="../../er_evaluation.metrics.html#er_evaluation.metrics.wrap_sklearn_metric">[docs]</a><span class="k">def</span> <span class="nf">wrap_sklearn_metric</span><span class="p">(</span><span class="n">sklearn_metric</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generic function to wrap sklearn cluster metrics.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sklearn_metric (function): cluster metric to wrap.</span>
+<span class="sd">        </span>
+<span class="sd">    Notes:</span>
+<span class="sd">        * The prediction and reference membership vectors are inner joined before this metric is computed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">sklearn_metric</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">ismembership</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ismembership</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+
+        <span class="n">inner</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">({</span><span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">prediction</span><span class="p">,</span> <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="n">reference</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">prediction_codes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">inner</span><span class="o">.</span><span class="n">prediction</span><span class="p">)</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="n">reference_codes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">inner</span><span class="o">.</span><span class="n">reference</span><span class="p">)</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">sklearn_metric</span><span class="p">(</span><span class="n">reference_codes</span><span class="p">,</span> <span class="n">prediction_codes</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">func</span></div>
+
+
+<div class="viewcode-block" id="cluster_homogeneity"><a class="viewcode-back" href="../../er_evaluation.metrics.html#er_evaluation.metrics.cluster_homogeneity">[docs]</a><span class="k">def</span> <span class="nf">cluster_homogeneity</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Cluster homogeneity score (based on conditional entropy).</span>
+
+<span class="sd">    This wraps scikit-learn&#39;s `homogeneity score function &lt;https://scikit-learn.org/stable/modules/generated/sklearn.metrics.homogeneity_score.html&gt;`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series):  membership vector for predicted clusters, i.e. a pandas Series indexed by mention ids and with values representing predicted cluster assignment.</span>
+<span class="sd">        reference (Series):  membership vector for reference clusters, i.e. a pandas Series indexed by mention ids and with values representing reference cluster assignment.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: homogeneity score</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        * The prediction and reference membership vectors are inner joined before this metric is computed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">wrap_sklearn_metric</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">homogeneity_score</span><span class="p">)(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cluster_completeness"><a class="viewcode-back" href="../../er_evaluation.metrics.html#er_evaluation.metrics.cluster_completeness">[docs]</a><span class="k">def</span> <span class="nf">cluster_completeness</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Cluster completeness score (based on conditional entropy)</span>
+
+<span class="sd">    This wraps scikit-learn&#39;s `completeness score function &lt;https://scikit-learn.org/stable/modules/generated/sklearn.metrics.completeness_score.html&gt;`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series):  membership vector for predicted clusters, i.e. a pandas Series indexed by mention ids and with values representing predicted cluster assignment.</span>
+<span class="sd">        reference (Series):  membership vector for reference clusters, i.e. a pandas Series indexed by mention ids and with values representing reference cluster assignment.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: completeness score</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        * The prediction and reference membership vectors are inner joined before this metric is computed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">wrap_sklearn_metric</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">completeness_score</span><span class="p">)(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cluster_v_measure"><a class="viewcode-back" href="../../er_evaluation.metrics.html#er_evaluation.metrics.cluster_v_measure">[docs]</a><span class="k">def</span> <span class="nf">cluster_v_measure</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the V-measure.</span>
+
+<span class="sd">    This wraps scikit-learn&#39;s `V-measure function &lt;https://scikit-learn.org/stable/modules/generated/sklearn.metrics.v_measure_score.html#sklearn-metrics-v-measure-score&gt;`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series):  membership vector for predicted clusters, i.e. a pandas Series indexed by mention ids and with values representing predicted cluster assignment.</span>
+<span class="sd">        reference (Series):  membership vector for reference clusters, i.e. a pandas Series indexed by mention ids and with values representing reference cluster assignment.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: V-measure</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        * The prediction and reference membership vectors are inner joined before this metric is computed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">wrap_sklearn_metric</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">v_measure_score</span><span class="p">)(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">beta</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="rand_score"><a class="viewcode-back" href="../../er_evaluation.metrics.html#er_evaluation.metrics.rand_score">[docs]</a><span class="k">def</span> <span class="nf">rand_score</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the Rand index.</span>
+
+<span class="sd">    This wraps scikit-learn&#39;s `rand index function &lt;https://scikit-learn.org/stable/modules/generated/sklearn.metrics.rand_score.html#sklearn.metrics.rand_score&gt;`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series):  membership vector for predicted clusters, i.e. a pandas Series indexed by mention ids and with values representing predicted cluster assignment.</span>
+<span class="sd">        reference (Series):  membership vector for reference clusters, i.e. a pandas Series indexed by mention ids and with values representing reference cluster assignment.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: rand index</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        * The prediction and reference membership vectors are inner joined before this metric is computed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">wrap_sklearn_metric</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">rand_score</span><span class="p">)(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="adjusted_rand_score"><a class="viewcode-back" href="../../er_evaluation.metrics.html#er_evaluation.metrics.adjusted_rand_score">[docs]</a><span class="k">def</span> <span class="nf">adjusted_rand_score</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the adjusted Rand index.</span>
+
+<span class="sd">    This wraps scikit-learn&#39;s `adjusted rand score function &lt;https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_rand_score.html#sklearn-metrics-adjusted-rand-score&gt;`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series):  membership vector for predicted clusters, i.e. a pandas Series indexed by mention ids and with values representing predicted cluster assignment.</span>
+<span class="sd">        reference (Series):  membership vector for reference clusters, i.e. a pandas Series indexed by mention ids and with values representing reference cluster assignment.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: adjusted rand index</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        * The prediction and reference membership vectors are inner joined before this metric is computed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">wrap_sklearn_metric</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">adjusted_rand_score</span><span class="p">)(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span></div>
 </pre></div>
 
             </article>

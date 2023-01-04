@@ -34,9 +34,21 @@ from .estimators import (
 )
 
 from .metrics import (
+    b_cubed_precision,
+    b_cubed_recall,
+    b_cubed_f,
+    cluster_precision,
+    cluster_recall,
+    cluster_f,
     pairwise_precision,
     pairwise_recall,
+    pairwise_f,
     metrics_table,
+    cluster_homogeneity,
+    cluster_completeness,
+    cluster_v_measure,
+    rand_score,
+    adjusted_rand_score,
 )
 
 from .plots import (
@@ -82,15 +94,29 @@ __all__ = [
     "count_missing_links",
     "expected_extra_links",
     "expected_missing_links",
+    "expected_relative_extra_links",
+    "expected_relative_missing_links",
     "splitting_entropy",
     # estimators
     "pairwise_precision_design_estimate",
     "pairwise_recall_design_estimate",
     "estimates_table",
     # metrics
+    "b_cubed_precision",
+    "b_cubed_recall",
+    "b_cubed_f",
+    "cluster_precision",
+    "cluster_recall",
+    "cluster_f",
     "pairwise_precision",
     "pairwise_recall",
+    "pairwise_f",
     "metrics_table",
+    "cluster_homogeneity",
+    "cluster_completeness",
+    "cluster_v_measure",
+    "rand_score",
+    "adjusted_rand_score",
     # plots
     "plot_cluster_sizes_distribution",
     "plot_entropy_curve",

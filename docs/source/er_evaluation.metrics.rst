@@ -9,9 +9,21 @@ Contents
 .. autosummary:: 
    :nosignatures:
    
-   pairwise_precision
-   pairwise_recall
-   metrics_table
+   b_cubed_precision
+    b_cubed_recall
+    b_cubed_f
+    cluster_precision
+    cluster_recall
+    cluster_f
+    pairwise_precision
+    pairwise_recall
+    pairwise_f
+    metrics_table
+    cluster_homogeneity
+    cluster_completeness
+    cluster_v_measure
+    rand_score
+    adjusted_rand_score
 
 Documentation
 -------------
