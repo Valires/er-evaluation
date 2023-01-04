@@ -81,7 +81,7 @@ def pairwise_precision(prediction, reference):
     Pairwise precision for the inner join of two clusterings.
 
     Pairwise precision:
-        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let $T$ be the set of record pairs which appear in the same reference cluster, and let $P$ be the set of record pairs which appear in the same predicted clusters. Pairwise precision is then defined as
+        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let :math:`T` be the set of record pairs which appear in the same reference cluster, and let :math:`P` be the set of record pairs which appear in the same predicted clusters. Pairwise precision is then defined as
 
         .. math::
 
@@ -126,7 +126,7 @@ def pairwise_recall(prediction, reference):
     Pairwise recall for the inner join of two clusterings.
 
     Pairwise recall:
-        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let $T$ be the set of record pairs which appear in the same reference cluster, and let $P$ be the set of record pairs which appear in the same predicted clusters. Pairwise recall is then defined as
+        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let :math:`T` be the set of record pairs which appear in the same reference cluster, and let :math:`P` be the set of record pairs which appear in the same predicted clusters. Pairwise recall is then defined as
 
         .. math::
 
@@ -155,7 +155,7 @@ def pairwise_f(prediction, reference, beta=1.0):
     Pairwise F score for the inner join of two clusterings.
 
     Pairwise F score:
-        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let $T$ be the set of record pairs which appear in the same reference cluster, and let $P$ be the set of record pairs which appear in the same predicted clusters. Pairwise F score is then defined as the weighted harmonic mean of pairwise precision and pairwise recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F1 score is the harmonic mean of precision and recall. When :math:`\beta < 1`, the F1 score is weighted towards precision. When :math:`\beta > 1`, the F score is weighted towards recall.
+        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let :math:`T` be the set of record pairs which appear in the same reference cluster, and let :math:`P` be the set of record pairs which appear in the same predicted clusters. Pairwise F score is then defined as the weighted harmonic mean of pairwise precision and pairwise recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F1 score is the harmonic mean of precision and recall. When :math:`\beta < 1`, the F1 score is weighted towards precision. When :math:`\beta > 1`, the F score is weighted towards recall.
 
     Args:
         prediction (Series): Membership vector for the predicted clustering.
@@ -182,7 +182,7 @@ def cluster_precision(prediction, reference):
     Cluster precision for the inner join of two clusterings.
 
     Cluster precision:
-        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let $T$ be the set of reference clusters, and let $P$ be the set of predicted clusters. Cluster precision is then defined as
+        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let :math:`T` be the set of reference clusters, and let :math:`P` be the set of predicted clusters. Cluster precision is then defined as
 
         .. math::
 
@@ -220,7 +220,7 @@ def cluster_recall(prediction, reference):
     Cluster recall for the inner join of two clusterings.
 
     Cluster recall:
-        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let $T$ be the set of reference clusters, and let $P$ be the set of predicted clusters. Cluster recall is then defined as
+        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let :math:`T` be the set of reference clusters, and let :math:`P` be the set of predicted clusters. Cluster recall is then defined as
 
         .. math::
 
@@ -249,7 +249,7 @@ def cluster_f(prediction, reference, beta=1.0):
     Cluster F score for the inner join of two clusterings.
 
     Cluster F score:
-        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let $T$ be the set of reference clusters, and let $P$ be the set of predicted clusters. Cluster F score is then defined as the weighted harmonic mean of cluster precision and cluster recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F score is the harmonic mean of precision and recall. When :math:`\beta < 1`, the F score is weighted towards precision. When :math:`\beta > 1`, the F score is weighted towards recall.
+        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let :math:`T` be the set of reference clusters, and let :math:`P` be the set of predicted clusters. Cluster F score is then defined as the weighted harmonic mean of cluster precision and cluster recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F score is the harmonic mean of precision and recall. When :math:`\beta < 1`, the F score is weighted towards precision. When :math:`\beta > 1`, the F score is weighted towards recall.
 
     Args:
         prediction (Series): Membership vector for the predicted clustering.
@@ -391,7 +391,7 @@ def wrap_sklearn_metric(sklearn_metric):
 
     Args:
         sklearn_metric (function): cluster metric to wrap.
-        
+
     Notes:
         * The prediction and reference membership vectors are inner joined before this metric is computed.
     """

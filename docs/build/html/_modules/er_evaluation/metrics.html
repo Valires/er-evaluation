@@ -367,7 +367,7 @@
 <span class="sd">    Pairwise precision for the inner join of two clusterings.</span>
 
 <span class="sd">    Pairwise precision:</span>
-<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let $T$ be the set of record pairs which appear in the same reference cluster, and let $P$ be the set of record pairs which appear in the same predicted clusters. Pairwise precision is then defined as</span>
+<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let :math:`T` be the set of record pairs which appear in the same reference cluster, and let :math:`P` be the set of record pairs which appear in the same predicted clusters. Pairwise precision is then defined as</span>
 
 <span class="sd">        .. math::</span>
 
@@ -412,7 +412,7 @@
 <span class="sd">    Pairwise recall for the inner join of two clusterings.</span>
 
 <span class="sd">    Pairwise recall:</span>
-<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let $T$ be the set of record pairs which appear in the same reference cluster, and let $P$ be the set of record pairs which appear in the same predicted clusters. Pairwise recall is then defined as</span>
+<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let :math:`T` be the set of record pairs which appear in the same reference cluster, and let :math:`P` be the set of record pairs which appear in the same predicted clusters. Pairwise recall is then defined as</span>
 
 <span class="sd">        .. math::</span>
 
@@ -441,7 +441,7 @@
 <span class="sd">    Pairwise F score for the inner join of two clusterings.</span>
 
 <span class="sd">    Pairwise F score:</span>
-<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let $T$ be the set of record pairs which appear in the same reference cluster, and let $P$ be the set of record pairs which appear in the same predicted clusters. Pairwise F score is then defined as the weighted harmonic mean of pairwise precision and pairwise recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F1 score is the harmonic mean of precision and recall. When :math:`\beta &lt; 1`, the F1 score is weighted towards precision. When :math:`\beta &gt; 1`, the F score is weighted towards recall.</span>
+<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let :math:`T` be the set of record pairs which appear in the same reference cluster, and let :math:`P` be the set of record pairs which appear in the same predicted clusters. Pairwise F score is then defined as the weighted harmonic mean of pairwise precision and pairwise recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F1 score is the harmonic mean of precision and recall. When :math:`\beta &lt; 1`, the F1 score is weighted towards precision. When :math:`\beta &gt; 1`, the F score is weighted towards recall.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        prediction (Series): Membership vector for the predicted clustering.</span>
@@ -468,7 +468,7 @@
 <span class="sd">    Cluster precision for the inner join of two clusterings.</span>
 
 <span class="sd">    Cluster precision:</span>
-<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let $T$ be the set of reference clusters, and let $P$ be the set of predicted clusters. Cluster precision is then defined as</span>
+<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let :math:`T` be the set of reference clusters, and let :math:`P` be the set of predicted clusters. Cluster precision is then defined as</span>
 
 <span class="sd">        .. math::</span>
 
@@ -506,7 +506,7 @@
 <span class="sd">    Cluster recall for the inner join of two clusterings.</span>
 
 <span class="sd">    Cluster recall:</span>
-<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let $T$ be the set of reference clusters, and let $P$ be the set of predicted clusters. Cluster recall is then defined as</span>
+<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let :math:`T` be the set of reference clusters, and let :math:`P` be the set of predicted clusters. Cluster recall is then defined as</span>
 
 <span class="sd">        .. math::</span>
 
@@ -535,7 +535,7 @@
 <span class="sd">    Cluster F score for the inner join of two clusterings.</span>
 
 <span class="sd">    Cluster F score:</span>
-<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let $T$ be the set of reference clusters, and let $P$ be the set of predicted clusters. Cluster F score is then defined as the weighted harmonic mean of cluster precision and cluster recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F score is the harmonic mean of precision and recall. When :math:`\beta &lt; 1`, the F score is weighted towards precision. When :math:`\beta &gt; 1`, the F score is weighted towards recall.</span>
+<span class="sd">        Consider two clusterings of a set of records, refered to as the *predicted* and *reference* clusterings. Let :math:`T` be the set of reference clusters, and let :math:`P` be the set of predicted clusters. Cluster F score is then defined as the weighted harmonic mean of cluster precision and cluster recall: :math:`F_\beta = \frac{(1 + \beta^2)PR}{ \beta^2 P+R}`. The :math:`\beta` parameter controls the relative weight of precision and recall. When :math:`\beta = 1`, the F score is the harmonic mean of precision and recall. When :math:`\beta &lt; 1`, the F score is weighted towards precision. When :math:`\beta &gt; 1`, the F score is weighted towards recall.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        prediction (Series): Membership vector for the predicted clustering.</span>
@@ -677,7 +677,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        sklearn_metric (function): cluster metric to wrap.</span>
-<span class="sd">        </span>
+
 <span class="sd">    Notes:</span>
 <span class="sd">        * The prediction and reference membership vectors are inner joined before this metric is computed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
