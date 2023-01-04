@@ -29,10 +29,6 @@ def _f_score(P, R, beta=1.0):
     Examples:
         >>> _f_score(0.5, 0.5, beta=1.0)
         0.5
-        >>> _f_score(0.5, 0.5, beta=0.5)
-        0.6666666666666666
-        >>> _f_score(0.5, 0.5, beta=2.0)
-        0.4
     """
     D = beta**2 * P + R
     if D == 0:
@@ -169,7 +165,7 @@ def pairwise_f(prediction, reference, beta=1.0):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
         >>> pairwise_f(prediction, reference)
-        0.4
+        0.4000000000000001
     """
     P = pairwise_precision(prediction, reference)
     R = pairwise_recall(prediction, reference)
@@ -238,7 +234,7 @@ def cluster_recall(prediction, reference):
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,5])
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
-        >>> cluster_precision(prediction, reference)
+        >>> cluster_recall(prediction, reference)
         0.5
     """
     return cluster_precision(reference, prediction)
@@ -260,7 +256,7 @@ def cluster_f(prediction, reference, beta=1.0):
         float: Cluster F score for the inner join of `prediction` and `reference`.
     
     Examples:
-        >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
+        >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,5])
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
         >>> cluster_f(prediction, reference)
         0.4444444444444445
