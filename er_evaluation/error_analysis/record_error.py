@@ -52,6 +52,7 @@ def record_error_table(prediction, sample):
         6	    4	        c3	        3	                2.0	                1.0	            0.0
         7	    4	        c3	        3	                2.0	                1.0	            0.0
         8	    4	        NaN	        3	                NaN	                NaN	            NaN
+        
     """
     sample = sample[sample.index.isin(prediction.index)]
     prediction = relevant_prediction_subset(prediction, sample)
