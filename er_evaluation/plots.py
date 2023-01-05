@@ -7,7 +7,10 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 
-from .summary import cluster_sizes_distribution, cluster_hill_number
+from er_evaluation.summary import (
+    cluster_sizes_distribution,
+    cluster_hill_number,
+)
 
 
 def compare_plots(*figs, names=None, marker="color", marker_values=None):

@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 from scipy.special import comb
 
-from .data_structures import ismembership
+from er_evaluation.data_structures import ismembership
 
 
 def number_of_clusters(membership):
@@ -185,7 +185,7 @@ def cluster_hill_number(membership, alpha=1):
     if alpha == np.Inf:
         return 1 / np.max(probs)
     else:
-        return np.sum(probs ** alpha) ** (1 / (1 - alpha))
+        return np.sum(probs**alpha) ** (1 / (1 - alpha))
 
 
 def homonimy_rate(membership, names):
@@ -228,7 +228,10 @@ def homonimy_rate(membership, names):
         .reset_index(name="cluster_count")
     )
     merged = name_count_per_cluster.merge(
-        names_count, on="name", copy=False, validate="m:1",
+        names_count,
+        on="name",
+        copy=False,
+        validate="m:1",
     )
     merged["diff"] = merged.total_count - merged.cluster_count
 

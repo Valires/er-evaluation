@@ -136,7 +136,10 @@ def ismembership(obj):
     """
     if isinstance(obj, pd.Series):
         return all(
-            [obj.index.has_duplicates == False, obj.index.hasnans == False,]
+            [
+                obj.index.has_duplicates == False,
+                obj.index.hasnans == False,
+            ]
         )
     else:
         return False

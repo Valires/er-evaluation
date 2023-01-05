@@ -1,13 +1,63 @@
 r"""
 Performance Estimators Based on Ground Truth Clusters
 """
-
+import warnings
 import pandas as pd
 import numpy as np
 from scipy.special import comb
 
-from .data_structures import ismembership
-from .utils import expand_grid
+from er_evaluation.data_structures import ismembership
+from er_evaluation.utils import expand_grid, relevant_prediction_subset
+from er_evaluation.summary import cluster_sizes
+
+
+def _parse_weights(sample, weights):
+    """
+    Parse weights argument.
+
+    Args:
+        sample (Series): Membership vector representation of a clustering.
+        weights (Union[Series, str]): Sampling weights. If "uniform", all weights are set to 1. If "cluster_size", weights are set to 1 / cluster size. Otherwise, weights are expected to be a pandas Series with the same index as sample.
+
+    Returns:
+        Series: Sampling weights.
+
+    Examples:
+        >>> sample = pd.Series(index=[1,2,3,4,5,6,7], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3"])
+        >>> _parse_weights(sample, "uniform")
+        1    1
+        2    1
+        3    1
+        4    1
+        5    1
+        6    1
+        7    1
+        dtype: int64
+        >>> _parse_weights(sample, "cluster_size")
+        1    0.333333
+        2    0.333333
+        3    0.333333
+        4    0.500000
+        5    0.500000
+        6    0.500000
+        7    0.500000
+        dtype: float64
+        >>> _parse_weights(sample, pd.Series(index=[1,2,3,4,5,6,7], data=[1,2,3,4,5,6,7]))
+        1    1
+        2    2
+        3    3
+        4    4
+        5    5
+        6    6
+        7    7
+        dtype: int64
+    """
+    if weights == "uniform":
+        return pd.Series(1, index=sample.unique())
+    elif weights == "cluster_size":
+        return 1 / cluster_sizes(sample)
+    else:
+        return weights
 
 
 def estimates_table(predictions, samples_weights, estimators):
@@ -61,7 +111,7 @@ def estimates_table(predictions, samples_weights, estimators):
     return params
 
 
-def validate_estimator_arguments(prediction, sample, weights):
+def validate_prediction_sample(prediction, sample):
     r"""
     Validate inputs to estimators.
 
@@ -74,10 +124,14 @@ def validate_estimator_arguments(prediction, sample, weights):
         AssertionError
     """
     assert ismembership(prediction) and ismembership(sample)
+
+    if not all(sample.index.isin(prediction.index)):
+        warnings.warn("Some sample elements are not in the prediction.")
+
+
+def validate_weights(sample, weights):
     assert isinstance(weights, pd.Series)
-    assert not weights.index.has_duplicates and all(
-        weights.index.isin(sample.values)
-    )
+    assert all(weights.index.isin(sample.unique()))
 
 
 def pairwise_precision_design_estimate(prediction, sample, weights):
@@ -92,7 +146,7 @@ def pairwise_precision_design_estimate(prediction, sample, weights):
     Args:
         prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
         sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
-        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities).
+        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string "uniform" for uniform sampling weights, or "cluster_size" for inverse cluster size sampling weights.
 
     Returns:
         tuple: Precision estimate and standard deviation estimate.
@@ -107,9 +161,12 @@ def pairwise_precision_design_estimate(prediction, sample, weights):
     References:
         [1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230
     """
-    validate_estimator_arguments(prediction, sample, weights)
+    validate_prediction_sample(prediction, sample)
+    sample = sample[sample.index.isin(prediction.index)]
+    prediction = relevant_prediction_subset(prediction, sample)
 
-    sample = sample[sample.index.isin(prediction.index.values)]
+    weights = _parse_weights(sample, weights)
+    validate_weights(sample, weights)
     weights = weights[weights.index.isin(sample.values)]
 
     inner = pd.concat(
@@ -161,7 +218,7 @@ def pairwise_recall_design_estimate(prediction, sample, weights):
     Args:
         prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
         sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
-        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities).
+        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string "uniform" for uniform sampling weights, or "cluster_size" for inverse cluster size sampling weights.
 
     Returns:
         tuple: Recall estimate and standard deviation estimate.
@@ -176,9 +233,12 @@ def pairwise_recall_design_estimate(prediction, sample, weights):
     References:
         [1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230
     """
-    validate_estimator_arguments(prediction, sample, weights)
+    validate_prediction_sample(prediction, sample)
+    sample = sample[sample.index.isin(prediction.index)]
+    prediction = relevant_prediction_subset(prediction, sample)
 
-    sample = sample[sample.index.isin(prediction.index.values)]
+    weights = _parse_weights(sample, weights)
+    validate_weights(sample, weights)
     weights = weights[weights.index.isin(sample.values)]
 
     inner = pd.concat(

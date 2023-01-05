@@ -8,10 +8,10 @@ from scipy.special import comb
 import sklearn.metrics as sm
 from functools import wraps
 
-from .data_structures import ismembership
-from .summary import number_of_links
-from .utils import expand_grid
-from .error_analysis import error_indicator
+from er_evaluation.data_structures import ismembership
+from er_evaluation.summary import number_of_links
+from er_evaluation.utils import expand_grid
+from er_evaluation.error_analysis import error_indicator
 
 
 def _f_score(P, R, beta=1.0):
@@ -25,7 +25,7 @@ def _f_score(P, R, beta=1.0):
 
     Returns:
         float: Weighted F1 score.
-    
+
     Examples:
         >>> _f_score(0.5, 0.5, beta=1.0)
         0.5
@@ -157,10 +157,10 @@ def pairwise_f(prediction, reference, beta=1.0):
         prediction (Series): Membership vector for the predicted clustering.
         reference (Series): Membership vector for the reference clustering.
         beta (float): Weight of precision in the F score.
-    
+
     Returns:
         float: Pairwise F score for the inner join of `prediction` and `reference`.
-    
+
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
@@ -185,14 +185,14 @@ def cluster_precision(prediction, reference):
             P = \frac{\lvert T \cap P \rvert}{\lvert P \rvert}
 
         This is the proportion of correctly predicted clusters among all predicted clusters.
-    
+
     Args:
         prediction (Series): Membership vector for the predicted clustering.
         reference (Series): Membership vector for the reference clustering.
-    
+
     Returns:
         float: Cluster precision for the inner join of `prediction` and `reference`.
-    
+
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,5])
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
@@ -207,7 +207,7 @@ def cluster_precision(prediction, reference):
         copy=False,
     )
     errors = error_indicator(inner.prediction, inner.reference)
-    
+
     return (1 - errors).sum() / inner.prediction.nunique()
 
 
@@ -227,10 +227,10 @@ def cluster_recall(prediction, reference):
     Args:
         prediction (Series): Membership vector for the predicted clustering.
         reference (Series): Membership vector for the reference clustering.
-    
+
     Returns:
         float: Cluster recall for the inner join of `prediction` and `reference`.
-    
+
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,5])
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
@@ -251,10 +251,10 @@ def cluster_f(prediction, reference, beta=1.0):
         prediction (Series): Membership vector for the predicted clustering.
         reference (Series): Membership vector for the reference clustering.
         beta (float): Weight of precision in the F score.
-    
+
     Returns:
         float: Cluster F score for the inner join of `prediction` and `reference`.
-    
+
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,5])
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
@@ -277,7 +277,7 @@ def b_cubed_precision(prediction, reference):
 
     Returns:
         float: B-cubed precision for the inner join of `prediction` and `reference`.
-    
+
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
@@ -302,14 +302,22 @@ def b_cubed_precision(prediction, reference):
     n_clusters = inner.reference.nunique()
 
     df = (
-        inner
-        .merge(intersection_sizes.reset_index(name="intersection_size"), how="left")
-        .merge(ref_cluster_sizes.reset_index(name="ref_cluster_size"), how="left")
-        .merge(pred_cluster_sizes.reset_index(name="pred_cluster_size"), how="left")
+        inner.merge(
+            intersection_sizes.reset_index(name="intersection_size"), how="left"
+        )
+        .merge(
+            ref_cluster_sizes.reset_index(name="ref_cluster_size"), how="left"
+        )
+        .merge(
+            pred_cluster_sizes.reset_index(name="pred_cluster_size"), how="left"
+        )
     )
     df = df[df.intersection_size > 0]
 
-    return (df.intersection_size / (df.ref_cluster_size * df.pred_cluster_size * n_clusters)).sum()
+    return (
+        df.intersection_size
+        / (df.ref_cluster_size * df.pred_cluster_size * n_clusters)
+    ).sum()
 
 
 def b_cubed_recall(prediction, reference):
@@ -319,10 +327,10 @@ def b_cubed_recall(prediction, reference):
     Args:
         prediction (Series): Membership vector for the predicted clustering.
         reference (Series): Membership vector for the reference clustering.
-    
+
     Returns:
         float: B-cubed recall for the inner join of `prediction` and `reference`.
-    
+
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
@@ -347,14 +355,21 @@ def b_cubed_recall(prediction, reference):
     n_clusters = inner.reference.nunique()
 
     df = (
-        inner
-        .merge(intersection_sizes.reset_index(name="intersection_size"), how="left")
-        .merge(ref_cluster_sizes.reset_index(name="ref_cluster_size"), how="left")
-        .merge(pred_cluster_sizes.reset_index(name="pred_cluster_size"), how="left")
+        inner.merge(
+            intersection_sizes.reset_index(name="intersection_size"), how="left"
+        )
+        .merge(
+            ref_cluster_sizes.reset_index(name="ref_cluster_size"), how="left"
+        )
+        .merge(
+            pred_cluster_sizes.reset_index(name="pred_cluster_size"), how="left"
+        )
     )
     df = df[df.intersection_size > 0]
 
-    return (df.intersection_size / (df.ref_cluster_size**2 * n_clusters)).sum()
+    return (
+        df.intersection_size / (df.ref_cluster_size**2 * n_clusters)
+    ).sum()
 
 
 def b_cubed_f(prediction, reference, beta=1.0):
@@ -365,21 +380,20 @@ def b_cubed_f(prediction, reference, beta=1.0):
         prediction (Series): Membership vector for the predicted clustering.
         reference (Series): Membership vector for the reference clustering.
         beta (float): Weight of precision in the F score.
-    
+
     Returns:
         float: B-cubed F score for the inner join of `prediction` and `reference`.
-    
+
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
-        >>> b_cubed_f1(prediction, reference)
+        >>> b_cubed_f(prediction, reference)
         0.6999178981937603
     """
     P = b_cubed_precision(prediction, reference)
     R = b_cubed_recall(prediction, reference)
 
     return _f_score(P, R, beta=beta)
-
 
 
 def wrap_sklearn_metric(sklearn_metric):
@@ -396,8 +410,15 @@ def wrap_sklearn_metric(sklearn_metric):
     def func(prediction, reference, **kw):
         assert ismembership(prediction) and ismembership(reference)
 
-        inner = pd.concat({"prediction": prediction, "reference": reference}, axis=1, join="inner", copy=False)
-        prediction_codes = pd.Categorical(inner.prediction).codes.astype(np.int64)
+        inner = pd.concat(
+            {"prediction": prediction, "reference": reference},
+            axis=1,
+            join="inner",
+            copy=False,
+        )
+        prediction_codes = pd.Categorical(inner.prediction).codes.astype(
+            np.int64
+        )
         reference_codes = pd.Categorical(inner.reference).codes.astype(np.int64)
 
         return sklearn_metric(reference_codes, prediction_codes, **kw)
@@ -457,7 +478,9 @@ def cluster_v_measure(prediction, reference, beta=1.0):
         * The prediction and reference membership vectors are inner joined before this metric is computed.
     """
 
-    return wrap_sklearn_metric(sm.v_measure_score)(prediction, reference, beta=beta)
+    return wrap_sklearn_metric(sm.v_measure_score)(
+        prediction, reference, beta=beta
+    )
 
 
 def rand_score(prediction, reference):

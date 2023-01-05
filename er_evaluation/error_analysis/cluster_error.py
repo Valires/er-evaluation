@@ -1,9 +1,9 @@
 r"""
-=============================================================
-Error Analysis: Analyze Errors Based on Ground Truth Clusters
-=============================================================
+============================
+Analyze cluster-level errors
+============================
 
-The **error_analysis** submodule provides a set of tools to analyze errors, given a set of ground truth clusters. These ground truth clusters may correspond to a benchmark dataset which is *complete* (all of the entities within it are fully resolved and have no missing links), or to a probability sample of ground truth clusters. For more information on the underlying methodology, please refer to [XX].
+The **error_analysis.cluster_error** submodule provides a set of tools to analyze errors, given a set of ground truth clusters. These ground truth clusters may correspond to a benchmark dataset which is *complete* (all of the entities within it are fully resolved and have no missing links), or to a probability sample of ground truth clusters. For more information on the underlying methodology, please refer to [XX].
 
 The key assumptions used for this module are:
 1. A *predicted* clustering is available as a membership vector (named  `prediction` throughout).
@@ -65,6 +65,8 @@ import pandas as pd
 import numpy as np
 from scipy.special import comb
 
+from er_evaluation.utils import relevant_prediction_subset
+
 
 def count_extra_links(prediction, sample):
     r"""
@@ -92,9 +94,7 @@ def count_extra_links(prediction, sample):
         c4    2
         Name: count_extra_links, dtype: int64
     """
-    # Index of elements with a predicted cluster intersecting sampled clusters:
-    I = prediction.isin(prediction[prediction.index.isin(sample.index)])
-    relevant_predictions = prediction[I]
+    relevant_predictions = relevant_prediction_subset(prediction, sample)
 
     outer = pd.concat(
         {"prediction": relevant_predictions, "sample": sample},
@@ -183,8 +183,7 @@ def expected_relative_extra_links(prediction, sample):
         c4    0.666667
         Name: expected_relative_extra_links, dtype: float64
     """
-    I = prediction.isin(prediction[prediction.index.isin(sample.index)])
-    relevant_predictions = prediction[I]
+    relevant_predictions = relevant_prediction_subset(prediction, sample)
 
     outer = pd.concat(
         {"prediction": relevant_predictions, "sample": sample},
@@ -242,9 +241,7 @@ def count_missing_links(prediction, sample):
         c4    0
         Name: count_missing_links, dtype: int64
     """
-    # Index of elements with a predicted cluster intersecting sampled clusters:
-    I = prediction.isin(prediction[prediction.index.isin(sample.index)])
-    relevant_predictions = prediction[I]
+    relevant_predictions = relevant_prediction_subset(prediction, sample)
 
     outer = pd.concat(
         {"prediction": relevant_predictions, "sample": sample},
@@ -333,7 +330,7 @@ def expected_relative_missing_links(prediction, sample):
     result = count_missing_links(prediction, sample)
     sizes = sample.groupby(sample).size()
 
-    result = result / sizes ** 2
+    result = result / sizes**2
     result.rename("expected_relative_missing_links", inplace=True)
 
     return result
@@ -351,7 +348,7 @@ def error_indicator(prediction, sample):
 
     Returns:
         Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the error indicator.
-    
+
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,5])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
@@ -363,8 +360,7 @@ def error_indicator(prediction, sample):
         Name: error_indicator, dtype: int64
 
     """
-    I = prediction.isin(prediction[prediction.index.isin(sample.index)])
-    relevant_predictions = prediction[I]
+    relevant_predictions = relevant_prediction_subset(prediction, sample)
 
     outer = pd.concat(
         {"prediction": relevant_predictions, "sample": sample},
@@ -418,10 +414,7 @@ def splitting_entropy(prediction, sample, alpha=1):
         c4    1.000000
         Name: splitting_entropy_1, dtype: float64
     """
-
-    # Index of elements with a predicted cluster intersecting sampled clusters:
-    I = prediction.isin(prediction[prediction.index.isin(sample.index)])
-    relevant_predictions = prediction[I]
+    relevant_predictions = relevant_prediction_subset(prediction, sample)
 
     outer = pd.concat(
         {"prediction": relevant_predictions, "sample": sample},
@@ -440,7 +433,7 @@ def splitting_entropy(prediction, sample, alpha=1):
         if alpha == 1:
             return np.exp(-np.sum(u * np.log(u)))
 
-        return (np.sum(u ** alpha)) ** (1 / (1 - alpha))
+        return (np.sum(u**alpha)) ** (1 / (1 - alpha))
 
     result = outer.groupby("sample").agg(lambd).prediction
     result.rename(f"splitting_entropy_{alpha}", inplace=True)

@@ -1,5 +1,16 @@
 import pandas as pd
+import numpy as np
 import itertools
+
+from er_evaluation.data_structures import membership_to_clusters
+
+
+def relevant_prediction_subset(prediction, sample):
+    """Return predicted clusters which intersect sampled clusters"""
+    I = prediction.index.isin(sample.index)
+    J = prediction.isin(prediction[I].values)
+
+    return prediction[J]
 
 
 def expand_grid(**kwargs):
@@ -8,10 +19,10 @@ def expand_grid(**kwargs):
 
     Args:
         kwargs: Dictionary of elements to combine. Keys become column names.
-    
+
     Returns:
         DataFrame: DataFrame with columns corresponding to argument names and rows for each combination of argument values.
-    
+
     Examples:
         >>> expand_grid(col1=[1,2], col2=["a", "b"])
            col1 col2

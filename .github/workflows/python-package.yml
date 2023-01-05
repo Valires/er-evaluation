@@ -33,3 +33,4 @@ jobs:
       run: |
         pip install pytest testbook ipykernel jupyter
         pytest --doctest-modules
+        pytest .
