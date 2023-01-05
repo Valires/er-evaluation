@@ -52,10 +52,15 @@ def _parse_weights(sample, weights):
         7    7
         dtype: int64
     """
-    if weights == "uniform":
-        return pd.Series(1, index=sample.unique())
-    elif weights == "cluster_size":
-        return 1 / cluster_sizes(sample)
+    if isinstance(weights, str):
+        if weights == "uniform":
+            return pd.Series(1, index=sample.unique())
+        elif weights == "cluster_size":
+            return 1 / cluster_sizes(sample)
+        else:
+            raise ValueError(
+                "If weights is a string, it must be either 'uniform' or 'cluster_size'."
+            )
     else:
         return weights
 
