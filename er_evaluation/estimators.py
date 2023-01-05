@@ -25,32 +25,20 @@ def _parse_weights(sample, weights):
     Examples:
         >>> sample = pd.Series(index=[1,2,3,4,5,6,7], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3"])
         >>> _parse_weights(sample, "uniform")
-        1    1
-        2    1
-        3    1
-        4    1
-        5    1
-        6    1
-        7    1
+        c1    1
+        c2    1
+        c3    1
         dtype: int64
         >>> _parse_weights(sample, "cluster_size")
-        1    0.333333
-        2    0.333333
-        3    0.333333
-        4    0.500000
-        5    0.500000
-        6    0.500000
-        7    0.500000
-        dtype: float64
-        >>> _parse_weights(sample, pd.Series(index=[1,2,3,4,5,6,7], data=[1,2,3,4,5,6,7]))
-        1    1
-        2    2
-        3    3
-        4    4
-        5    5
-        6    6
-        7    7
+        c1    0.333333
+        c2    0.5
+        c3    0.5
         dtype: int64
+        >>> _parse_weights(sample, pd.Series(index=["c1", "c2", "c3"], data=[0.2, 0.4, 0.2]))
+        c1    0.2
+        c2    0.4
+        c3    0.2
+        dtype: float64
     """
     if isinstance(weights, str):
         if weights == "uniform":
