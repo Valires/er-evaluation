@@ -27,3 +27,4 @@ dependencies:
     - twine
     - pytest
     - testbook
+    - pyhamcrest

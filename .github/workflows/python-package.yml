@@ -31,6 +31,6 @@ jobs:
 
     - name: Test with pytest
       run: |
-        pip install pytest testbook ipykernel jupyter
+        pip install pytest testbook ipykernel jupyter pyhamcrest
         pytest --doctest-modules
         pytest .
