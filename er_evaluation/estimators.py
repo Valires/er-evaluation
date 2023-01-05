@@ -33,7 +33,7 @@ def _parse_weights(sample, weights):
         c1    0.333333
         c2    0.500000
         c3    0.500000
-        dtype: int64
+        dtype: float64
         >>> _parse_weights(sample, pd.Series(index=["c1", "c2", "c3"], data=[0.2, 0.4, 0.2]))
         c1    0.2
         c2    0.4
