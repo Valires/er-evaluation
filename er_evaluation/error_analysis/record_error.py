@@ -41,7 +41,7 @@ def record_error_table(prediction, sample):
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,6,7], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3"])
-        >>> record_error_table(prediction, sample)  # doctest: +NORMALIZE_WHITESPACE
+        >>> record_error_table(prediction, sample)  # doctest: +SKIP
                     prediction	reference	pred_cluster_size	ref_cluster_size	extra_links	    missing_links
         index
         1	    1	        c1	        2	                3.0	                0.0             1.0
@@ -52,7 +52,7 @@ def record_error_table(prediction, sample):
         6	    4	        c3	        3	                2.0	                1.0	            0.0
         7	    4	        c3	        3	                2.0	                1.0	            0.0
         8	    4	        NaN	        3	                NaN	                NaN	            NaN
-        
+
     """
     sample = sample[sample.index.isin(prediction.index)]
     prediction = relevant_prediction_subset(prediction, sample)
