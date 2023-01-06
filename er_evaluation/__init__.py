@@ -25,11 +25,21 @@ from .error_analysis import (
     expected_relative_extra_links,
     expected_relative_missing_links,
     splitting_entropy,
+    expected_extra_links_from_table,
+    expected_missing_links_from_table,
+    expected_relative_extra_links_from_table,
+    expected_relative_missing_links_from_table,
+    expected_size_difference_from_table,
 )
 
 from .estimators import (
     pairwise_precision_design_estimate,
     pairwise_recall_design_estimate,
+    pairwise_f_design_estimate,
+    cluster_precision_design_estimate,
+    cluster_recall_design_estimate,
+    b_cubed_precision_design_estimate,
+    b_cubed_recall_design_estimate,
     estimates_table,
 )
 
@@ -97,10 +107,20 @@ __all__ = [
     "expected_relative_extra_links",
     "expected_relative_missing_links",
     "splitting_entropy",
+    "expected_extra_links_from_table",
+    "expected_missing_links_from_table",
+    "expected_relative_extra_links_from_table",
+    "expected_relative_missing_links_from_table",
+    "expected_size_difference_from_table",
     # estimators
     "pairwise_precision_design_estimate",
     "pairwise_recall_design_estimate",
     "estimates_table",
+    "pairwise_f_design_estimate",
+    "cluster_precision_design_estimate",
+    "cluster_recall_design_estimate",
+    "b_cubed_precision_design_estimate",
+    "b_cubed_recall_design_estimate",
     # metrics
     "b_cubed_precision",
     "b_cubed_recall",

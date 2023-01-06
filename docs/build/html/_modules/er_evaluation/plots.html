@@ -293,7 +293,10 @@
 <span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
 <span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
 
-<span class="kn">from</span> <span class="nn">.summary</span> <span class="kn">import</span> <span class="n">cluster_sizes_distribution</span><span class="p">,</span> <span class="n">cluster_hill_number</span>
+<span class="kn">from</span> <span class="nn">er_evaluation.summary</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">cluster_sizes_distribution</span><span class="p">,</span>
+    <span class="n">cluster_hill_number</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="compare_plots"><a class="viewcode-back" href="../../er_evaluation.plots.html#er_evaluation.plots.compare_plots">[docs]</a><span class="k">def</span> <span class="nf">compare_plots</span><span class="p">(</span><span class="o">*</span><span class="n">figs</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="n">marker_values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -322,7 +325,9 @@
     <span class="k">return</span> <span class="n">combined</span></div>
 
 
-<div class="viewcode-block" id="plot_cluster_sizes_distribution"><a class="viewcode-back" href="../../er_evaluation.plots.html#er_evaluation.plots.plot_cluster_sizes_distribution">[docs]</a><span class="k">def</span> <span class="nf">plot_cluster_sizes_distribution</span><span class="p">(</span><span class="n">membership</span><span class="p">,</span> <span class="n">groupby</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="plot_cluster_sizes_distribution"><a class="viewcode-back" href="../../er_evaluation.plots.html#er_evaluation.plots.plot_cluster_sizes_distribution">[docs]</a><span class="k">def</span> <span class="nf">plot_cluster_sizes_distribution</span><span class="p">(</span>
+    <span class="n">membership</span><span class="p">,</span> <span class="n">groupby</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot the cluster size distribution</span>
 

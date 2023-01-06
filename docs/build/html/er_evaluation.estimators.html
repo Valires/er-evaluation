@@ -315,7 +315,22 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#er_evaluation.estimators.pairwise_recall_design_estimate" title="er_evaluation.estimators.pairwise_recall_design_estimate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairwise_recall_design_estimate</span></code></a></p></td>
 <td><p>Design estimator for pairwise recall.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.estimators.estimates_table" title="er_evaluation.estimators.estimates_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">estimates_table</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.estimators.pairwise_f_design_estimate" title="er_evaluation.estimators.pairwise_f_design_estimate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairwise_f_design_estimate</span></code></a></p></td>
+<td><p>Design estimator for pairwise F-score.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#er_evaluation.estimators.cluster_precision_design_estimate" title="er_evaluation.estimators.cluster_precision_design_estimate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cluster_precision_design_estimate</span></code></a></p></td>
+<td><p>Cluster precision design estimator.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.estimators.cluster_recall_design_estimate" title="er_evaluation.estimators.cluster_recall_design_estimate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cluster_recall_design_estimate</span></code></a></p></td>
+<td><p>Cluster recall design estimator.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#er_evaluation.estimators.b_cubed_precision_design_estimate" title="er_evaluation.estimators.b_cubed_precision_design_estimate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">b_cubed_precision_design_estimate</span></code></a></p></td>
+<td><p>B-cubed precision design estimator.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.estimators.b_cubed_recall_design_estimate" title="er_evaluation.estimators.b_cubed_recall_design_estimate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">b_cubed_recall_design_estimate</span></code></a></p></td>
+<td><p>B-cubed recall design estimator.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#er_evaluation.estimators.estimates_table" title="er_evaluation.estimators.estimates_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">estimates_table</span></code></a></p></td>
 <td><p>Create table of estimates applied to all combinations of predictions and (sample, weights) pairs.</p></td>
 </tr>
 </tbody>
@@ -324,6 +339,126 @@
 <section id="module-er_evaluation.estimators">
 <span id="documentation"></span><h2>Documentation<a class="headerlink" href="#module-er_evaluation.estimators" title="Permalink to this heading">#</a></h2>
 <p>Performance Estimators Based on Ground Truth Clusters</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.estimators.b_cubed_precision_design_estimate">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.estimators.</span></span><span class="sig-name descname"><span class="pre">b_cubed_precision_design_estimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/estimators.html#b_cubed_precision_design_estimate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.estimators.b_cubed_precision_design_estimate" title="Permalink to this definition">#</a></dt>
+<dd><p>B-cubed precision design estimator.</p>
+<p>Given a predicted disambiguation <cite>prediction</cite>, a set of ground truth clusters <cite>sample</cite>, and a set of cluster sampling weights <cite>weights</cite> (e.g., inverse probability weights for each cluster), this returns a B-cubed precision estimate together with its estimated standard deviation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
+<li><p><strong>sample</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
+<li><p><strong>weights</strong> (<em>Series</em>) – Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string “uniform” for uniform sampling weights, or “cluster_size” for inverse cluster size sampling weights.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>B-cubed precision estimate and standard deviation estimate.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="c1"># Uniform cluster weights</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b_cubed_precision_design_estimate</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+<span class="go">(0.7916666666666667, 0.0416666666666673)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.estimators.b_cubed_recall_design_estimate">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.estimators.</span></span><span class="sig-name descname"><span class="pre">b_cubed_recall_design_estimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/estimators.html#b_cubed_recall_design_estimate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.estimators.b_cubed_recall_design_estimate" title="Permalink to this definition">#</a></dt>
+<dd><p>B-cubed recall design estimator.</p>
+<p>Given a predicted disambiguation <cite>prediction</cite>, a set of ground truth clusters <cite>sample</cite>, and a set of cluster sampling weights <cite>weights</cite> (e.g., inverse probability weights for each cluster), this returns a B-cubed recall estimate together with its estimated standard deviation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
+<li><p><strong>sample</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
+<li><p><strong>weights</strong> (<em>Series</em>) – Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string “uniform” for uniform sampling weights, or “cluster_size” for inverse cluster size sampling weights.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>B-cubed recall estimate and standard deviation estimate.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="c1"># Uniform cluster weights</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b_cubed_recall_design_estimate</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+<span class="go">(0.5277777777777778, 0.027777777777778203)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.estimators.cluster_precision_design_estimate">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.estimators.</span></span><span class="sig-name descname"><span class="pre">cluster_precision_design_estimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/estimators.html#cluster_precision_design_estimate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.estimators.cluster_precision_design_estimate" title="Permalink to this definition">#</a></dt>
+<dd><p>Cluster precision design estimator.</p>
+<p>Given a predicted disambiguation <cite>prediction</cite>, a set of ground truth clusters <cite>sample</cite>, and a set of cluster sampling weights <cite>weights</cite> (e.g., inverse probability weights for each cluster), this returns a cluster precision estimate together with its estimated standard deviation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
+<li><p><strong>sample</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
+<li><p><strong>weights</strong> (<em>Series</em>) – Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string “uniform” for uniform sampling weights, or “cluster_size” for inverse cluster size sampling weights.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Cluster precision estimate and standard deviation estimate.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="c1"># Uniform cluster weights</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_precision_design_estimate</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+<span class="go">(0, nan)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.estimators.cluster_recall_design_estimate">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.estimators.</span></span><span class="sig-name descname"><span class="pre">cluster_recall_design_estimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/estimators.html#cluster_recall_design_estimate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.estimators.cluster_recall_design_estimate" title="Permalink to this definition">#</a></dt>
+<dd><p>Cluster recall design estimator.</p>
+<p>Given a predicted disambiguation <cite>prediction</cite>, a set of ground truth clusters <cite>sample</cite>, and a set of cluster sampling weights <cite>weights</cite> (e.g., inverse probability weights for each cluster), this returns a cluster recall estimate together with its estimated standard deviation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
+<li><p><strong>sample</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
+<li><p><strong>weights</strong> (<em>Series</em>) – Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string “uniform” for uniform sampling weights, or “cluster_size” for inverse cluster size sampling weights.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Cluster recall estimate and standard deviation estimate.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="c1"># Uniform cluster weights</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_recall_design_estimate</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+<span class="go">(0, nan)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="er_evaluation.estimators.estimates_table">
 <span class="sig-prename descclassname"><span class="pre">er_evaluation.estimators.</span></span><span class="sig-name descname"><span class="pre">estimates_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samples_weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">estimators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/estimators.html#estimates_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.estimators.estimates_table" title="Permalink to this definition">#</a></dt>
@@ -358,6 +493,37 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.estimators.pairwise_f_design_estimate">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.estimators.</span></span><span class="sig-name descname"><span class="pre">pairwise_f_design_estimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/estimators.html#pairwise_f_design_estimate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.estimators.pairwise_f_design_estimate" title="Permalink to this definition">#</a></dt>
+<dd><p>Design estimator for pairwise F-score.</p>
+<p>Given a predicted disambiguation <cite>prediction</cite>, a set of ground truth clusters <cite>sample</cite>, and a set of cluster sampling weights <cite>weights</cite> (e.g., inverse probability weights for each cluster), this returns a pairwise F-score estimate together with its estimated standard deviation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
+<li><p><strong>sample</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
+<li><p><strong>weights</strong> (<em>Series</em>) – Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string “uniform” for uniform sampling weights, or “cluster_size” for inverse cluster size sampling weights.</p></li>
+<li><p><strong>beta</strong> (<em>float</em>) – Weighting parameter for F-score. Default is 1.0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>F-score estimate and standard deviation estimate.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="c1"># Uniform cluster weights</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pairwise_f_design_estimate</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+<span class="go">(0.36213991769547327, 0.19753086419753088)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="er_evaluation.estimators.pairwise_precision_design_estimate">
 <span class="sig-prename descclassname"><span class="pre">er_evaluation.estimators.</span></span><span class="sig-name descname"><span class="pre">pairwise_precision_design_estimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/estimators.html#pairwise_precision_design_estimate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.estimators.pairwise_precision_design_estimate" title="Permalink to this definition">#</a></dt>
 <dd><p>Design estimator for pairwise precision.</p>
@@ -371,7 +537,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
 <li><p><strong>sample</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
-<li><p><strong>weights</strong> (<em>Series</em>) – Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities).</p></li>
+<li><p><strong>weights</strong> (<em>Series</em>) – Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string “uniform” for uniform sampling weights, or “cluster_size” for inverse cluster size sampling weights.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -407,7 +573,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
 <li><p><strong>sample</strong> (<em>Series</em>) – Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</p></li>
-<li><p><strong>weights</strong> (<em>Series</em>) – Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities).</p></li>
+<li><p><strong>weights</strong> (<em>Series</em>) – Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string “uniform” for uniform sampling weights, or “cluster_size” for inverse cluster size sampling weights.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -442,8 +608,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="er_evaluation.estimators.validate_estimator_arguments">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.estimators.</span></span><span class="sig-name descname"><span class="pre">validate_estimator_arguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/estimators.html#validate_estimator_arguments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.estimators.validate_estimator_arguments" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="er_evaluation.estimators.validate_prediction_sample">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.estimators.</span></span><span class="sig-name descname"><span class="pre">validate_prediction_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/estimators.html#validate_prediction_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.estimators.validate_prediction_sample" title="Permalink to this definition">#</a></dt>
 <dd><p>Validate inputs to estimators.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -458,6 +624,11 @@
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.estimators.validate_weights">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.estimators.</span></span><span class="sig-name descname"><span class="pre">validate_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/estimators.html#validate_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.estimators.validate_weights" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </section>
 </section>
@@ -504,10 +675,55 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.estimators.b_cubed_precision_design_estimate">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       b_cubed_precision_design_estimate()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.estimators.b_cubed_recall_design_estimate">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       b_cubed_recall_design_estimate()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.estimators.cluster_precision_design_estimate">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       cluster_precision_design_estimate()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.estimators.cluster_recall_design_estimate">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       cluster_recall_design_estimate()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#er_evaluation.estimators.estimates_table">
      <code class="docutils literal notranslate">
       <span class="pre">
        estimates_table()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.estimators.pairwise_f_design_estimate">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       pairwise_f_design_estimate()
       </span>
      </code>
     </a>
@@ -549,10 +765,19 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#er_evaluation.estimators.validate_estimator_arguments">
+    <a class="reference internal nav-link" href="#er_evaluation.estimators.validate_prediction_sample">
      <code class="docutils literal notranslate">
       <span class="pre">
-       validate_estimator_arguments()
+       validate_prediction_sample()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.estimators.validate_weights">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       validate_weights()
       </span>
      </code>
     </a>

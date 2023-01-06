@@ -287,13 +287,66 @@
 <span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Performance Estimators Based on Ground Truth Clusters</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">comb</span>
 
-<span class="kn">from</span> <span class="nn">.data_structures</span> <span class="kn">import</span> <span class="n">ismembership</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">expand_grid</span>
+<span class="kn">from</span> <span class="nn">er_evaluation.data_structures</span> <span class="kn">import</span> <span class="n">ismembership</span>
+<span class="kn">from</span> <span class="nn">er_evaluation.utils</span> <span class="kn">import</span> <span class="n">expand_grid</span><span class="p">,</span> <span class="n">relevant_prediction_subset</span>
+<span class="kn">from</span> <span class="nn">er_evaluation.summary</span> <span class="kn">import</span> <span class="n">cluster_sizes</span>
+
+<span class="kn">from</span> <span class="nn">er_evaluation.error_analysis.record_error</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">record_error_table</span><span class="p">,</span>
+    <span class="n">expected_missing_links_from_table</span><span class="p">,</span>
+    <span class="n">expected_size_difference_from_table</span><span class="p">,</span>
+    <span class="n">expected_relative_extra_links_from_table</span><span class="p">,</span>
+    <span class="n">expected_relative_missing_links_from_table</span><span class="p">,</span>
+    <span class="n">cluster_sizes_from_table</span><span class="p">,</span>
+    <span class="n">error_indicator_from_table</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_parse_weights</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse weights argument.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sample (Series): Membership vector representation of a clustering.</span>
+<span class="sd">        weights (Union[Series, str]): Sampling weights. If &quot;uniform&quot;, all weights are set to 1. If &quot;cluster_size&quot;, weights are set to 1 / cluster size. Otherwise, weights are expected to be a pandas Series with the same index as sample.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Series: Sampling weights.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5,6,7], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; _parse_weights(sample, &quot;uniform&quot;)</span>
+<span class="sd">        c1    1</span>
+<span class="sd">        c2    1</span>
+<span class="sd">        c3    1</span>
+<span class="sd">        dtype: int64</span>
+<span class="sd">        &gt;&gt;&gt; _parse_weights(sample, &quot;cluster_size&quot;)</span>
+<span class="sd">        c1    0.333333</span>
+<span class="sd">        c2    0.500000</span>
+<span class="sd">        c3    0.500000</span>
+<span class="sd">        dtype: float64</span>
+<span class="sd">        &gt;&gt;&gt; _parse_weights(sample, pd.Series(index=[&quot;c1&quot;, &quot;c2&quot;, &quot;c3&quot;], data=[0.2, 0.4, 0.2]))</span>
+<span class="sd">        c1    0.2</span>
+<span class="sd">        c2    0.4</span>
+<span class="sd">        c3    0.2</span>
+<span class="sd">        dtype: float64</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">weights</span> <span class="o">==</span> <span class="s2">&quot;uniform&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">weights</span> <span class="o">==</span> <span class="s2">&quot;cluster_size&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">cluster_sizes</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;If weights is a string, it must be either &#39;uniform&#39; or &#39;cluster_size&#39;.&quot;</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">weights</span>
 
 
 <div class="viewcode-block" id="estimates_table"><a class="viewcode-back" href="../../er_evaluation.estimators.html#er_evaluation.estimators.estimates_table">[docs]</a><span class="k">def</span> <span class="nf">estimates_table</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">samples_weights</span><span class="p">,</span> <span class="n">estimators</span><span class="p">):</span>
@@ -339,7 +392,7 @@
             <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">lambd</span><span class="p">(</span>
                 <span class="n">x</span><span class="p">[</span><span class="s2">&quot;prediction&quot;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;sample_weights&quot;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;estimator&quot;</span><span class="p">]</span>
             <span class="p">),</span>
-            <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+            <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
         <span class="n">index</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
     <span class="p">)</span>
@@ -347,7 +400,7 @@
     <span class="k">return</span> <span class="n">params</span></div>
 
 
-<div class="viewcode-block" id="validate_estimator_arguments"><a class="viewcode-back" href="../../er_evaluation.estimators.html#er_evaluation.estimators.validate_estimator_arguments">[docs]</a><span class="k">def</span> <span class="nf">validate_estimator_arguments</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+<div class="viewcode-block" id="validate_prediction_sample"><a class="viewcode-back" href="../../er_evaluation.estimators.html#er_evaluation.estimators.validate_prediction_sample">[docs]</a><span class="k">def</span> <span class="nf">validate_prediction_sample</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Validate inputs to estimators.</span>
 
@@ -360,10 +413,26 @@
 <span class="sd">        AssertionError</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="n">ismembership</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ismembership</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">prediction</span><span class="o">.</span><span class="n">index</span><span class="p">)):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Some sample elements are not in the prediction.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="validate_weights"><a class="viewcode-back" href="../../er_evaluation.estimators.html#er_evaluation.estimators.validate_weights">[docs]</a><span class="k">def</span> <span class="nf">validate_weights</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="ow">not</span> <span class="n">weights</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">has_duplicates</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span>
-        <span class="n">weights</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-    <span class="p">)</span></div>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">unique</span><span class="p">()))</span></div>
+
+
+<span class="k">def</span> <span class="nf">_prepare_args</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="n">validate_prediction_sample</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">sample</span><span class="p">[</span><span class="n">sample</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">prediction</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">relevant_prediction_subset</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">_parse_weights</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+    <span class="n">validate_weights</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="n">weights</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">values</span><span class="p">)]</span>
+
+    <span class="k">return</span> <span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span>
 
 
 <div class="viewcode-block" id="pairwise_precision_design_estimate"><a class="viewcode-back" href="../../er_evaluation.estimators.html#er_evaluation.estimators.pairwise_precision_design_estimate">[docs]</a><span class="k">def</span> <span class="nf">pairwise_precision_design_estimate</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
@@ -378,7 +447,7 @@
 <span class="sd">    Args:</span>
 <span class="sd">        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</span>
 <span class="sd">        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</span>
-<span class="sd">        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities).</span>
+<span class="sd">        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string &quot;uniform&quot; for uniform sampling weights, or &quot;cluster_size&quot; for inverse cluster size sampling weights.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple: Precision estimate and standard deviation estimate.</span>
@@ -393,10 +462,7 @@
 <span class="sd">    References:</span>
 <span class="sd">        [1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">validate_estimator_arguments</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
-
-    <span class="n">sample</span> <span class="o">=</span> <span class="n">sample</span><span class="p">[</span><span class="n">sample</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">prediction</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">)]</span>
-    <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="n">weights</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">values</span><span class="p">)]</span>
+    <span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">_prepare_args</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
 
     <span class="n">inner</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
         <span class="p">{</span><span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">prediction</span><span class="p">,</span> <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="p">},</span>
@@ -447,7 +513,7 @@
 <span class="sd">    Args:</span>
 <span class="sd">        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</span>
 <span class="sd">        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</span>
-<span class="sd">        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities).</span>
+<span class="sd">        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string &quot;uniform&quot; for uniform sampling weights, or &quot;cluster_size&quot; for inverse cluster size sampling weights.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple: Recall estimate and standard deviation estimate.</span>
@@ -462,10 +528,7 @@
 <span class="sd">    References:</span>
 <span class="sd">        [1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">validate_estimator_arguments</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
-
-    <span class="n">sample</span> <span class="o">=</span> <span class="n">sample</span><span class="p">[</span><span class="n">sample</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">prediction</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">)]</span>
-    <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="n">weights</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">values</span><span class="p">)]</span>
+    <span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">_prepare_args</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
 
     <span class="n">inner</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
         <span class="p">{</span><span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">prediction</span><span class="p">,</span> <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="p">},</span>
@@ -493,8 +556,173 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">ratio_estimator</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">),</span> <span class="n">std_dev</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span></div>
 
 
+<div class="viewcode-block" id="pairwise_f_design_estimate"><a class="viewcode-back" href="../../er_evaluation.estimators.html#er_evaluation.estimators.pairwise_f_design_estimate">[docs]</a><span class="k">def</span> <span class="nf">pairwise_f_design_estimate</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Design estimator for pairwise F-score.</span>
+
+<span class="sd">    Given a predicted disambiguation `prediction`, a set of ground truth clusters `sample`, and a set of cluster sampling weights `weights` (e.g., inverse probability weights for each cluster), this returns a pairwise F-score estimate together with its estimated standard deviation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</span>
+<span class="sd">        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</span>
+<span class="sd">        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string &quot;uniform&quot; for uniform sampling weights, or &quot;cluster_size&quot; for inverse cluster size sampling weights.</span>
+<span class="sd">        beta (float): Weighting parameter for F-score. Default is 1.0.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: F-score estimate and standard deviation estimate.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights</span>
+<span class="sd">        &gt;&gt;&gt; pairwise_f_design_estimate(prediction, sample, weights)</span>
+<span class="sd">        (0.36213991769547327, 0.19753086419753088)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">_prepare_args</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+
+    <span class="n">error_table</span> <span class="o">=</span> <span class="n">record_error_table</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+    <span class="n">cs</span> <span class="o">=</span> <span class="n">cluster_sizes_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">)</span>
+    <span class="n">E_miss</span> <span class="o">=</span> <span class="n">expected_missing_links_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">)</span>
+    <span class="n">E_size</span> <span class="o">=</span> <span class="n">expected_size_difference_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">cs</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="n">cs</span> <span class="o">*</span> <span class="p">(</span><span class="n">cs</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">E_miss</span><span class="p">)</span> <span class="o">*</span> <span class="n">weights</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">cs</span> <span class="o">*</span> <span class="p">(</span><span class="n">cs</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">beta</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">E_size</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">beta</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="n">weights</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">ratio_estimator</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">),</span> <span class="n">std_dev</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="cluster_precision_design_estimate"><a class="viewcode-back" href="../../er_evaluation.estimators.html#er_evaluation.estimators.cluster_precision_design_estimate">[docs]</a><span class="k">def</span> <span class="nf">cluster_precision_design_estimate</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cluster precision design estimator.</span>
+
+<span class="sd">    Given a predicted disambiguation `prediction`, a set of ground truth clusters `sample`, and a set of cluster sampling weights `weights` (e.g., inverse probability weights for each cluster), this returns a cluster precision estimate together with its estimated standard deviation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</span>
+<span class="sd">        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</span>
+<span class="sd">        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string &quot;uniform&quot; for uniform sampling weights, or &quot;cluster_size&quot; for inverse cluster size sampling weights.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: Cluster precision estimate and standard deviation estimate.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights</span>
+<span class="sd">        &gt;&gt;&gt; cluster_precision_design_estimate(prediction, sample, weights)</span>
+<span class="sd">        (0, nan)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">_prepare_args</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+
+    <span class="n">error_table</span> <span class="o">=</span> <span class="n">record_error_table</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+    <span class="n">cs</span> <span class="o">=</span> <span class="n">cluster_sizes_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">)</span>
+    <span class="n">E_delta</span> <span class="o">=</span> <span class="n">error_indicator_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">)</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span> <span class="o">*</span> <span class="n">E_delta</span> <span class="o">*</span> <span class="n">weights</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cs</span><span class="p">)</span> <span class="o">*</span> <span class="n">cs</span> <span class="o">*</span> <span class="n">weights</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">ratio_estimator</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">),</span> <span class="n">std_dev</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="cluster_recall_design_estimate"><a class="viewcode-back" href="../../er_evaluation.estimators.html#er_evaluation.estimators.cluster_recall_design_estimate">[docs]</a><span class="k">def</span> <span class="nf">cluster_recall_design_estimate</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cluster recall design estimator.</span>
+
+<span class="sd">    Given a predicted disambiguation `prediction`, a set of ground truth clusters `sample`, and a set of cluster sampling weights `weights` (e.g., inverse probability weights for each cluster), this returns a cluster recall estimate together with its estimated standard deviation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</span>
+<span class="sd">        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</span>
+<span class="sd">        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string &quot;uniform&quot; for uniform sampling weights, or &quot;cluster_size&quot; for inverse cluster size sampling weights.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: Cluster recall estimate and standard deviation estimate.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights</span>
+<span class="sd">        &gt;&gt;&gt; cluster_recall_design_estimate(prediction, sample, weights)</span>
+<span class="sd">        (0, nan)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">_prepare_args</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+
+    <span class="n">error_table</span> <span class="o">=</span> <span class="n">record_error_table</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+    <span class="n">E_delta</span> <span class="o">=</span> <span class="n">error_indicator_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">)</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="n">E_delta</span> <span class="o">*</span> <span class="n">weights</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">weights</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">ratio_estimator</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">),</span> <span class="n">std_dev</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="b_cubed_precision_design_estimate"><a class="viewcode-back" href="../../er_evaluation.estimators.html#er_evaluation.estimators.b_cubed_precision_design_estimate">[docs]</a><span class="k">def</span> <span class="nf">b_cubed_precision_design_estimate</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    B-cubed precision design estimator.</span>
+
+<span class="sd">    Given a predicted disambiguation `prediction`, a set of ground truth clusters `sample`, and a set of cluster sampling weights `weights` (e.g., inverse probability weights for each cluster), this returns a B-cubed precision estimate together with its estimated standard deviation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</span>
+<span class="sd">        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</span>
+<span class="sd">        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string &quot;uniform&quot; for uniform sampling weights, or &quot;cluster_size&quot; for inverse cluster size sampling weights.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: B-cubed precision estimate and standard deviation estimate.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights</span>
+<span class="sd">        &gt;&gt;&gt; b_cubed_precision_design_estimate(prediction, sample, weights)</span>
+<span class="sd">        (0.7916666666666667, 0.0416666666666673)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">_prepare_args</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+
+    <span class="n">error_table</span> <span class="o">=</span> <span class="n">record_error_table</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+    <span class="n">E_extra_rel</span> <span class="o">=</span> <span class="n">expected_relative_extra_links_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">)</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">E_extra_rel</span><span class="p">)</span> <span class="o">*</span> <span class="n">weights</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">weights</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">ratio_estimator</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">),</span> <span class="n">std_dev</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="b_cubed_recall_design_estimate"><a class="viewcode-back" href="../../er_evaluation.estimators.html#er_evaluation.estimators.b_cubed_recall_design_estimate">[docs]</a><span class="k">def</span> <span class="nf">b_cubed_recall_design_estimate</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    B-cubed recall design estimator.</span>
+
+<span class="sd">    Given a predicted disambiguation `prediction`, a set of ground truth clusters `sample`, and a set of cluster sampling weights `weights` (e.g., inverse probability weights for each cluster), this returns a B-cubed recall estimate together with its estimated standard deviation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</span>
+<span class="sd">        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.</span>
+<span class="sd">        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string &quot;uniform&quot; for uniform sampling weights, or &quot;cluster_size&quot; for inverse cluster size sampling weights.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: B-cubed recall estimate and standard deviation estimate.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights</span>
+<span class="sd">        &gt;&gt;&gt; b_cubed_recall_design_estimate(prediction, sample, weights)</span>
+<span class="sd">        (0.5277777777777778, 0.027777777777778203)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">_prepare_args</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+
+    <span class="n">error_table</span> <span class="o">=</span> <span class="n">record_error_table</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+    <span class="n">E_miss_rel</span> <span class="o">=</span> <span class="n">expected_relative_missing_links_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">)</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">E_miss_rel</span><span class="p">)</span> <span class="o">*</span> <span class="n">weights</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">weights</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">ratio_estimator</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">),</span> <span class="n">std_dev</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span></div>
+
+
 <div class="viewcode-block" id="ratio_estimator"><a class="viewcode-back" href="../../er_evaluation.estimators.html#er_evaluation.estimators.ratio_estimator">[docs]</a><span class="k">def</span> <span class="nf">ratio_estimator</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Ratio estimator for mean(B)/mean(A) with bias adjustment.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Ratio estimator for mean(B)/mean(A) with bias adjustment.&quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
 
     <span class="n">A_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
@@ -515,7 +743,7 @@
 
 
 <div class="viewcode-block" id="std_dev"><a class="viewcode-back" href="../../er_evaluation.estimators.html#er_evaluation.estimators.std_dev">[docs]</a><span class="k">def</span> <span class="nf">std_dev</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Standard deviation estimate for ratio estimator.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Standard deviation estimate for ratio estimator.&quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
 
     <span class="n">A_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>

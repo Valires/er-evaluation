@@ -10,6 +10,16 @@ from er_evaluation.data_structures import ismembership
 from er_evaluation.utils import expand_grid, relevant_prediction_subset
 from er_evaluation.summary import cluster_sizes
 
+from er_evaluation.error_analysis.record_error import (
+    record_error_table,
+    expected_missing_links_from_table,
+    expected_size_difference_from_table,
+    expected_relative_extra_links_from_table,
+    expected_relative_missing_links_from_table,
+    cluster_sizes_from_table,
+    error_indicator_from_table,
+)
+
 
 def _parse_weights(sample, weights):
     """
@@ -127,6 +137,18 @@ def validate_weights(sample, weights):
     assert all(weights.index.isin(sample.unique()))
 
 
+def _prepare_args(prediction, sample, weights):
+    validate_prediction_sample(prediction, sample)
+    sample = sample[sample.index.isin(prediction.index)]
+    prediction = relevant_prediction_subset(prediction, sample)
+
+    weights = _parse_weights(sample, weights)
+    validate_weights(sample, weights)
+    weights = weights[weights.index.isin(sample.values)]
+
+    return prediction, sample, weights
+
+
 def pairwise_precision_design_estimate(prediction, sample, weights):
     r"""
     Design estimator for pairwise precision.
@@ -154,13 +176,7 @@ def pairwise_precision_design_estimate(prediction, sample, weights):
     References:
         [1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230
     """
-    validate_prediction_sample(prediction, sample)
-    sample = sample[sample.index.isin(prediction.index)]
-    prediction = relevant_prediction_subset(prediction, sample)
-
-    weights = _parse_weights(sample, weights)
-    validate_weights(sample, weights)
-    weights = weights[weights.index.isin(sample.values)]
+    prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     inner = pd.concat(
         {"prediction": prediction, "reference": sample},
@@ -226,13 +242,7 @@ def pairwise_recall_design_estimate(prediction, sample, weights):
     References:
         [1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230
     """
-    validate_prediction_sample(prediction, sample)
-    sample = sample[sample.index.isin(prediction.index)]
-    prediction = relevant_prediction_subset(prediction, sample)
-
-    weights = _parse_weights(sample, weights)
-    validate_weights(sample, weights)
-    weights = weights[weights.index.isin(sample.values)]
+    prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     inner = pd.concat(
         {"prediction": prediction, "reference": sample},
@@ -260,8 +270,173 @@ def pairwise_recall_design_estimate(prediction, sample, weights):
     return (ratio_estimator(N, D), std_dev(N, D))
 
 
+def pairwise_f_design_estimate(prediction, sample, weights, beta=1.0):
+    """
+    Design estimator for pairwise F-score.
+
+    Given a predicted disambiguation `prediction`, a set of ground truth clusters `sample`, and a set of cluster sampling weights `weights` (e.g., inverse probability weights for each cluster), this returns a pairwise F-score estimate together with its estimated standard deviation.
+
+    Args:
+        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string "uniform" for uniform sampling weights, or "cluster_size" for inverse cluster size sampling weights.
+        beta (float): Weighting parameter for F-score. Default is 1.0.
+
+    Returns:
+        tuple: F-score estimate and standard deviation estimate.
+
+    Examples:
+        >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
+        >>> sample = pd.Series(index=[1,2,3,4,5], data=["c1", "c1", "c1", "c2", "c2"])
+        >>> weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights
+        >>> pairwise_f_design_estimate(prediction, sample, weights)
+        (0.36213991769547327, 0.19753086419753088)
+    """
+    prediction, sample, weights = _prepare_args(prediction, sample, weights)
+
+    error_table = record_error_table(prediction, sample)
+    cs = cluster_sizes_from_table(error_table)
+    E_miss = expected_missing_links_from_table(error_table)
+    E_size = expected_size_difference_from_table(error_table)
+    weights = 1 / cs
+
+    N = cs * (cs - 1 - E_miss) * weights
+    D = cs * (cs - 1 + beta**2 * E_size / (1 + beta**2)) * weights
+
+    return (ratio_estimator(N, D), std_dev(N, D))
+
+
+def cluster_precision_design_estimate(prediction, sample, weights):
+    """
+    Cluster precision design estimator.
+
+    Given a predicted disambiguation `prediction`, a set of ground truth clusters `sample`, and a set of cluster sampling weights `weights` (e.g., inverse probability weights for each cluster), this returns a cluster precision estimate together with its estimated standard deviation.
+
+    Args:
+        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string "uniform" for uniform sampling weights, or "cluster_size" for inverse cluster size sampling weights.
+
+    Returns:
+        tuple: Cluster precision estimate and standard deviation estimate.
+
+    Examples:
+        >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
+        >>> sample = pd.Series(index=[1,2,3,4,5], data=["c1", "c1", "c1", "c2", "c2"])
+        >>> weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights
+        >>> cluster_precision_design_estimate(prediction, sample, weights)
+        (0, nan)
+    """
+    prediction, sample, weights = _prepare_args(prediction, sample, weights)
+
+    error_table = record_error_table(prediction, sample)
+    cs = cluster_sizes_from_table(error_table)
+    E_delta = error_indicator_from_table(error_table)
+
+    N = len(prediction) * E_delta * weights
+    D = len(cs) * cs * weights
+
+    return (ratio_estimator(N, D), std_dev(N, D))
+
+
+def cluster_recall_design_estimate(prediction, sample, weights):
+    """
+    Cluster recall design estimator.
+
+    Given a predicted disambiguation `prediction`, a set of ground truth clusters `sample`, and a set of cluster sampling weights `weights` (e.g., inverse probability weights for each cluster), this returns a cluster recall estimate together with its estimated standard deviation.
+
+    Args:
+        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string "uniform" for uniform sampling weights, or "cluster_size" for inverse cluster size sampling weights.
+
+    Returns:
+        tuple: Cluster recall estimate and standard deviation estimate.
+
+    Examples:
+        >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
+        >>> sample = pd.Series(index=[1,2,3,4,5], data=["c1", "c1", "c1", "c2", "c2"])
+        >>> weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights
+        >>> cluster_recall_design_estimate(prediction, sample, weights)
+        (0, nan)
+    """
+    prediction, sample, weights = _prepare_args(prediction, sample, weights)
+
+    error_table = record_error_table(prediction, sample)
+    E_delta = error_indicator_from_table(error_table)
+
+    N = E_delta * weights
+    D = weights
+
+    return (ratio_estimator(N, D), std_dev(N, D))
+
+
+def b_cubed_precision_design_estimate(prediction, sample, weights):
+    """
+    B-cubed precision design estimator.
+
+    Given a predicted disambiguation `prediction`, a set of ground truth clusters `sample`, and a set of cluster sampling weights `weights` (e.g., inverse probability weights for each cluster), this returns a B-cubed precision estimate together with its estimated standard deviation.
+
+    Args:
+        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string "uniform" for uniform sampling weights, or "cluster_size" for inverse cluster size sampling weights.
+
+    Returns:
+        tuple: B-cubed precision estimate and standard deviation estimate.
+
+    Examples:
+        >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
+        >>> sample = pd.Series(index=[1,2,3,4,5], data=["c1", "c1", "c1", "c2", "c2"])
+        >>> weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights
+        >>> b_cubed_precision_design_estimate(prediction, sample, weights)
+        (0.7916666666666667, 0.0416666666666673)
+    """
+    prediction, sample, weights = _prepare_args(prediction, sample, weights)
+
+    error_table = record_error_table(prediction, sample)
+    E_extra_rel = expected_relative_extra_links_from_table(error_table)
+
+    N = (1 - E_extra_rel) * weights
+    D = weights
+
+    return (ratio_estimator(N, D), std_dev(N, D))
+
+
+def b_cubed_recall_design_estimate(prediction, sample, weights):
+    """
+    B-cubed recall design estimator.
+
+    Given a predicted disambiguation `prediction`, a set of ground truth clusters `sample`, and a set of cluster sampling weights `weights` (e.g., inverse probability weights for each cluster), this returns a B-cubed recall estimate together with its estimated standard deviation.
+
+    Args:
+        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string "uniform" for uniform sampling weights, or "cluster_size" for inverse cluster size sampling weights.
+
+    Returns:
+        tuple: B-cubed recall estimate and standard deviation estimate.
+
+    Examples:
+        >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
+        >>> sample = pd.Series(index=[1,2,3,4,5], data=["c1", "c1", "c1", "c2", "c2"])
+        >>> weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights
+        >>> b_cubed_recall_design_estimate(prediction, sample, weights)
+        (0.5277777777777778, 0.027777777777778203)
+    """
+    prediction, sample, weights = _prepare_args(prediction, sample, weights)
+
+    error_table = record_error_table(prediction, sample)
+    E_miss_rel = expected_relative_missing_links_from_table(error_table)
+
+    N = (1 - E_miss_rel) * weights
+    D = weights
+
+    return (ratio_estimator(N, D), std_dev(N, D))
+
+
 def ratio_estimator(B, A):
-    r"""Ratio estimator for mean(B)/mean(A) with bias adjustment."""
+    """Ratio estimator for mean(B)/mean(A) with bias adjustment."""
     assert len(A) == len(B)
 
     A_mean = np.mean(A)
@@ -282,7 +457,7 @@ def ratio_estimator(B, A):
 
 
 def std_dev(B, A):
-    r"""Standard deviation estimate for ratio estimator."""
+    """Standard deviation estimate for ratio estimator."""
     assert len(A) == len(B)
 
     A_mean = np.mean(A)

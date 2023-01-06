@@ -16,7 +16,11 @@ Contents
    expected_relative_extra_links
    expected_relative_missing_links
    splitting_entropy
-
+   expected_extra_links_from_table
+   expected_missing_links_from_table
+   expected_relative_extra_links_from_table
+   expected_relative_missing_links_from_table
+   expected_size_difference_from_table
 
 Documentation
 -------------

@@ -332,69 +332,58 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.error_analysis.splitting_entropy" title="er_evaluation.error_analysis.splitting_entropy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">splitting_entropy</span></code></a></p></td>
 <td><p>Splitting entropy of true clusters.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#er_evaluation.error_analysis.expected_extra_links_from_table" title="er_evaluation.error_analysis.expected_extra_links_from_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expected_extra_links_from_table</span></code></a></p></td>
+<td><p>Compute expected extra links from record error table.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.error_analysis.expected_missing_links_from_table" title="er_evaluation.error_analysis.expected_missing_links_from_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expected_missing_links_from_table</span></code></a></p></td>
+<td><p>Compute expected missing links from record error table.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#er_evaluation.error_analysis.expected_relative_extra_links_from_table" title="er_evaluation.error_analysis.expected_relative_extra_links_from_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expected_relative_extra_links_from_table</span></code></a></p></td>
+<td><p>Compute expected relative extra links from record error table.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#er_evaluation.error_analysis.expected_relative_missing_links_from_table" title="er_evaluation.error_analysis.expected_relative_missing_links_from_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expected_relative_missing_links_from_table</span></code></a></p></td>
+<td><p>Compute expected relative missing links from record error table.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#er_evaluation.error_analysis.expected_size_difference_from_table" title="er_evaluation.error_analysis.expected_size_difference_from_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expected_size_difference_from_table</span></code></a></p></td>
+<td><p>Compute expected size difference from record error table.</p></td>
+</tr>
 </tbody>
 </table>
 </section>
 <section id="module-er_evaluation.error_analysis">
 <span id="documentation"></span><h2>Documentation<a class="headerlink" href="#module-er_evaluation.error_analysis" title="Permalink to this heading">#</a></h2>
-<section id="error-analysis-analyze-errors-based-on-ground-truth-clusters">
-<h3>Error Analysis: Analyze Errors Based on Ground Truth Clusters<a class="headerlink" href="#error-analysis-analyze-errors-based-on-ground-truth-clusters" title="Permalink to this heading">#</a></h3>
-<p>The <strong>error_analysis</strong> submodule provides a set of tools to analyze errors, given a set of ground truth clusters. These ground truth clusters may correspond to a benchmark dataset which is <em>complete</em> (all of the entities within it are fully resolved and have no missing links), or to a probability sample of ground truth clusters. For more information on the underlying methodology, please refer to [XX].</p>
-<p>The key assumptions used for this module are:
-1. A <em>predicted</em> clustering is available as a membership vector (named  <cite>prediction</cite> throughout).
-2. A set of ground truth clusters is available as a membership vector (named <cite>sample</cite> throughout).</p>
-<p>Given these two elements, error metrics are associated to each true entity (corresponding to a cluster in <cite>sample</cite>). The corresponding error space can then be analyzed to identify systematic errors, identify performance disparities, and investigate root causes.</p>
-<p><strong>Toy Example</strong></p>
-<p>For example, consider the following set of ground truth clusters and predicted clusters of records <span class="math notranslate nohighlight">\(1,2,\dots, 8\)</span>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                    ┌───────┐  ┌─────┐  ┌───┐
-                    │ 1   2 │  │  4  │  │ 6 │  ┌───┐
-     True clusters: │       │  │     │  │   │  │ 8 │
-                    │   3   │  │  5  │  │ 7 │  └───┘
-                    └───────┘  └─────┘  └───┘   c4
-                        c1        c2      c3
-
-                    ┌───────┐  ┌─────┐  ┌──────────┐
-                    │ 1   2 │  │  4  │  │ 6        │
-Predicted clusters: ├───────┴──┴─────┤  │        8 │
-                    │   3         5  │  │ 7        │
-                    └────────────────┘  └──────────┘
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.error_analysis.cluster_sizes_from_table">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">cluster_sizes_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis/record_error.html#cluster_sizes_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.cluster_sizes_from_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute cluster sizes from record error table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>error_table</strong> (<em>DataFrame</em>) – Record error table.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Cluster sizes for each reference cluster.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Series</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">error_table</span> <span class="o">=</span> <span class="n">record_error_table</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cluster_sizes_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">)</span>
+<span class="go">reference</span>
+<span class="go">c1    3.0</span>
+<span class="go">c2    2.0</span>
+<span class="go">c3    2.0</span>
+<span class="go">Name: ref_cluster_size, dtype: float64</span>
 </pre></div>
 </div>
-<p>Assume that the ground truth clusters <cite>c1</cite>, <cite>c2</cite>, and <cite>c4</cite> are available in a benchmark dataset <cite>sample</cite>. Then, we have:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c4&quot;</span><span class="p">])</span>
-</pre></div>
-</div>
-<p>The following error metrics, namely the splitting entropy, expected number of extraneous links, and expected number of missing links, are used to quantify errors associated with each ground truth cluster. Refer to the API documentation for full definitions:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">er_evaluation.error_analysis</span> <span class="kn">import</span> <span class="p">(</span><span class="n">splitting_entropy</span><span class="p">,</span> <span class="n">expected_extra_links</span><span class="p">,</span> <span class="n">expected_missing_links</span><span class="p">)</span>
+</dd></dl>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">expected_extra_links</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
-<span class="go">sample</span>
-<span class="go">c1    0.333333</span>
-<span class="go">c2    0.500000</span>
-<span class="go">c4    2.000000</span>
-<span class="go">Name: expected_extra_links, dtype: float64</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">expected_missing_links</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
-<span class="go">sample</span>
-<span class="go">c1    1.333333</span>
-<span class="go">c2    1.000000</span>
-<span class="go">c4    0.000000</span>
-<span class="go">Name: expected_missing_links, dtype: float64</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">splitting_entropy</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
-<span class="go">sample</span>
-<span class="go">c1    1.889882</span>
-<span class="go">c2    2.000000</span>
-<span class="go">c4    1.000000</span>
-<span class="go">Name: splitting_entropy_1, dtype: float64</span>
-</pre></div>
-</div>
-</section>
 <dl class="py function">
 <dt class="sig sig-object py" id="er_evaluation.error_analysis.count_extra_links">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">count_extra_links</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis.html#count_extra_links"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.count_extra_links" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">count_extra_links</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis/cluster_error.html#count_extra_links"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.count_extra_links" title="Permalink to this definition">#</a></dt>
 <dd><p>Count the number of extraneous links to sampled clusters.</p>
 <p>Given a predicted disambiguation <cite>prediction</cite> and a sample of true clusters <cite>sample</cite>, both represented as membership vectors, this functions returns the count of extraneous links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the counts of extraneous links.</p>
 <dl class="simple">
@@ -430,7 +419,7 @@ Predicted clusters: ├───────┴──┴─────┤  │ 
 
 <dl class="py function">
 <dt class="sig sig-object py" id="er_evaluation.error_analysis.count_missing_links">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">count_missing_links</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis.html#count_missing_links"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.count_missing_links" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">count_missing_links</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis/cluster_error.html#count_missing_links"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.count_missing_links" title="Permalink to this definition">#</a></dt>
 <dd><p>Count the number of missing links to sampled clusters.</p>
 <p>Given a predicted disambiguation <cite>prediction</cite> and a sample of true clusters <cite>sample</cite>, both represented as membership vectors, this functions returns the count of missing links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the counts of missing links.</p>
 <dl class="simple">
@@ -466,7 +455,7 @@ Predicted clusters: ├───────┴──┴─────┤  │ 
 
 <dl class="py function">
 <dt class="sig sig-object py" id="er_evaluation.error_analysis.error_indicator">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">error_indicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis.html#error_indicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.error_indicator" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">error_indicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis/cluster_error.html#error_indicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.error_indicator" title="Permalink to this definition">#</a></dt>
 <dd><p>Error indicator metric.</p>
 <p>Given a predicted disambiguation <cite>prediction</cite> and a sample of true clusters <cite>sample</cite>, both represented as membership vectors, this functions returns an indicator whether each true cluster matches a predicted cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to 0 or 1, depending on whether or not the true cluster matches a predicted cluster.</p>
 <dl class="field-list simple">
@@ -497,8 +486,37 @@ Predicted clusters: ├───────┴──┴─────┤  │ 
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.error_analysis.error_indicator_from_table">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">error_indicator_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis/record_error.html#error_indicator_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.error_indicator_from_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute error indicator from record error table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>error_table</strong> (<em>DataFrame</em>) – Record error table.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Error indicator for each reference cluster.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Series</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">error_table</span> <span class="o">=</span> <span class="n">record_error_table</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">error_indicator_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">)</span>
+<span class="go">reference</span>
+<span class="go">c1    0.0</span>
+<span class="go">c2    0.0</span>
+<span class="go">c3    0.0</span>
+<span class="go">Name: error_indicator, dtype: float64</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="er_evaluation.error_analysis.expected_extra_links">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">expected_extra_links</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis.html#expected_extra_links"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.expected_extra_links" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">expected_extra_links</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis/cluster_error.html#expected_extra_links"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.expected_extra_links" title="Permalink to this definition">#</a></dt>
 <dd><p>Expected number of extraneous links to records in sampled clusters.</p>
 <p>Given a predicted disambiguation <cite>prediction</cite> and a sample of true clusters <cite>sample</cite>, both represented as membership vectors, this functions returns the expected number of extraneous links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of extraneous links.</p>
 <dl class="simple">
@@ -533,8 +551,37 @@ Predicted clusters: ├───────┴──┴─────┤  │ 
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.error_analysis.expected_extra_links_from_table">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">expected_extra_links_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis/record_error.html#expected_extra_links_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.expected_extra_links_from_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute expected extra links from record error table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>error_table</strong> (<em>DataFrame</em>) – Record error table.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Expected extra links for each reference cluster.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Series</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">error_table</span> <span class="o">=</span> <span class="n">record_error_table</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expected_extra_links_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">)</span>
+<span class="go">reference</span>
+<span class="go">c1    0.333333</span>
+<span class="go">c2    0.500000</span>
+<span class="go">c3    1.000000</span>
+<span class="go">Name: expected_extra_links, dtype: float64</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="er_evaluation.error_analysis.expected_missing_links">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">expected_missing_links</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis.html#expected_missing_links"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.expected_missing_links" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">expected_missing_links</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis/cluster_error.html#expected_missing_links"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.expected_missing_links" title="Permalink to this definition">#</a></dt>
 <dd><p>Expected number of missing links to records in sampled clusters.</p>
 <p>Given a predicted disambiguation <cite>prediction</cite> and a sample of true clusters <cite>sample</cite>, both represented as membership vectors, this functions returns the expected relative number of missing links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of missing links.</p>
 <dl class="simple">
@@ -569,8 +616,37 @@ Predicted clusters: ├───────┴──┴─────┤  │ 
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.error_analysis.expected_missing_links_from_table">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">expected_missing_links_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis/record_error.html#expected_missing_links_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.expected_missing_links_from_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute expected missing links from record error table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>error_table</strong> (<em>DataFrame</em>) – Record error table.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Expected missing links for each reference cluster.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Series</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">error_table</span> <span class="o">=</span> <span class="n">record_error_table</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expected_missing_links_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">)</span>
+<span class="go">reference</span>
+<span class="go">c1    1.333333</span>
+<span class="go">c2    1.000000</span>
+<span class="go">c3    0.000000</span>
+<span class="go">Name: expected_missing_links, dtype: float64</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="er_evaluation.error_analysis.expected_relative_extra_links">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">expected_relative_extra_links</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis.html#expected_relative_extra_links"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.expected_relative_extra_links" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">expected_relative_extra_links</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis/cluster_error.html#expected_relative_extra_links"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.expected_relative_extra_links" title="Permalink to this definition">#</a></dt>
 <dd><p>Expected relative number of extraneous links to records in sampled clusters.</p>
 <p>Given a predicted disambiguation <cite>prediction</cite> and a sample of true clusters <cite>sample</cite>, both represented as membership vectors, this functions returns the expected number of relative extraneous links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of relative extraneous links.</p>
 <dl class="simple">
@@ -605,8 +681,37 @@ Predicted clusters: ├───────┴──┴─────┤  │ 
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.error_analysis.expected_relative_extra_links_from_table">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">expected_relative_extra_links_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis/record_error.html#expected_relative_extra_links_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.expected_relative_extra_links_from_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute expected relative extra links from record error table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>error_table</strong> (<em>DataFrame</em>) – Record error table.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Expected relative extra links for each reference cluster.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Series</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">error_table</span> <span class="o">=</span> <span class="n">record_error_table</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expected_relative_extra_links_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">)</span>
+<span class="go">reference</span>
+<span class="go">c1    0.166667</span>
+<span class="go">c2    0.250000</span>
+<span class="go">c3    0.333333</span>
+<span class="go">Name: expected_relative_extra_links, dtype: float64</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="er_evaluation.error_analysis.expected_relative_missing_links">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">expected_relative_missing_links</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis.html#expected_relative_missing_links"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.expected_relative_missing_links" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">expected_relative_missing_links</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis/cluster_error.html#expected_relative_missing_links"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.expected_relative_missing_links" title="Permalink to this definition">#</a></dt>
 <dd><p>Expected relative number of missing links to records in sampled clusters.</p>
 <p>Given a predicted disambiguation <cite>prediction</cite> and a sample of true clusters <cite>sample</cite>, both represented as membership vectors, this functions returns the expected number of missing links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected relative number of missing links.</p>
 <dl class="simple">
@@ -641,8 +746,131 @@ Predicted clusters: ├───────┴──┴─────┤  │ 
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.error_analysis.expected_relative_missing_links_from_table">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">expected_relative_missing_links_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis/record_error.html#expected_relative_missing_links_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.expected_relative_missing_links_from_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute expected relative missing links from record error table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>error_table</strong> (<em>DataFrame</em>) – Record error table.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Expected relative missing links for each reference cluster.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Series</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">error_table</span> <span class="o">=</span> <span class="n">record_error_table</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expected_relative_missing_links_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">)</span>
+<span class="go">reference</span>
+<span class="go">c1    0.444444</span>
+<span class="go">c2    0.500000</span>
+<span class="go">c3    0.000000</span>
+<span class="go">Name: expected_relative_missing_links, dtype: float64</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.error_analysis.expected_size_difference_from_table">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">expected_size_difference_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis/record_error.html#expected_size_difference_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.expected_size_difference_from_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute expected size difference from record error table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>error_table</strong> (<em>DataFrame</em>) – Record error table.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Expected size difference for each reference cluster.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Series</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">error_table</span> <span class="o">=</span> <span class="n">record_error_table</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">expected_size_difference_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">)</span>
+<span class="go">reference</span>
+<span class="go">c1   -1.0</span>
+<span class="go">c2   -0.5</span>
+<span class="go">c3    1.0</span>
+<span class="go">Name: expected_size_diff, dtype: float64</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.error_analysis.pred_cluster_sizes_from_table">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">pred_cluster_sizes_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_table</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis/record_error.html#pred_cluster_sizes_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.pred_cluster_sizes_from_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute predicted cluster sizes from record error table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>error_table</strong> (<em>DataFrame</em>) – Record error table.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Predicted cluster sizes for each reference cluster.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Series</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">error_table</span> <span class="o">=</span> <span class="n">record_error_table</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pred_cluster_sizes_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">)</span>
+<span class="go">reference</span>
+<span class="go">c1    2.0</span>
+<span class="go">c2    1.5</span>
+<span class="go">c3    3.0</span>
+<span class="go">Name: pred_cluster_size, dtype: float64</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="er_evaluation.error_analysis.record_error_table">
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">record_error_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis/record_error.html#record_error_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.record_error_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute record error table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<em>Series</em>) – Membership vector representation of a clustering.</p></li>
+<li><p><strong>sample</strong> (<em>Series</em>) – Membership vector representation of a clustering.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Record error table.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">,</span> <span class="s2">&quot;c3&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record_error_table</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>  
+<span class="go">            prediction  reference       pred_cluster_size       ref_cluster_size        extra_links         missing_links</span>
+<span class="go">index</span>
+<span class="go">1           1           c1              2                       3.0                     0.0             1.0</span>
+<span class="go">2           1           c1              2                       3.0                     0.0                 1.0</span>
+<span class="go">3           2           c1              2                       3.0                     1.0                 2.0</span>
+<span class="go">4           3           c2              1                       2.0                     0.0                 1.0</span>
+<span class="go">5           2           c2              2                       2.0                     1.0                 1.0</span>
+<span class="go">6           4           c3              3                       2.0                     1.0                 0.0</span>
+<span class="go">7           4           c3              3                       2.0                     1.0                 0.0</span>
+<span class="go">8           4           NaN             3                       NaN                     NaN                 NaN</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="er_evaluation.error_analysis.splitting_entropy">
-<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">splitting_entropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis.html#splitting_entropy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.splitting_entropy" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">er_evaluation.error_analysis.</span></span><span class="sig-name descname"><span class="pre">splitting_entropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/er_evaluation/error_analysis/cluster_error.html#splitting_entropy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#er_evaluation.error_analysis.splitting_entropy" title="Permalink to this definition">#</a></dt>
 <dd><p>Splitting entropy of true clusters.</p>
 <p>This function returns the splitting entropy, defined below, of each entity represented in the sampled clusters <cite>sample</cite>.</p>
 <dl>
@@ -730,8 +958,12 @@ Predicted clusters: ├───────┴──┴─────┤  │ 
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#error-analysis-analyze-errors-based-on-ground-truth-clusters">
-     Error Analysis: Analyze Errors Based on Ground Truth Clusters
+    <a class="reference internal nav-link" href="#er_evaluation.error_analysis.cluster_sizes_from_table">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       cluster_sizes_from_table()
+      </span>
+     </code>
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -762,10 +994,28 @@ Predicted clusters: ├───────┴──┴─────┤  │ 
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.error_analysis.error_indicator_from_table">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       error_indicator_from_table()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#er_evaluation.error_analysis.expected_extra_links">
      <code class="docutils literal notranslate">
       <span class="pre">
        expected_extra_links()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.error_analysis.expected_extra_links_from_table">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       expected_extra_links_from_table()
       </span>
      </code>
     </a>
@@ -780,6 +1030,15 @@ Predicted clusters: ├───────┴──┴─────┤  │ 
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.error_analysis.expected_missing_links_from_table">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       expected_missing_links_from_table()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#er_evaluation.error_analysis.expected_relative_extra_links">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -789,10 +1048,55 @@ Predicted clusters: ├───────┴──┴─────┤  │ 
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.error_analysis.expected_relative_extra_links_from_table">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       expected_relative_extra_links_from_table()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#er_evaluation.error_analysis.expected_relative_missing_links">
      <code class="docutils literal notranslate">
       <span class="pre">
        expected_relative_missing_links()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.error_analysis.expected_relative_missing_links_from_table">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       expected_relative_missing_links_from_table()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.error_analysis.expected_size_difference_from_table">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       expected_size_difference_from_table()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.error_analysis.pred_cluster_sizes_from_table">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       pred_cluster_sizes_from_table()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#er_evaluation.error_analysis.record_error_table">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       record_error_table()
       </span>
      </code>
     </a>

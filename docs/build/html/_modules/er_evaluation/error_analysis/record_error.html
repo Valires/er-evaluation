@@ -1,0 +1,704 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>er_evaluation.error_analysis.record_error &#8212; ER-Evaluation  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_lesson.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/minipres.js"></script>
+    <script src="../../../_static/tabs.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/er_evaluation/error_analysis/record_error';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../index.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+    <p class="title logo__title">ER-Evaluation  documentation</p>
+  
+</a>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../readme.html">
+                        README
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../er_evaluation.html">
+                        API Doc
+                      </a>
+                    </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+        </div>
+      
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/OlivierBinette/er-evaluation" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+    </div>
+  
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../readme.html">
+                        README
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../er_evaluation.html">
+                        API Doc
+                      </a>
+                    </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/OlivierBinette/er-evaluation" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+  
+  <div id="rtd-footer-container"></div>
+
+      </div>
+      <main id="main-content" class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+            </div>
+            
+            
+            <article class="bd-article" role="main">
+              
+  <h1>Source code for er_evaluation.error_analysis.record_error</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">===========================</span>
+<span class="sd">Analyse record-level errors</span>
+<span class="sd">===========================</span>
+
+<span class="sd">The **error_analysis.record_error** submodule provides a set of tools to analyze errors expressed at the record level.</span>
+
+<span class="sd">For each record, it is assumed that we know the following quantities:</span>
+
+<span class="sd">1. **pred_cluster_size**: The size of the predicted cluster which contains the record.</span>
+<span class="sd">2. **ref_cluster_size**: The size of the true cluster which contains the record.</span>
+<span class="sd">3. **extra_links**: The number of elements in the predicted cluster which are not in the true cluster.</span>
+<span class="sd">4. **missing_links**: The number of elements in the true cluster which are not in the predicted cluster.</span>
+
+<span class="sd">These four quantities, together with the record index, the predicted cluster ID, and the true cluster ID, are stored in what is called the **record error table**. The record error table can be computed using the :func:`record_error_table` function, given a sample of ground truth clusters and a prediction.</span>
+
+<span class="sd">From the record error table, the same error metrics as in the :mod:`error_analysis.cluster_error` module can be computed. The functions :func:`expected_size_difference_from_table`, :func:`expected_extra_links_from_table`, :func:`expected_missing_links_from_table`, :func:`expected_relative_extra_links_from_table`, :func:`expected_relative_missing_links_from_table`, and :func:`error_indicator_from_table` compute the same metrics as in the :mod:`error_analysis.cluster_error` module, but from the record error table instead of from the prediction and the sample.</span>
+
+<span class="sd">The key advantage of working with the record error table is that it allows sensitivity analyses to be performed. Since all cluster error metrics and representative performance estimators can be computed directly from the record error table, uncertainty regarding error rates can be propagated from the record error table into cluster error metrics and into performance estimates.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">comb</span>
+
+<span class="kn">from</span> <span class="nn">er_evaluation.utils</span> <span class="kn">import</span> <span class="n">relevant_prediction_subset</span>
+<span class="kn">from</span> <span class="nn">er_evaluation.data_structures</span> <span class="kn">import</span> <span class="n">membership_to_clusters</span>
+
+
+<div class="viewcode-block" id="record_error_table"><a class="viewcode-back" href="../../../er_evaluation.error_analysis.html#er_evaluation.error_analysis.record_error_table">[docs]</a><span class="k">def</span> <span class="nf">record_error_table</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute record error table.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prediction (Series): Membership vector representation of a clustering.</span>
+<span class="sd">        sample (Series): Membership vector representation of a clustering.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: Record error table.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5,6,7], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; record_error_table(prediction, sample)  # doctest: +SKIP</span>
+<span class="sd">                    prediction	reference	pred_cluster_size	ref_cluster_size	extra_links	    missing_links</span>
+<span class="sd">        index</span>
+<span class="sd">        1	    1	        c1	        2	                3.0	                0.0             1.0</span>
+<span class="sd">        2	    1	        c1	        2	                3.0	                0.0	            1.0</span>
+<span class="sd">        3	    2	        c1	        2	                3.0	                1.0	            2.0</span>
+<span class="sd">        4	    3	        c2	        1	                2.0	                0.0	            1.0</span>
+<span class="sd">        5	    2	        c2	        2	                2.0	                1.0	            1.0</span>
+<span class="sd">        6	    4	        c3	        3	                2.0	                1.0	            0.0</span>
+<span class="sd">        7	    4	        c3	        3	                2.0	                1.0	            0.0</span>
+<span class="sd">        8	    4	        NaN	        3	                NaN	                NaN	            NaN</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">sample</span><span class="p">[</span><span class="n">sample</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">prediction</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">relevant_prediction_subset</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+
+    <span class="n">pred_cluster_size</span> <span class="o">=</span> <span class="n">prediction</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+    <span class="n">pred_cluster_size</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;prediction&quot;</span>
+    <span class="n">pred_cluster_size</span> <span class="o">=</span> <span class="n">pred_cluster_size</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;pred_cluster_size&quot;</span><span class="p">)</span>
+
+    <span class="n">ref_cluster_size</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+    <span class="n">ref_cluster_size</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;reference&quot;</span>
+    <span class="n">ref_cluster_size</span> <span class="o">=</span> <span class="n">ref_cluster_size</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;ref_cluster_size&quot;</span><span class="p">)</span>
+
+    <span class="n">prediction</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;index&quot;</span>
+    <span class="n">sample</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;index&quot;</span>
+    <span class="n">error_table</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">prediction</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;reference&quot;</span><span class="p">),</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">pred_cluster_size</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">ref_cluster_size</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;reference&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">error_table</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">pred_clusters</span> <span class="o">=</span> <span class="n">membership_to_clusters</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span>
+    <span class="n">ref_clusters</span> <span class="o">=</span> <span class="n">membership_to_clusters</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">A_r</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">reference</span><span class="p">):</span>
+            <span class="n">A_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">A_r</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">setdiff1d</span><span class="p">(</span>
+                    <span class="n">pred_clusters</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">prediction</span><span class="p">],</span> <span class="n">ref_clusters</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">reference</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">A_r</span>
+
+    <span class="k">def</span> <span class="nf">B_r</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">reference</span><span class="p">):</span>
+            <span class="n">A_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">A_r</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">setdiff1d</span><span class="p">(</span>
+                    <span class="n">ref_clusters</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">reference</span><span class="p">],</span> <span class="n">pred_clusters</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">prediction</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">A_r</span>
+
+    <span class="n">error_table</span><span class="p">[</span><span class="s2">&quot;extra_links&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">A_r</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">error_table</span><span class="p">[</span><span class="s2">&quot;missing_links&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">B_r</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">error_table</span></div>
+
+
+<div class="viewcode-block" id="expected_size_difference_from_table"><a class="viewcode-back" href="../../../er_evaluation.error_analysis.html#er_evaluation.error_analysis.expected_size_difference_from_table">[docs]</a><span class="k">def</span> <span class="nf">expected_size_difference_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute expected size difference from record error table.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        error_table (DataFrame): Record error table.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Series: Expected size difference for each reference cluster.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5,6,7], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; error_table = record_error_table(prediction, sample)</span>
+<span class="sd">        &gt;&gt;&gt; expected_size_difference_from_table(error_table)</span>
+<span class="sd">        reference</span>
+<span class="sd">        c1   -1.0</span>
+<span class="sd">        c2   -0.5</span>
+<span class="sd">        c3    1.0</span>
+<span class="sd">        Name: expected_size_diff, dtype: float64</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">error_table</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">error_table</span><span class="p">[</span><span class="s2">&quot;expected_size_diff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">error_table</span><span class="p">[</span><span class="s2">&quot;pred_cluster_size&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">error_table</span><span class="p">[</span><span class="s2">&quot;ref_cluster_size&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;reference&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;expected_size_diff&quot;</span><span class="p">:</span> <span class="s2">&quot;mean&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;expected_size_diff&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="expected_extra_links_from_table"><a class="viewcode-back" href="../../../er_evaluation.error_analysis.html#er_evaluation.error_analysis.expected_extra_links_from_table">[docs]</a><span class="k">def</span> <span class="nf">expected_extra_links_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute expected extra links from record error table.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        error_table (DataFrame): Record error table.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Series: Expected extra links for each reference cluster.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5,6,7], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; error_table = record_error_table(prediction, sample)</span>
+<span class="sd">        &gt;&gt;&gt; expected_extra_links_from_table(error_table)</span>
+<span class="sd">        reference</span>
+<span class="sd">        c1    0.333333</span>
+<span class="sd">        c2    0.500000</span>
+<span class="sd">        c3    1.000000</span>
+<span class="sd">        Name: expected_extra_links, dtype: float64</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">error_table</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;reference&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;extra_links&quot;</span><span class="p">:</span> <span class="s2">&quot;mean&quot;</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;extra_links&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;expected_extra_links&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="expected_missing_links_from_table"><a class="viewcode-back" href="../../../er_evaluation.error_analysis.html#er_evaluation.error_analysis.expected_missing_links_from_table">[docs]</a><span class="k">def</span> <span class="nf">expected_missing_links_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute expected missing links from record error table.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        error_table (DataFrame): Record error table.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Series: Expected missing links for each reference cluster.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5,6,7], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; error_table = record_error_table(prediction, sample)</span>
+<span class="sd">        &gt;&gt;&gt; expected_missing_links_from_table(error_table)</span>
+<span class="sd">        reference</span>
+<span class="sd">        c1    1.333333</span>
+<span class="sd">        c2    1.000000</span>
+<span class="sd">        c3    0.000000</span>
+<span class="sd">        Name: expected_missing_links, dtype: float64</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">error_table</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;reference&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;missing_links&quot;</span><span class="p">:</span> <span class="s2">&quot;mean&quot;</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;missing_links&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;expected_missing_links&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="expected_relative_extra_links_from_table"><a class="viewcode-back" href="../../../er_evaluation.error_analysis.html#er_evaluation.error_analysis.expected_relative_extra_links_from_table">[docs]</a><span class="k">def</span> <span class="nf">expected_relative_extra_links_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute expected relative extra links from record error table.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        error_table (DataFrame): Record error table.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Series: Expected relative extra links for each reference cluster.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5,6,7], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; error_table = record_error_table(prediction, sample)</span>
+<span class="sd">        &gt;&gt;&gt; expected_relative_extra_links_from_table(error_table)</span>
+<span class="sd">        reference</span>
+<span class="sd">        c1    0.166667</span>
+<span class="sd">        c2    0.250000</span>
+<span class="sd">        c3    0.333333</span>
+<span class="sd">        Name: expected_relative_extra_links, dtype: float64</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">error_table</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">error_table</span><span class="p">[</span><span class="s2">&quot;expected_relative_extra_links&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">error_table</span><span class="p">[</span><span class="s2">&quot;extra_links&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">error_table</span><span class="p">[</span><span class="s2">&quot;pred_cluster_size&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;reference&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;expected_relative_extra_links&quot;</span><span class="p">:</span> <span class="s2">&quot;mean&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;expected_relative_extra_links&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="expected_relative_missing_links_from_table"><a class="viewcode-back" href="../../../er_evaluation.error_analysis.html#er_evaluation.error_analysis.expected_relative_missing_links_from_table">[docs]</a><span class="k">def</span> <span class="nf">expected_relative_missing_links_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute expected relative missing links from record error table.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        error_table (DataFrame): Record error table.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Series: Expected relative missing links for each reference cluster.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5,6,7], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; error_table = record_error_table(prediction, sample)</span>
+<span class="sd">        &gt;&gt;&gt; expected_relative_missing_links_from_table(error_table)</span>
+<span class="sd">        reference</span>
+<span class="sd">        c1    0.444444</span>
+<span class="sd">        c2    0.500000</span>
+<span class="sd">        c3    0.000000</span>
+<span class="sd">        Name: expected_relative_missing_links, dtype: float64</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">error_table</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">error_table</span><span class="p">[</span><span class="s2">&quot;expected_relative_missing_links&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">error_table</span><span class="p">[</span><span class="s2">&quot;missing_links&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">error_table</span><span class="p">[</span><span class="s2">&quot;ref_cluster_size&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;reference&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;expected_relative_missing_links&quot;</span><span class="p">:</span> <span class="s2">&quot;mean&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;expected_relative_missing_links&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="error_indicator_from_table"><a class="viewcode-back" href="../../../er_evaluation.error_analysis.html#er_evaluation.error_analysis.error_indicator_from_table">[docs]</a><span class="k">def</span> <span class="nf">error_indicator_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute error indicator from record error table.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        error_table (DataFrame): Record error table.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Series: Error indicator for each reference cluster.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5,6,7], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; error_table = record_error_table(prediction, sample)</span>
+<span class="sd">        &gt;&gt;&gt; error_indicator_from_table(error_table)</span>
+<span class="sd">        reference</span>
+<span class="sd">        c1    0.0</span>
+<span class="sd">        c2    0.0</span>
+<span class="sd">        c3    0.0</span>
+<span class="sd">        Name: error_indicator, dtype: float64</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">error_table</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">error_table</span><span class="p">[</span><span class="s2">&quot;error_indicator&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">error_table</span><span class="p">[</span><span class="s2">&quot;extra_links&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span>
+        <span class="n">error_table</span><span class="p">[</span><span class="s2">&quot;missing_links&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;reference&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;error_indicator&quot;</span><span class="p">:</span> <span class="s2">&quot;mean&quot;</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;error_indicator&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="cluster_sizes_from_table"><a class="viewcode-back" href="../../../er_evaluation.error_analysis.html#er_evaluation.error_analysis.cluster_sizes_from_table">[docs]</a><span class="k">def</span> <span class="nf">cluster_sizes_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute cluster sizes from record error table.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        error_table (DataFrame): Record error table.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Series: Cluster sizes for each reference cluster.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5,6,7], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; error_table = record_error_table(prediction, sample)</span>
+<span class="sd">        &gt;&gt;&gt; cluster_sizes_from_table(error_table)</span>
+<span class="sd">        reference</span>
+<span class="sd">        c1    3.0</span>
+<span class="sd">        c2    2.0</span>
+<span class="sd">        c3    2.0</span>
+<span class="sd">        Name: ref_cluster_size, dtype: float64</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">error_table</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;reference&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;ref_cluster_size&quot;</span><span class="p">:</span> <span class="s2">&quot;mean&quot;</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;ref_cluster_size&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="pred_cluster_sizes_from_table"><a class="viewcode-back" href="../../../er_evaluation.error_analysis.html#er_evaluation.error_analysis.pred_cluster_sizes_from_table">[docs]</a><span class="k">def</span> <span class="nf">pred_cluster_sizes_from_table</span><span class="p">(</span><span class="n">error_table</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute predicted cluster sizes from record error table.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        error_table (DataFrame): Record error table.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Series: Predicted cluster sizes for each reference cluster.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])</span>
+<span class="sd">        &gt;&gt;&gt; sample = pd.Series(index=[1,2,3,4,5,6,7], data=[&quot;c1&quot;, &quot;c1&quot;, &quot;c1&quot;, &quot;c2&quot;, &quot;c2&quot;, &quot;c3&quot;, &quot;c3&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; error_table = record_error_table(prediction, sample)</span>
+<span class="sd">        &gt;&gt;&gt; pred_cluster_sizes_from_table(error_table)</span>
+<span class="sd">        reference</span>
+<span class="sd">        c1    2.0</span>
+<span class="sd">        c2    1.5</span>
+<span class="sd">        c3    3.0</span>
+<span class="sd">        Name: pred_cluster_size, dtype: float64</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">error_table</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">error_table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;reference&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;pred_cluster_size&quot;</span><span class="p">:</span> <span class="s2">&quot;mean&quot;</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;pred_cluster_size&quot;</span><span class="p">]</span></div>
+</pre></div>
+
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+
+  <footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022, Olivier Binette.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+
+  </div>
+  
+</div>
+  </footer>
+  </body>
+</html>
