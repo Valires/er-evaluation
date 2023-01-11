@@ -10,3 +10,5 @@ twine
 
 pytest
 black
+
+pydata-sphinx-theme
