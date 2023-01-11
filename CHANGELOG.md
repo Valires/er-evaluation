@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0 (January 10, 2022):
+
+- Added additional error metrics, performance evaluation metrics, and performance estimators.
+- Added record-level error metrics and error analysis tools.
+
 ## 1.0.2 (December 5, 2022):
 
 - Update setup.py with find_packages()

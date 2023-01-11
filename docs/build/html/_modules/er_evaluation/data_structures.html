@@ -370,7 +370,7 @@
 
 
 <div class="viewcode-block" id="isgraph"><a class="viewcode-back" href="../../er_evaluation.data_structures.html#er_evaluation.data_structures.isgraph">[docs]</a><span class="k">def</span> <span class="nf">isgraph</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if given object is an iGraph :py:class:`Graph`.</span>
 
 <span class="sd">    Graph:</span>
@@ -393,7 +393,7 @@
 
 
 <div class="viewcode-block" id="ismembership"><a class="viewcode-back" href="../../er_evaluation.data_structures.html#er_evaluation.data_structures.ismembership">[docs]</a><span class="k">def</span> <span class="nf">ismembership</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if given object is a membership vector.</span>
 
 <span class="sd">    Membership vector:</span>
@@ -432,7 +432,7 @@
 
 
 <div class="viewcode-block" id="isclusters"><a class="viewcode-back" href="../../er_evaluation.data_structures.html#er_evaluation.data_structures.isclusters">[docs]</a><span class="k">def</span> <span class="nf">isclusters</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if given object is a clusters dictionary.</span>
 
 <span class="sd">    Clusters dictionary:</span>
@@ -473,7 +473,7 @@
 
 
 <div class="viewcode-block" id="ispairs"><a class="viewcode-back" href="../../er_evaluation.data_structures.html#er_evaluation.data_structures.ispairs">[docs]</a><span class="k">def</span> <span class="nf">ispairs</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if given object is a pairs list.</span>
 
 <span class="sd">    A pairwise links list is an array of pairwise links between elements of the clustering, where each element of a cluster is linked to every other element of the same cluster. Note that clusters are unnamed in pairwise links lists. Example::</span>
@@ -505,7 +505,7 @@
 
 
 <div class="viewcode-block" id="membership_to_clusters"><a class="viewcode-back" href="../../er_evaluation.data_structures.html#er_evaluation.data_structures.membership_to_clusters">[docs]</a><span class="k">def</span> <span class="nf">membership_to_clusters</span><span class="p">(</span><span class="n">membership</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transform membership vector into clusters dictionary.</span>
 
 <span class="sd">    Args:</span>
@@ -527,7 +527,7 @@
 
 
 <div class="viewcode-block" id="membership_to_pairs"><a class="viewcode-back" href="../../er_evaluation.data_structures.html#er_evaluation.data_structures.membership_to_pairs">[docs]</a><span class="k">def</span> <span class="nf">membership_to_pairs</span><span class="p">(</span><span class="n">membership</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transform membership vector into pairs list.</span>
 
 <span class="sd">    Args:</span>
@@ -552,7 +552,7 @@
 
 
 <div class="viewcode-block" id="membership_to_graph"><a class="viewcode-back" href="../../er_evaluation.data_structures.html#er_evaluation.data_structures.membership_to_graph">[docs]</a><span class="k">def</span> <span class="nf">membership_to_graph</span><span class="p">(</span><span class="n">membership</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transform membership vector into Graph.</span>
 
 <span class="sd">    Args:</span>
@@ -577,7 +577,7 @@
 
 
 <div class="viewcode-block" id="clusters_to_pairs"><a class="viewcode-back" href="../../er_evaluation.data_structures.html#er_evaluation.data_structures.clusters_to_pairs">[docs]</a><span class="k">def</span> <span class="nf">clusters_to_pairs</span><span class="p">(</span><span class="n">clusters</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transform clusters dictionary into pairs list.</span>
 
 <span class="sd">    Args:</span>
@@ -599,7 +599,7 @@
     <span class="k">assert</span> <span class="n">isclusters</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">single_cluster_to_pairs</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        References:</span>
 <span class="sd">            - Carlos Gameiro (2021) Fast pairwise combinations in NumPy.</span>
 <span class="sd">                Accessed online on November 1, 2022.</span>
@@ -612,7 +612,7 @@
 
 
 <div class="viewcode-block" id="clusters_to_membership"><a class="viewcode-back" href="../../er_evaluation.data_structures.html#er_evaluation.data_structures.clusters_to_membership">[docs]</a><span class="k">def</span> <span class="nf">clusters_to_membership</span><span class="p">(</span><span class="n">clusters</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transform clusters dictionary into membership vector.</span>
 
 <span class="sd">    Args:</span>
@@ -643,7 +643,7 @@
 
 
 <div class="viewcode-block" id="clusters_to_graph"><a class="viewcode-back" href="../../er_evaluation.data_structures.html#er_evaluation.data_structures.clusters_to_graph">[docs]</a><span class="k">def</span> <span class="nf">clusters_to_graph</span><span class="p">(</span><span class="n">clusters</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transform clusters dictionary into Graph.</span>
 
 <span class="sd">    Args:</span>
@@ -665,7 +665,7 @@
 
 
 <div class="viewcode-block" id="pairs_to_membership"><a class="viewcode-back" href="../../er_evaluation.data_structures.html#er_evaluation.data_structures.pairs_to_membership">[docs]</a><span class="k">def</span> <span class="nf">pairs_to_membership</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Transform pairs list into membership vector.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Transform pairs list into membership vector.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        pairs (ndarray): array of paired elements.</span>
@@ -696,7 +696,7 @@
 
 
 <div class="viewcode-block" id="pairs_to_clusters"><a class="viewcode-back" href="../../er_evaluation.data_structures.html#er_evaluation.data_structures.pairs_to_clusters">[docs]</a><span class="k">def</span> <span class="nf">pairs_to_clusters</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Transform pairs list into clusters dictionary.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Transform pairs list into clusters dictionary.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        pairs (ndarray): array of paired elements.</span>
@@ -709,7 +709,7 @@
 
 
 <div class="viewcode-block" id="pairs_to_graph"><a class="viewcode-back" href="../../er_evaluation.data_structures.html#er_evaluation.data_structures.pairs_to_graph">[docs]</a><span class="k">def</span> <span class="nf">pairs_to_graph</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transform pairs list into Graph.</span>
 
 <span class="sd">    Args:</span>
@@ -739,7 +739,7 @@
 
 
 <div class="viewcode-block" id="graph_to_membership"><a class="viewcode-back" href="../../er_evaluation.data_structures.html#er_evaluation.data_structures.graph_to_membership">[docs]</a><span class="k">def</span> <span class="nf">graph_to_membership</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transform Graph into membership vector.</span>
 
 <span class="sd">    Args:</span>
@@ -772,7 +772,7 @@
 
 
 <div class="viewcode-block" id="graph_to_clusters"><a class="viewcode-back" href="../../er_evaluation.data_structures.html#er_evaluation.data_structures.graph_to_clusters">[docs]</a><span class="k">def</span> <span class="nf">graph_to_clusters</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transform Graph into clusters dictionary.</span>
 
 <span class="sd">    Args:</span>
@@ -797,7 +797,7 @@
 
 
 <div class="viewcode-block" id="graph_to_pairs"><a class="viewcode-back" href="../../er_evaluation.data_structures.html#er_evaluation.data_structures.graph_to_pairs">[docs]</a><span class="k">def</span> <span class="nf">graph_to_pairs</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transform Graph into pairs list.</span>
 
 <span class="sd">    Args:</span>
