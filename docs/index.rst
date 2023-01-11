@@ -1,5 +1,5 @@
 Welcome to ER-Evaluation's documentation!
-======================================
+=========================================
 
 .. toctree::
    :maxdepth: 2

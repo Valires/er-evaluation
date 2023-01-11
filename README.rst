@@ -9,8 +9,8 @@ ER-Evaluation
 .. image:: https://img.shields.io/travis/OlivierBinette/er_evaluation.svg
         :target: https://travis-ci.com/OlivierBinette/er_evaluation
 
-.. image:: https://readthedocs.org/projects/er-evaluation/badge/?version=latest
-        :target: https://er-evaluation.readthedocs.io/en/latest/?version=latest
+.. image:: https://readthedocs.org/projects/er-evaluation/badge/?version=refactor
+        :target: https://er-evaluation.readthedocs.io/en/latest/?version=refactor
         :alt: Documentation Status
 
 
@@ -19,8 +19,7 @@ ER-Evaluation
      :alt: Updates
 
 
-
- An End-to-End Evaluation Framework for Entity Resolution Systems.
+An End-to-End Evaluation Framework for Entity Resolution Systems.
 
 
 * Free software: GNU General Public License v3
