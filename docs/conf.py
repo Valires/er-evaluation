@@ -99,7 +99,10 @@ html_theme_options = {
     #    ],
     # Add light/dark mode and documentation version switcher:
     "navbar_end": ["navbar-icon-links"],
-    "logo": None
+    "logo": {
+      "image_light": "",
+      "image_dark": "",
+   }
 }
 
 html_last_updated_fmt = "%b %d, %Y"
