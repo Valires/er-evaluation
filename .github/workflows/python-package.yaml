@@ -24,4 +24,5 @@ jobs:
       - name: Doctest modules
         run: |
           pip install -r requirements_dev.txt
+          pip install .
           pytest --doctest-modules
