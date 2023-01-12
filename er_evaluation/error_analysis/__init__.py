@@ -92,7 +92,6 @@ from er_evaluation.error_analysis._cluster_error import (
     expected_missing_links,
     expected_relative_extra_links,
     expected_relative_missing_links,
-    expected_size_difference,
     splitting_entropy,
 )
 from er_evaluation.error_analysis._record_error import (
@@ -115,7 +114,6 @@ __all__ = [
     "expected_missing_links",
     "expected_relative_extra_links",
     "expected_relative_missing_links",
-    "expected_size_difference",
     "splitting_entropy",
     "cluster_sizes_from_table",
     "error_indicator_from_table",
