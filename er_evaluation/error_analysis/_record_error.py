@@ -107,7 +107,7 @@ def expected_size_difference_from_table(error_table):
 
         >>> from er_evaluation.error_analysis import expected_size_difference
         >>> expected_size_difference(prediction, sample)
-        reference
+        sample
         c1   -1.0
         c2   -0.5
         c3    1.0
@@ -147,7 +147,7 @@ def expected_extra_links_from_table(error_table):
 
         >>> from er_evaluation.error_analysis import expected_extra_links
         >>> expected_extra_links(prediction, sample)
-        reference
+        sample
         c1    0.333333
         c2    0.500000
         c3    1.000000
@@ -185,7 +185,7 @@ def expected_missing_links_from_table(error_table):
 
         >>> from er_evaluation.error_analysis import expected_missing_links
         >>> expected_missing_links(prediction, sample)
-        reference
+        sample
         c1    1.333333
         c2    1.000000
         c3    0.000000
@@ -223,7 +223,7 @@ def expected_relative_extra_links_from_table(error_table):
 
         >>> from er_evaluation.error_analysis import expected_relative_extra_links
         >>> expected_relative_extra_links(prediction, sample)
-        reference
+        sample
         c1    0.166667
         c2    0.250000
         c3    0.333333
@@ -262,7 +262,7 @@ def expected_relative_missing_links_from_table(error_table):
 
         >>> from er_evaluation.error_analysis import expected_relative_missing_links
         >>> expected_relative_missing_links(prediction, sample)
-        reference
+        sample
         c1    0.444444
         c2    0.500000
         c3    0.000000
@@ -302,7 +302,7 @@ def error_indicator_from_table(error_table):
 
         >>> from er_evaluation.error_analysis import error_indicator
         >>> error_indicator(prediction, sample)
-        reference
+        sample
         c1    0.0
         c2    0.0
         c3    0.0
