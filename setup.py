@@ -45,4 +45,12 @@ setup(
     url="https://github.com/OlivierBinette/er_evaluation",
     version="1.2.0",
     zip_safe=False,
+    install_requires=[
+            "pandas",
+            "numpy",
+            "scipy",
+            "plotly",
+            "igraph",
+            "scikit-learn",
+        ],
 )
