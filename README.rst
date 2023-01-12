@@ -5,8 +5,8 @@
 .. image:: https://badge.fury.io/py/er-evaluation.svg
         :target: https://badge.fury.io/py/er-evaluation
 
-.. image:: https://readthedocs.org/projects/er-evaluation/badge/?version=refactor
-        :target: https://er-evaluation.readthedocs.io/en/latest/?version=refactor
+.. image:: https://readthedocs.org/projects/er-evaluation/badge/?version=latest
+        :target: https://er-evaluation.readthedocs.io/en/latest/?version=latest
         :alt: Documentation Status
 
 
