@@ -17,6 +17,16 @@
         "ideas",
         "doc"
       ]
+    },
+    {
+      "login": "ybaek",
+      "name": "Youngsoo Baek",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44536898?v=4",
+      "profile": "https://github.com/ybaek",
+      "contributions": [
+        "research",
+        "ideas"
+      ]
     }
   ],
   "projectName": "er-evaluation",
