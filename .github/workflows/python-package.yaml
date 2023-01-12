@@ -21,3 +21,7 @@ jobs:
       - name: Run tox
         # Run tox using the version of Python in `PATH`
         run: tox -e py
+      - name: Doctest modules
+        run: |
+          pip install -r requirements_dev.txt
+          pytest --doctest-modules
