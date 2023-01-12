@@ -3,7 +3,7 @@ Changelog
 =========
 
 1.2.0 (January 11, 2022)
-------------------
+------------------------
 
 - Refactoring and documentation overhaul.
 

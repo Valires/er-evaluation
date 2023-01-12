@@ -2,12 +2,9 @@
 Credits
 =======
 
-Development Lead
-----------------
-
-* Olivier Binette <olivier.binette@gmail.com>
-
-Contributors
+Project Lead
 ------------
 
-None yet. Why not be the first?
+* Olivier Binette (http://github.com/OlivierBinette)
+
+.. mdinclude:: CONTRIBUTORS.md
