@@ -17,3 +17,4 @@ ipykernel
 
 pydata-sphinx-theme
 sphinx_automodapi
+sphinx_design
