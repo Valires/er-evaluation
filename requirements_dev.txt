@@ -1,3 +1,10 @@
+pandas
+numpy
+scipy
+plotly
+igraph
+scikit-learn
+
 pip
 bump2version
 wheel
