@@ -38,7 +38,7 @@ setup(
     long_description=readme + "\n\n" + history,
     include_package_data=True,
     keywords="er_evaluation",
-    name="er_evaluation",
+    name="ER-Evaluation",
     packages=find_packages(include=["er_evaluation", "er_evaluation.*"]),
     test_suite="tests",
     tests_require=test_requirements,
