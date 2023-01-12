@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
+from er_evaluation.data_structures import MembershipVector
 from er_evaluation.summary import cluster_hill_number, cluster_sizes_distribution
 
 
@@ -45,6 +46,8 @@ def plot_cluster_sizes_distribution(membership, groupby=None, name=None, normali
     Returns:
         Figure: Cluster size distribution plot.
     """
+    membership = MembershipVector(membership)
+    
     if groupby is not None:
         assert isinstance(groupby, pd.Series)
         assert groupby.index.equals(membership.index)
@@ -96,6 +99,7 @@ def plot_entropy_curve(membership, q_range=None, groupby=None, name=None):
     Returns:
         Figure: Hill number entropy curve.
     """
+    membership = MembershipVector(membership)
 
     if q_range is None:
         q_range = np.linspace(0, 2)

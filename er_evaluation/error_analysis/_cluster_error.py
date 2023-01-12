@@ -3,6 +3,7 @@ import pandas as pd
 from scipy.special import comb
 
 from er_evaluation.utils import relevant_prediction_subset
+from er_evaluation.data_structures import MembershipVector
 
 
 def count_extra_links(prediction, sample):
@@ -35,6 +36,9 @@ def count_extra_links(prediction, sample):
         c4    2
         Name: count_extra_links, dtype: int64
     """
+    prediction = MembershipVector(prediction)
+    sample = MembershipVector(sample)
+    
     relevant_predictions = relevant_prediction_subset(prediction, sample)
 
     outer = pd.concat(
@@ -95,6 +99,9 @@ def expected_extra_links(prediction, sample):
         c4    2.000000
         Name: expected_extra_links, dtype: float64
     """
+    prediction = MembershipVector(prediction)
+    sample = MembershipVector(sample)
+
     result = count_extra_links(prediction, sample)
     sizes = sample.groupby(sample).size()
 
@@ -136,6 +143,9 @@ def expected_relative_extra_links(prediction, sample):
         c4    0.666667
         Name: expected_relative_extra_links, dtype: float64
     """
+    prediction = MembershipVector(prediction)
+    sample = MembershipVector(sample)
+
     relevant_predictions = relevant_prediction_subset(prediction, sample)
 
     outer = pd.concat(
@@ -198,6 +208,9 @@ def count_missing_links(prediction, sample):
         c4    0
         Name: count_missing_links, dtype: int64
     """
+    prediction = MembershipVector(prediction)
+    sample = MembershipVector(sample)
+
     relevant_predictions = relevant_prediction_subset(prediction, sample)
 
     outer = pd.concat(
@@ -253,6 +266,9 @@ def expected_missing_links(prediction, sample):
         c4    0.000000
         Name: expected_missing_links, dtype: float64
     """
+    prediction = MembershipVector(prediction)
+    sample = MembershipVector(sample)
+
     result = count_missing_links(prediction, sample)
     sizes = sample.groupby(sample).size()
 
@@ -292,6 +308,9 @@ def expected_relative_missing_links(prediction, sample):
         c4    0.000000
         Name: expected_relative_missing_links, dtype: float64
     """
+    prediction = MembershipVector(prediction)
+    sample = MembershipVector(sample)
+
     result = count_missing_links(prediction, sample)
     sizes = sample.groupby(sample).size()
 
@@ -325,6 +344,9 @@ def error_indicator(prediction, sample):
         Name: error_indicator, dtype: int64
 
     """
+    prediction = MembershipVector(prediction)
+    sample = MembershipVector(sample)
+
     relevant_predictions = relevant_prediction_subset(prediction, sample)
 
     outer = pd.concat(
@@ -379,6 +401,9 @@ def splitting_entropy(prediction, sample, alpha=1):
         c4    1.000000
         Name: splitting_entropy_1, dtype: float64
     """
+    prediction = MembershipVector(prediction)
+    sample = MembershipVector(sample)
+
     relevant_predictions = relevant_prediction_subset(prediction, sample)
 
     outer = pd.concat(

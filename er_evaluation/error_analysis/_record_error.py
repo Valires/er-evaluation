@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from scipy.special import comb
 
-from er_evaluation.data_structures import membership_to_clusters
+from er_evaluation.data_structures import membership_to_clusters, MembershipVector
 from er_evaluation.utils import relevant_prediction_subset
 
 
@@ -33,6 +33,9 @@ def record_error_table(prediction, sample):
         8	    4	        NaN	        3	                NaN	                NaN	            NaN
 
     """
+    prediction = MembershipVector(prediction)
+    sample = MembershipVector(sample)
+
     sample = sample[sample.index.isin(prediction.index)]
     prediction = relevant_prediction_subset(prediction, sample)
 

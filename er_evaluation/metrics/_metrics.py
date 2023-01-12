@@ -5,7 +5,7 @@ import pandas as pd
 import sklearn.metrics as sm
 from scipy.special import comb
 
-from er_evaluation.data_structures import ismembership
+from er_evaluation.data_structures import ismembership, MembershipVector
 from er_evaluation.error_analysis import error_indicator
 from er_evaluation.summary import number_of_links
 from er_evaluation.utils import expand_grid
@@ -91,7 +91,8 @@ def pairwise_precision(prediction, reference):
         >>> pairwise_precision(prediction, reference)
         0.4
     """
-    assert ismembership(prediction) and ismembership(reference)
+    prediction = MembershipVector(prediction)
+    reference = MembershipVector(reference)
 
     inner = pd.concat(
         {"prediction": prediction, "reference": reference},
@@ -136,6 +137,9 @@ def pairwise_recall(prediction, reference):
         >>> pairwise_recall(prediction, reference)
         0.4
     """
+    prediction = MembershipVector(prediction)
+    reference = MembershipVector(reference)
+
     return pairwise_precision(reference, prediction)
 
 
@@ -166,6 +170,9 @@ def pairwise_f(prediction, reference, beta=1.0):
         >>> pairwise_f(prediction, reference)
         0.4000000000000001
     """
+    prediction = MembershipVector(prediction)
+    reference = MembershipVector(reference)
+
     P = pairwise_precision(prediction, reference)
     R = pairwise_recall(prediction, reference)
 
@@ -198,7 +205,9 @@ def cluster_precision(prediction, reference):
         >>> cluster_precision(prediction, reference)
         0.4
     """
-    assert ismembership(prediction) and ismembership(reference)
+    prediction = MembershipVector(prediction)
+    reference = MembershipVector(reference)
+    
     inner = pd.concat(
         {"prediction": prediction, "reference": reference},
         axis=1,
@@ -236,6 +245,9 @@ def cluster_recall(prediction, reference):
         >>> cluster_recall(prediction, reference)
         0.5
     """
+    prediction = MembershipVector(prediction)
+    reference = MembershipVector(reference)
+
     return cluster_precision(reference, prediction)
 
 
@@ -266,6 +278,9 @@ def cluster_f(prediction, reference, beta=1.0):
         >>> cluster_f(prediction, reference)
         0.4444444444444445
     """
+    prediction = MembershipVector(prediction)
+    reference = MembershipVector(reference)
+
     P = cluster_precision(prediction, reference)
     R = cluster_recall(prediction, reference)
 
@@ -303,7 +318,8 @@ def b_cubed_precision(prediction, reference):
         >>> b_cubed_precision(prediction, reference)
         0.6458333333333333
     """
-    assert ismembership(prediction) and ismembership(reference)
+    prediction = MembershipVector(prediction)
+    reference = MembershipVector(reference)
 
     inner = pd.concat(
         {"prediction": prediction, "reference": reference},
@@ -361,7 +377,8 @@ def b_cubed_recall(prediction, reference):
         >>> b_cubed_recall(prediction, reference)
         0.7638888888888888
     """
-    assert ismembership(prediction) and ismembership(reference)
+    prediction = MembershipVector(prediction)
+    reference = MembershipVector(reference)
 
     inner = pd.concat(
         {"prediction": prediction, "reference": reference},
@@ -415,6 +432,9 @@ def b_cubed_f(prediction, reference, beta=1.0):
         >>> b_cubed_f(prediction, reference)
         0.6999178981937603
     """
+    prediction = MembershipVector(prediction)
+    reference = MembershipVector(reference)
+
     P = b_cubed_precision(prediction, reference)
     R = b_cubed_recall(prediction, reference)
 
@@ -433,7 +453,8 @@ def wrap_sklearn_metric(sklearn_metric):
 
     @wraps(sklearn_metric)
     def func(prediction, reference, **kw):
-        assert ismembership(prediction) and ismembership(reference)
+        prediction = MembershipVector(prediction)
+        reference = MembershipVector(reference)
 
         inner = pd.concat(
             {"prediction": prediction, "reference": reference},
@@ -464,6 +485,9 @@ def cluster_homogeneity(prediction, reference):
     Notes:
         * The prediction and reference membership vectors are inner joined before this metric is computed.
     """
+    prediction = MembershipVector(prediction)
+    reference = MembershipVector(reference)
+
     return wrap_sklearn_metric(sm.homogeneity_score)(prediction, reference)
 
 
@@ -482,6 +506,9 @@ def cluster_completeness(prediction, reference):
     Notes:
         * The prediction and reference membership vectors are inner joined before this metric is computed.
     """
+    prediction = MembershipVector(prediction)
+    reference = MembershipVector(reference)
+
     return wrap_sklearn_metric(sm.completeness_score)(prediction, reference)
 
 
@@ -500,6 +527,8 @@ def cluster_v_measure(prediction, reference, beta=1.0):
     Notes:
         * The prediction and reference membership vectors are inner joined before this metric is computed.
     """
+    prediction = MembershipVector(prediction)
+    reference = MembershipVector(reference)
 
     return wrap_sklearn_metric(sm.v_measure_score)(prediction, reference, beta=beta)
 
@@ -519,6 +548,9 @@ def rand_score(prediction, reference):
     Notes:
         * The prediction and reference membership vectors are inner joined before this metric is computed.
     """
+    prediction = MembershipVector(prediction)
+    reference = MembershipVector(reference)
+
     return wrap_sklearn_metric(sm.rand_score)(prediction, reference)
 
 
@@ -537,5 +569,7 @@ def adjusted_rand_score(prediction, reference):
     Notes:
         * The prediction and reference membership vectors are inner joined before this metric is computed.
     """
+    prediction = MembershipVector(prediction)
+    reference = MembershipVector(reference)
 
     return wrap_sklearn_metric(sm.adjusted_rand_score)(prediction, reference)

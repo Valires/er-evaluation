@@ -1,6 +1,39 @@
+from igraph import Graph
+import logging
 import numpy as np
 import pandas as pd
-from igraph import Graph
+
+
+class MembershipVector(pd.Series):
+    """
+    Series wrapper to validate membership vector format and log potential issues.
+    
+    Given a Series ``membership`` representing a membership vector, you can validate it using:
+
+    .. code::
+
+        membership = MembershipVector(membership)
+    
+    This casts its type to the MembershipVector subclass. If ``membership`` is already of the MembershipVector subtype, this does absolutely nothing and simply returns the ``membership`` object as-is. However, if ``membership`` is a Series, then it is validated, potential issues are logged, and then the object is returned as a instance of the MembershipVector subclass.
+
+    This wrapper helps avoid duplicate validation and duplicate logging within the er_evaluation package. Externally, you may use :meth:`ismembership` to validate that a given pandas Series satisfies the requirements of a membership vector.
+    """
+    def __init__(self, data=None, **kwargs):
+        if not isinstance(data, MembershipVector):
+            super().__init__(data=data, **kwargs)
+            if ismembership(self):
+                if len(self) == 0:
+                    logging.warning("Membership vector is empty.")
+                if self.hasnans:
+                    logging.warning("Membership vector contains NA values.")
+            else:
+                logging.critical(f"Invalid membership vector: {self}")
+                raise ValueError(f"Invalid membership vector: {self}")
+
+    def __new__(cls, data=None, **kwargs):
+        if isinstance(data, MembershipVector):
+            return data
+        return super().__new__(cls)
 
 
 def isgraph(obj):
@@ -23,7 +56,10 @@ def isgraph(obj):
         >>> isgraph(g)
         True
     """
-    return isinstance(obj, Graph)
+    if isinstance(obj, Graph):
+        return True
+    else:
+        return False
 
 
 def ismembership(obj):
@@ -53,7 +89,7 @@ def ismembership(obj):
 
         >>> ismembership([1,1,2,3,2,4,4,4])
         False
-    """
+    """    
     if isinstance(obj, pd.Series):
         return all(
             [
@@ -98,12 +134,10 @@ def isclusters(obj):
     Notes:
         * This function does not verify that clusters are non-overlapping with unique non-NaN elements.
     """
-    return all(
-        [
-            isinstance(obj, dict),
-            all(isinstance(value, np.ndarray) for value in obj.values()),
-        ]
-    )
+    if isinstance(obj, dict):
+        return all(isinstance(value, np.ndarray) for value in obj.values())
+    else:
+        return False
 
 
 def ispairs(obj):
@@ -130,13 +164,14 @@ def ispairs(obj):
         >>> ispairs(obj)
         False
     """
-    if not isinstance(obj, np.ndarray):
+    if isinstance(obj, np.ndarray):
+        shape = obj.shape
+        if shape[1] == 2:
+            return True
+        else:
+            return False
+    else:
         return False
-    shape = obj.shape
-    if not len(shape) == 2:
-        return False
-    return shape[1] == 2
-
 
 def membership_to_clusters(membership):
     r"""
@@ -153,7 +188,7 @@ def membership_to_clusters(membership):
         >>> membership_to_clusters(membership)
         {1: array([1, 2]), 2: array([3, 5]), 3: array([4]), 4: array([6, 7, 8])}
     """
-    assert ismembership(membership)
+    membership = MembershipVector(membership)
 
     return {k: np.array(v) for k, v in membership.groupby(membership).groups.items()}
 
@@ -177,7 +212,7 @@ def membership_to_pairs(membership):
                [6, 8],
                [7, 8]])
     """
-    assert ismembership(membership)
+    membership = MembershipVector(membership)
 
     clusters = membership_to_clusters(membership)
     return clusters_to_pairs(clusters)
@@ -201,7 +236,7 @@ def membership_to_graph(membership):
         >>> graph = membership_to_graph(membership)
 
     """
-    assert ismembership(membership)
+    membership = MembershipVector(membership)
 
     return pairs_to_graph(membership_to_pairs(membership), membership.index.values)
 

@@ -1,17 +1,22 @@
+from er_evaluation.data_structures import MembershipVector
 import itertools
-
-import numpy as np
+import logging
 import pandas as pd
-
-from er_evaluation.data_structures import membership_to_clusters
 
 
 def relevant_prediction_subset(prediction, sample):
-    """Return predicted clusters which intersect sampled clusters"""
+    """Return predicted clusters which intersect sampled clusters."""
+    prediction = MembershipVector(prediction)
+    sample = MembershipVector(sample)
+
     I = prediction.index.isin(sample.index)
     J = prediction.isin(prediction[I].values)
 
-    return prediction[J]
+    relevant_prediction = prediction[J]
+    if len(relevant_prediction) == 0:
+        logging.warning("Relevant prediction subset is empty: predicted clusters do not overlap sample clusters.")
+
+    return relevant_prediction
 
 
 def expand_grid(**kwargs):

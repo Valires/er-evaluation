@@ -1,4 +1,4 @@
-.PHONY: clean clean-build clean-pyc clean-test coverage dist docs help install lint lint/flake8 lint/black
+.PHONY: clean clean-build clean-pyc clean-test coverage dist docs help install lint lint/flake8 lint/black black
 .DEFAULT_GOAL := help
 
 define BROWSER_PYSCRIPT
@@ -51,6 +51,8 @@ lint/flake8: ## check style with flake8
 	flake8 er_evaluation tests
 lint/black: ## check style with black
 	black --check er_evaluation tests
+black:
+	black . --line-length=120
 
 lint: lint/flake8 lint/black ## check style
 

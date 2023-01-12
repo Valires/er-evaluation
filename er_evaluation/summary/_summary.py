@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from scipy.special import comb
 
-from er_evaluation.data_structures import ismembership
+from er_evaluation.data_structures import MembershipVector
 
 
 def summary_statistics(membership, names=None):
@@ -33,6 +33,8 @@ def summary_statistics(membership, names=None):
         >>> summary_statistics(membership)
         {'number_of_clusters': 4, 'average_cluster_size': 2.0, 'matching_rate': 0.875, 'H0': 3, 'H1': 2.82842712474619, 'H2': 2.6666666666666665}
     """
+    membership = MembershipVector(membership)
+
     statistics = {
         "number_of_clusters": number_of_clusters(membership),
         "average_cluster_size": average_cluster_size(membership),
@@ -68,7 +70,7 @@ def number_of_clusters(membership):
         >>> number_of_clusters(membership)
         4
     """
-    assert ismembership(membership)
+    membership = MembershipVector(membership)
 
     return membership.nunique()
 
@@ -89,7 +91,7 @@ def number_of_links(membership):
         5.0
 
     """
-    assert ismembership(membership)
+    membership = MembershipVector(membership)
 
     return np.sum(comb(cluster_sizes(membership), 2))
 
@@ -112,7 +114,7 @@ def matching_rate(membership):
         >>> matching_rate(membership)
         0.875
     """
-    assert ismembership(membership)
+    membership = MembershipVector(membership)
 
     counts = membership.groupby(membership).count()
 
@@ -134,6 +136,8 @@ def average_cluster_size(membership):
         >>> average_cluster_size(membership)
         2.0
     """
+    membership = MembershipVector(membership)
+
     return cluster_sizes(membership).mean()
 
 
@@ -156,7 +160,7 @@ def cluster_sizes(membership):
         4    3
         dtype: int64
     """
-    assert ismembership(membership)
+    membership = MembershipVector(membership)
 
     return membership.groupby(membership).count()
 
@@ -179,7 +183,7 @@ def cluster_sizes_distribution(membership):
         3    1
         dtype: int64
     """
-    assert ismembership(membership)
+    membership = MembershipVector(membership)
 
     cs = cluster_sizes(membership)
     return cs.groupby(cs).count()
@@ -216,7 +220,7 @@ def cluster_hill_number(membership, alpha=1):
         >>> cluster_hill_number(membership, alpha=np.Inf)
         2.0
     """
-    assert ismembership(membership)
+    membership = MembershipVector(membership)
 
     cs_dist = cluster_sizes_distribution(membership)
     probs = cs_dist / np.sum(cs_dist)
@@ -252,7 +256,7 @@ def homonimy_rate(membership, names):
         >>> homonimy_rate(membership, names)
         0.5
     """
-    assert ismembership(membership)
+    membership = MembershipVector(membership)
     assert isinstance(names, pd.Series)
     assert all(membership.index.isin(names.index))
 
@@ -296,7 +300,7 @@ def name_variation_rate(membership, names):
         >>> name_variation_rate(membership, names)
         0.5
     """
-    assert ismembership(membership)
+    membership = MembershipVector(membership)
     assert isinstance(names, pd.Series)
     assert all(membership.index.isin(names.index))
 

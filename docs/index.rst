@@ -7,7 +7,7 @@ ER-Evaluation is a Python package for the evaluation of entity resolution (ER) s
 
 To get started, please refer to the :doc:`README <readme>` page and the :doc:`API documentation <er_evaluation>`.
 
-Use the project's `Discussion <https://github.com/OlivierBinette/ER-Evaluation/discussions>`_ page to ask questions and the `Issues <https://github.com/OlivierBinette/ER-Evaluation/issues>`_ page to request features and report bugs.
+Use the project's `Discussion <https://github.com/OlivierBinette/ER-Evaluation/discussions>`_ page to ask questions and the `Issues <https://github.com/OlivierBinette/ER-Evaluation/issues>`_ page to request features and submit report bugs.
 
 .. grid:: 2
 

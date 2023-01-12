@@ -95,6 +95,7 @@ from er_evaluation.data_structures._data_structures import (
     pairs_to_clusters,
     pairs_to_graph,
     pairs_to_membership,
+    MembershipVector,
 )
 
 __all__ = [
@@ -114,4 +115,5 @@ __all__ = [
     "pairs_to_clusters",
     "pairs_to_graph",
     "pairs_to_membership",
+    "MembershipVector"
 ]
