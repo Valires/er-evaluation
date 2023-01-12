@@ -1,40 +1,62 @@
-=============
-ER-Evaluation
-=============
 
+.. image:: https://github.com/OlivierBinette/er-evaluation/actions/workflows/python-package.yml/badge.svg
+        :target: https://github.com/OlivierBinette/er-evaluation/actions/workflows/python-package.yml
 
-.. image:: https://img.shields.io/pypi/v/er_evaluation.svg
-        :target: https://pypi.python.org/pypi/er_evaluation
-
-.. image:: https://img.shields.io/travis/OlivierBinette/er_evaluation.svg
-        :target: https://travis-ci.com/OlivierBinette/er_evaluation
+.. image:: https://badge.fury.io/py/er-evaluation.svg
+        :target: https://badge.fury.io/py/er-evaluation
 
 .. image:: https://readthedocs.org/projects/er-evaluation/badge/?version=refactor
         :target: https://er-evaluation.readthedocs.io/en/latest/?version=refactor
         :alt: Documentation Status
 
 
-.. image:: https://pyup.io/repos/github/OlivierBinette/er_evaluation/shield.svg
-     :target: https://pyup.io/repos/github/OlivierBinette/er_evaluation/
-     :alt: Updates
+🔍 ER-Evaluation: An End-to-End Evaluation Framework for Entity Resolution Systems
+==================================================================================
+
+**ER-Evaluation** is a Python package for the evaluation of entity resolution (ER) systems. It provides data structure definitions, summary statistics, visualizations, error analysis tools, and statistically principled performance estimators.
+
+Installation
+------------
+
+Install the released version from PyPI using:
+
+.. code:: bash
+
+    pip install er-evaluation
 
 
-An End-to-End Evaluation Framework for Entity Resolution Systems.
+Documentation
+-------------
 
+Please refer to the documentation website `olivierbinette.ca/er-evaluation <http://olivierbinette.ca/er-evaluation/build/html/index.html>`_.
+
+Acknowledgements
+----------------
+
+**ER-Evaluation** is an extension of the `PatentsView/PatentsView-Evaluation <https://github.com/PatentsView/PatentsView-Evaluation/>`_ project sponsored by the American Institutes for Research and the U.S. Patents and Trademarks Office. We aim to provide a unified source of evaluation tools for entity resolution systems which are maintained as an open source academic project.
+
+Publications
+------------
+
+- `Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230 <https://arxiv.org/abs/2210.01230>`_
+
+- Upcoming: "A Statistical Evaluation Framework for Black-Box Entity Resolution Systems With Application to Inventor Name Disambiguation"
+
+Funding
+^^^^^^^
+
+This project was made possible through support from the Natural Sciences and Engineering Research Council of Canada, Fonds de Recherche du Québec - Nature et Technologies, Duke University, the American Institutes for Research, and the U.S. Patents and Trademarks Office.
+
+Citation
+--------
+
+Please acknowledge the above publications as well as the ER-Evaluation Python package:
+
+- Binette, Olivier. (2022). ER-Evaluation: An End-to-End Evaluation Framework for Entity Resolution Systems. Available online at https://github.com/OlivierBinette/ER-Evaluation
+
+License
+-------
 
 * Free software: GNU General Public License v3
 * Documentation: https://er-evaluation.readthedocs.io.
 
-
-Features
---------
-
-* TODO
-
-Credits
--------
-
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
-
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
