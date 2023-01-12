@@ -9,6 +9,7 @@ Sphinx==5
 twine
 
 pytest
+pyhamcrest
 black
 testbook
 jupyter
