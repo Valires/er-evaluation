@@ -10,7 +10,16 @@ with open("README.rst") as readme_file:
 with open("CHANGELOG.rst") as history_file:
     history = history_file.read()
 
-requirements = []
+requirements = (
+    [
+        "pandas",
+        "numpy",
+        "scipy",
+        "plotly",
+        "igraph",
+        "scikit-learn",
+    ],
+)
 
 test_requirements = [
     "pytest>=3",
@@ -45,12 +54,4 @@ setup(
     url="https://github.com/OlivierBinette/er_evaluation",
     version="1.2.0",
     zip_safe=False,
-    install_requires=[
-            "pandas",
-            "numpy",
-            "scipy",
-            "plotly",
-            "igraph",
-            "scikit-learn",
-        ],
 )
