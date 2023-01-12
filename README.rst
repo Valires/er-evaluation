@@ -59,4 +59,3 @@ License
 
 * Free software: GNU General Public License v3
 * Documentation: https://er-evaluation.readthedocs.io.
-
