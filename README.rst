@@ -1,6 +1,6 @@
 
-.. image:: https://github.com/OlivierBinette/er-evaluation/actions/workflows/python-package.yml/badge.svg
-        :target: https://github.com/OlivierBinette/er-evaluation/actions/workflows/python-package.yml
+.. image:: https://github.com/OlivierBinette/er-evaluation/actions/workflows/python-package.yaml/badge.svg
+        :target: https://github.com/OlivierBinette/er-evaluation/actions/workflows/python-package.yaml
 
 .. image:: https://badge.fury.io/py/er-evaluation.svg
         :target: https://badge.fury.io/py/er-evaluation
