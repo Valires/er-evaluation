@@ -10,6 +10,9 @@ twine
 
 pytest
 black
+testbook
+jupyter
+ipykernel
 
 pydata-sphinx-theme
 sphinx_automodapi
