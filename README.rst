@@ -28,7 +28,7 @@ Install the released version from PyPI using:
 Documentation
 -------------
 
-Please refer to the documentation website `olivierbinette.ca/er-evaluation <http://olivierbinette.ca/er-evaluation/build/html/index.html>`_.
+Please refer to the documentation website `er-evaluation.readthedocs.io <https://er-evaluation.readthedocs.io/en/latest>`_.
 
 Acknowledgements
 ----------------
