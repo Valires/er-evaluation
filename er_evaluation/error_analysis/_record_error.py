@@ -99,7 +99,7 @@ def expected_size_difference_from_table(error_table):
         c1   -1.0
         c2   -0.5
         c3    1.0
-        Name: expected_size_diff, dtype: float64s
+        Name: expected_size_diff, dtype: float64
     """
     error_table = error_table.copy()
     error_table["expected_size_diff"] = error_table["pred_cluster_size"] - error_table["ref_cluster_size"]
@@ -297,7 +297,7 @@ def error_indicator_from_table(error_table):
         Name: error_indicator, dtype: int64
     """
     error_table = error_table.copy()
-    error_table["error_indicator"] = 1 - (error_table["extra_links"] == 0) & (error_table["missing_links"] == 0)
+    error_table["error_indicator"] = int(1 - (error_table["extra_links"] == 0) & (error_table["missing_links"] == 0))
     result = error_table.groupby("reference").agg({"error_indicator": "first"})
     return result["error_indicator"]
 
