@@ -53,4 +53,4 @@ def load_rldata10000(data_only=False, memberships_only=False, sample_prop=0.2, r
         return data, prediction, reference, sample
 
 
-# TODO: Add PatentsView inventor mentions dataset which intersects Binette's 2022 inventors benchmark
+# TODO: Add PatentsView inventor mentions dataset for all blocks that intersects Binette's 2022 inventors benchmark
