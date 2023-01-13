@@ -31,19 +31,26 @@ def _load_rldata(filename, sample_prop=0.2, sample_type="uniform", random_state=
     return rldata, prediction, reference, sample
 
 
-def load_rldata500(data_only=False, sample_prop=0.2, random_state=1):
+def load_rldata500(data_only=False, memberships_only=False, sample_prop=0.2, random_state=1):
     data, prediction, reference, sample = _load_rldata("RLdata500.tsv", sample_prop=sample_prop, random_state=random_state)
     
     if data_only:
         return data
+    if memberships_only:
+        return prediction, reference, sample
     else:
         return data, prediction, reference, sample
 
 
-def load_rldata10000(data_only=False, sample_prop=0.2, random_state=1):
+def load_rldata10000(data_only=False, memberships_only=False, sample_prop=0.2, random_state=1):
     data, prediction, reference, sample = _load_rldata("RLdata10000.tsv", sample_prop=sample_prop, random_state=random_state)
     
     if data_only:
         return data
+    if memberships_only:
+        return prediction, reference, sample
     else:
         return data, prediction, reference, sample
+
+
+# TODO: Add PatentsView inventor mentions dataset which intersects Binette's 2022 inventors benchmark
