@@ -2,8 +2,43 @@ import numpy as np
 import pandas as pd
 from scipy.special import comb
 
-from er_evaluation.utils import relevant_prediction_subset
 from er_evaluation.data_structures import MembershipVector
+from er_evaluation.error_analysis._record_error import expected_size_difference_from_table, record_error_table, error_metrics_from_table
+from er_evaluation.utils import relevant_prediction_subset
+
+
+def error_metrics(prediction, sample):
+    """
+    Compute canonical set of error metrics from record error table.
+
+    Error metrics included:
+
+    * Expected extra links (see :meth:`er_evaluation.error_analysis.expected_extra_links`)
+    * Expected relative extra links (see :meth:`er_evaluation.error_analysis.expected_relative_extra_links`)
+    * Expected missing links (see :meth:`er_evaluation.error_analysis.expected_missing_links`)
+    * Expected relative missing links (see :meth:`er_evaluation.error_analysis.expected_relative_missing_links`)
+    * Error indicator (see :meth:`er_evaluation.error_analysis.error_indicator`)
+
+    Args:
+        prediction (Series): Membership vector representing a predicted disambiguation.
+        sample (Series): Membership vector representing a set of true clusters.
+
+    Returns:
+        DataFrame: Dataframe indexed by cluster identifiers and with values corresponding to error metrics.
+
+    Examples
+        >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
+        >>> sample = pd.Series(index=[1,2,3,4,5,6,7, 8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c3"])
+        >>> error_metrics(prediction, sample)  # doctest: +SKIP
+        expected_extra_links	expected_relative_extra_links	expected_missing_links	expected_relative_missing_links	error_indicator
+        reference
+        c1	0.333333	0.166667	1.333333	0.444444	1
+        c2	0.500000	0.250000	1.000000	0.500000	1
+        c3	1.000000	0.333333	0.000000	0.000000	0
+    """
+    error_table = record_error_table(prediction, sample)
+    return error_metrics_from_table(error_table)
+
 
 
 def count_extra_links(prediction, sample):
@@ -65,6 +100,39 @@ def count_extra_links(prediction, sample):
     result.rename("count_extra_links", inplace=True)
 
     return result
+
+
+def expected_size_difference(prediction, sample):
+    r"""
+    Expected size difference between predicted and sampled clusters.
+
+    Expected Size Difference:
+     For a given sampled cluster :math:`c` with records :math:`r \in c`, let :math:`\hat c(r)` be the predicted cluster containing :math:`r`. Then the expected size difference for :math:`c` is
+
+     .. math::
+
+        E_{\text{size}}(c)  = \frac{1}{\lvert c \rvert}\sum_{r\in c} \lvert \hat c(r) \rvert - \lvert c \rvert.
+
+    Args:
+        prediction (Series): Membership vector representing a predicted disambiguation.
+        sample (Series): Membership vector representing a set of true clusters.
+
+    Returns:
+        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the expected size difference.
+
+    Examples:
+        >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
+        >>> sample = pd.Series(index=[1,2,3,4,5,6,7], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3"])
+        >>> expected_size_difference(prediction, sample)
+        reference
+        c1   -1.0
+        c2   -0.5
+        c3    1.0
+        Name: expected_size_diff, dtype: float64
+    """
+    error_table = record_error_table(prediction, sample)
+
+    return expected_size_difference_from_table(error_table)
 
 
 def expected_extra_links(prediction, sample):

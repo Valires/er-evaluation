@@ -80,6 +80,7 @@ Contents
     graph_to_pairs()
 """
 from er_evaluation.data_structures._data_structures import (
+    MembershipVector,
     clusters_to_graph,
     clusters_to_membership,
     clusters_to_pairs,
@@ -96,7 +97,6 @@ from er_evaluation.data_structures._data_structures import (
     pairs_to_clusters,
     pairs_to_graph,
     pairs_to_membership,
-    MembershipVector,
 )
 
 __all__ = [

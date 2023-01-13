@@ -1,7 +1,8 @@
-from igraph import Graph
 import logging
+
 import numpy as np
 import pandas as pd
+from igraph import Graph
 
 
 class MembershipVector(pd.Series):

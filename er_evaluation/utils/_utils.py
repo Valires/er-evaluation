@@ -1,7 +1,9 @@
-from er_evaluation.data_structures import MembershipVector
 import itertools
 import logging
+
 import pandas as pd
+
+from er_evaluation.data_structures import MembershipVector
 
 
 def relevant_prediction_subset(prediction, sample):

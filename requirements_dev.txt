@@ -17,10 +17,12 @@ twine
 
 pytest
 pyhamcrest
-black
 testbook
 jupyter
 ipykernel
+
+black
+isort
 
 pydata-sphinx-theme
 sphinx_automodapi

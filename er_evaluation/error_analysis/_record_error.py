@@ -2,8 +2,49 @@ import numpy as np
 import pandas as pd
 from scipy.special import comb
 
-from er_evaluation.data_structures import membership_to_clusters, MembershipVector
+from er_evaluation.data_structures import MembershipVector, membership_to_clusters
 from er_evaluation.utils import relevant_prediction_subset
+
+
+def error_metrics_from_table(error_table):
+    """
+    Compute canonical set of error metrics from record error table.
+
+    Error metrics included:
+
+    * Expected extra links (see :meth:`er_evaluation.error_analysis.expected_extra_links`)
+    * Expected relative extra links (see :meth:`er_evaluation.error_analysis.expected_relative_extra_links`)
+    * Expected missing links (see :meth:`er_evaluation.error_analysis.expected_missing_links`)
+    * Expected relative missing links (see :meth:`er_evaluation.error_analysis.expected_relative_missing_links`)
+    * Error indicator (see :meth:`er_evaluation.error_analysis.error_indicator`)
+
+    Args:
+        error_table (DataFrame): Record error table. See :meth:`er_evaluation.error_analysis.record_error_table`.
+
+    Returns:
+        DataFrame: Dataframe indexed by cluster identifiers and with values corresponding to error metrics.
+
+    Examples
+        >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
+        >>> sample = pd.Series(index=[1,2,3,4,5,6,7, 8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c3"])
+        >>> error_table = record_error_table(prediction, sample)
+        >>> error_metrics_from_table(prediction, sample)  # doctest: +SKIP
+        expected_extra_links	expected_relative_extra_links	expected_missing_links	expected_relative_missing_links	error_indicator
+        reference
+        c1	0.333333	0.166667	1.333333	0.444444	1
+        c2	0.500000	0.250000	1.000000	0.500000	1
+        c3	1.000000	0.333333	0.000000	0.000000	0
+    """
+    return pd.concat(
+        [
+            expected_extra_links_from_table(error_table),
+            expected_relative_extra_links_from_table(error_table),
+            expected_missing_links_from_table(error_table),
+            expected_relative_missing_links_from_table(error_table),
+            error_indicator_from_table(error_table),
+        ],
+        axis=1,
+    )
 
 
 def record_error_table(prediction, sample):
@@ -31,7 +72,6 @@ def record_error_table(prediction, sample):
         6	    4	        c3	        3	                2.0	                1.0	            0.0
         7	    4	        c3	        3	                2.0	                1.0	            0.0
         8	    4	        NaN	        3	                NaN	                NaN	            NaN
-
     """
     prediction = MembershipVector(prediction)
     sample = MembershipVector(sample)
@@ -84,6 +124,8 @@ def expected_size_difference_from_table(error_table):
     """
     Compute expected size difference from record error table.
 
+    See :meth:`er_evaluation.error_analysis.expected_size_difference`.
+
     Args:
         error_table (DataFrame): Record error table.
 
@@ -95,6 +137,15 @@ def expected_size_difference_from_table(error_table):
         >>> sample = pd.Series(index=[1,2,3,4,5,6,7], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3"])
         >>> error_table = record_error_table(prediction, sample)
         >>> expected_size_difference_from_table(error_table)
+        reference
+        c1   -1.0
+        c2   -0.5
+        c3    1.0
+        Name: expected_size_diff, dtype: float64
+
+        The result is the same as calling :meth:`er_evaluation.error_analysis.expected_size_difference` on prediction and sample:
+
+        >>> expected_size_difference_from_table(prediction, sample)
         reference
         c1   -1.0
         c2   -0.5
@@ -277,13 +328,13 @@ def error_indicator_from_table(error_table):
 
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
-        >>> sample = pd.Series(index=[1,2,3,4,5,6,7], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3"])
+        >>> sample = pd.Series(index=[1,2,3,4,5,6,7, 8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c3"])
         >>> error_table = record_error_table(prediction, sample)
         >>> error_indicator_from_table(error_table)
         reference
         c1    1
         c2    1
-        c3    1
+        c3    0
         Name: error_indicator, dtype: int64
 
         The result is the same as calling :meth:`er_evaluation.error_analysis.error_indicator` directly on ``prediction`` and ``sample``:
@@ -293,13 +344,12 @@ def error_indicator_from_table(error_table):
         sample
         c1    1
         c2    1
-        c3    1
+        c3    0
         Name: error_indicator, dtype: int64
     """
     error_table = error_table.copy()
-    error_table["error_indicator"] = (
-        1 - (error_table["extra_links"] == 0) & (error_table["missing_links"] == 0)
-    ).astype(int)
+    error_table["error_indicator"] = (error_table["extra_links"] != 0) | (error_table["missing_links"] != 0)
+    error_table["error_indicator"] = error_table["error_indicator"].astype(int)
     result = error_table.groupby("reference").agg({"error_indicator": "first"})
     return result["error_indicator"]
 
