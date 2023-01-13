@@ -438,7 +438,7 @@ def b_cubed_recall_design_estimate(prediction, sample, weights):
     """
     prediction = MembershipVector(prediction)
     sample = MembershipVector(sample)
-    
+
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)

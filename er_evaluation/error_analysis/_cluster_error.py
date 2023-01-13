@@ -38,7 +38,7 @@ def count_extra_links(prediction, sample):
     """
     prediction = MembershipVector(prediction)
     sample = MembershipVector(sample)
-    
+
     relevant_predictions = relevant_prediction_subset(prediction, sample)
 
     outer = pd.concat(

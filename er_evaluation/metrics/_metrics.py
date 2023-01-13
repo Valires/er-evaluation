@@ -207,7 +207,7 @@ def cluster_precision(prediction, reference):
     """
     prediction = MembershipVector(prediction)
     reference = MembershipVector(reference)
-    
+
     inner = pd.concat(
         {"prediction": prediction, "reference": reference},
         axis=1,

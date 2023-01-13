@@ -116,5 +116,5 @@ __all__ = [
     "pairs_to_clusters",
     "pairs_to_graph",
     "pairs_to_membership",
-    "MembershipVector"
+    "MembershipVector",
 ]

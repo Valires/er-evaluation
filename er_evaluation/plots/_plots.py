@@ -47,7 +47,7 @@ def plot_cluster_sizes_distribution(membership, groupby=None, name=None, normali
         Figure: Cluster size distribution plot.
     """
     membership = MembershipVector(membership)
-    
+
     if groupby is not None:
         assert isinstance(groupby, pd.Series)
         assert groupby.index.equals(membership.index)

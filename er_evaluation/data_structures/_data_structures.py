@@ -7,13 +7,13 @@ import pandas as pd
 class MembershipVector(pd.Series):
     """
     Series wrapper to validate membership vector format and log potential issues.
-    
+
     Given a Series ``membership`` representing a membership vector, you can validate it using:
 
     .. code::
 
         membership = MembershipVector(membership)
-    
+
     This casts its type to the MembershipVector subclass. If ``membership`` is already of the MembershipVector subtype, this does absolutely nothing and simply returns the ``membership`` object as-is. However, if ``membership`` is a Series, then it is validated, potential issues are logged, and then the object is returned as a instance of the MembershipVector subclass.
 
     This wrapper helps avoid duplicate validation and duplicate logging within the er_evaluation package. Externally, you may use :meth:`ismembership` to validate that a given pandas Series satisfies the requirements of a membership vector.
@@ -23,6 +23,7 @@ class MembershipVector(pd.Series):
         >>> membership = MembershipVector(series)  # Validates the series and logs potential issues.
         >>> membership = MembershipVector(membership)  # Does nothing.
     """
+
     def __init__(self, data=None, **kwargs):
         if not isinstance(data, MembershipVector):
             super().__init__(data=data, **kwargs)
@@ -94,7 +95,7 @@ def ismembership(obj):
 
         >>> ismembership([1,1,2,3,2,4,4,4])
         False
-    """    
+    """
     if isinstance(obj, pd.Series):
         return all(
             [
@@ -178,6 +179,7 @@ def ispairs(obj):
             return False
     else:
         return False
+
 
 def membership_to_clusters(membership):
     r"""
