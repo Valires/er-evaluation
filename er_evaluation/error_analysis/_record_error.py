@@ -84,8 +84,6 @@ def expected_size_difference_from_table(error_table):
     """
     Compute expected size difference from record error table.
 
-    See :meth:`er_evaluation.error_analysis.expected_size_difference`.
-
     Args:
         error_table (DataFrame): Record error table.
 
@@ -101,19 +99,9 @@ def expected_size_difference_from_table(error_table):
         c1   -1.0
         c2   -0.5
         c3    1.0
-        Name: expected_size_diff, dtype: float64
-
-        The result is the same as calling :meth:`er_evaluation.error_analysis.expected_size_difference` directly on ``prediction`` and ``sample``:
-
-        >>> from er_evaluation.error_analysis import expected_size_difference
-        >>> expected_size_difference(prediction, sample)
-        sample
-        c1   -1.0
-        c2   -0.5
-        c3    1.0
-        Name: expected_size_diff, dtype: float64
+        Name: expected_size_diff, dtype: float64s
     """
-    error_table = error_table.copy()
+    error_table = error_table.copy()s
     error_table["expected_size_diff"] = error_table["pred_cluster_size"] - error_table["ref_cluster_size"]
     result = error_table.groupby("reference").agg({"expected_size_diff": "mean"})
 
@@ -293,24 +281,24 @@ def error_indicator_from_table(error_table):
         >>> error_table = record_error_table(prediction, sample)
         >>> error_indicator_from_table(error_table)
         reference
-        c1    0.0
-        c2    0.0
-        c3    0.0
-        Name: error_indicator, dtype: float64
+        c1    1
+        c2    1
+        c3    1
+        Name: error_indicator, dtype: int64
 
         The result is the same as calling :meth:`er_evaluation.error_analysis.error_indicator` directly on ``prediction`` and ``sample``:
 
         >>> from er_evaluation.error_analysis import error_indicator
         >>> error_indicator(prediction, sample)
         sample
-        c1    0.0
-        c2    0.0
-        c3    0.0
-        Name: error_indicator, dtype: float64
+        c1    1
+        c2    1
+        c3    1
+        Name: error_indicator, dtype: int64
     """
     error_table = error_table.copy()
-    error_table["error_indicator"] = (error_table["extra_links"] == 0) & (error_table["missing_links"] == 0)
-    result = error_table.groupby("reference").agg({"error_indicator": "mean"})
+    error_table["error_indicator"] = 1 - (error_table["extra_links"] == 0) & (error_table["missing_links"] == 0)
+    result = error_table.groupby("reference").agg({"error_indicator": "first"})
     return result["error_indicator"]
 
 

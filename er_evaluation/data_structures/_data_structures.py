@@ -132,6 +132,7 @@ def isclusters(obj):
 
         ⚠️ Warning: Clustering validity is not checked.
 
+        >>> import pandas as pd
         >>> obj = {'c1': array([pd.NA]), 'c2': array([pd.NA])}
         >>> isclusters(obj)
         True
@@ -189,6 +190,7 @@ def membership_to_clusters(membership):
         Cluters dictionary.
 
     Examples:
+        >>> import pandas as pd
         >>> membership = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> membership_to_clusters(membership)
         {1: array([1, 2]), 2: array([3, 5]), 3: array([4]), 4: array([6, 7, 8])}

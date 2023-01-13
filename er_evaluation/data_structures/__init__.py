@@ -23,6 +23,7 @@ We use the following data structures to represent clusterings:
 Membership vector
     A membership vector is a pandas :py:class:`Series` indexed by the elements of :math:`E` and with values corresponding to cluster identifiers. That is, the memebership vector maps elements to clusters. Example::
 
+        >>> import pandas as pd
         >>> pd.Series(["c1", "c1", "c1", "c2", "c2", "c3"], index=[0,1,2,3,4,5])
         0    c1
         1    c1
