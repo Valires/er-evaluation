@@ -62,5 +62,4 @@ Please acknowledge the above publications as well as the ER-Evaluation Python pa
 License
 -------
 
-* Free software: GNU General Public License v3
-* Documentation: https://er-evaluation.readthedocs.io.
+* `GNU Affero General Public License v3 <https://www.gnu.org/licenses/agpl-3.0.en.html>`_
