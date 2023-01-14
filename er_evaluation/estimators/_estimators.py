@@ -325,10 +325,9 @@ def cluster_precision_design_estimate(prediction, sample, weights):
 
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
-        >>> sample = pd.Series(index=[1,2,3,4,5], data=["c1", "c1", "c1", "c2", "c2"])
-        >>> weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights
-        >>> cluster_precision_design_estimate(prediction, sample, weights)
-        (0, nan)
+        >>> sample = pd.Series(index=[1,2,3,4,5,6,7, 8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c3"])
+        >>> cluster_precision_design_estimate(prediction, sample, weights="uniform")
+        (0.6354166666666666, 0.38188130791298663)
     """
     prediction = MembershipVector(prediction)
     sample = MembershipVector(sample)
@@ -361,10 +360,9 @@ def cluster_recall_design_estimate(prediction, sample, weights):
 
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
-        >>> sample = pd.Series(index=[1,2,3,4,5], data=["c1", "c1", "c1", "c2", "c2"])
-        >>> weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights
-        >>> cluster_recall_design_estimate(prediction, sample, weights)
-        (0, nan)
+        >>> sample = pd.Series(index=[1,2,3,4,5,6,7, 8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c3"])
+        >>> cluster_recall_design_estimate(prediction, sample, weights="uniform")
+        (0.6666666666666666, 0.3333333333333333)
     """
     prediction = MembershipVector(prediction)
     sample = MembershipVector(sample)
