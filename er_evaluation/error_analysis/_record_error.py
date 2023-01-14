@@ -145,6 +145,7 @@ def expected_size_difference_from_table(error_table):
 
         The result is the same as calling :meth:`er_evaluation.error_analysis.expected_size_difference` on prediction and sample:
 
+        >>> from er_evaluation.error_analysis import expected_size_difference
         >>> expected_size_difference(prediction, sample)
         reference
         c1   -1.0
