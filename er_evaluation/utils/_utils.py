@@ -9,6 +9,17 @@ from er_evaluation.data_structures import MembershipVector
 
 
 def load_module_tsv(module, filename, dtype=str):
+    """
+    Load tsv file from a submodule.
+
+    Args:
+        module (string): Path to a module, such as "er_evaluation.datasets.raw_data.rldata"
+        filename (string): Name of the tsv file.
+        dtype: Data type to use to read the file. Defaults to str.
+
+    Returns:
+        pandas DataFrame
+    """
     with resources.open_text(module, filename) as f:
         data = pd.read_csv(f, sep="\t", dtype=dtype)
 
@@ -16,6 +27,47 @@ def load_module_tsv(module, filename, dtype=str):
 
 
 def sample_clusters(membership, weights="uniform", sample_prop=0.2, replace=True, random_state=1):
+    """
+    Sample clusters from a membership vector.
+
+    Args:
+        membership (Series): Membership vector.
+        weights (str, optional): Probability weights to use. Should be one "uniform", "cluster_size", or a pandas Series indexed by cluster identifiers and with values corresponding to probability weights. Defaults to "uniform".
+        sample_prop (float, optional): Proportion of clusters to sample. Defaults to 0.2.
+        replace (bool, optional): Wether or not to sample with replacement. Defaults to True.
+        random_state (int, optional): Random seed. Defaults to 1.
+
+    Returns:
+        Series: Membership vector with elements corresponding to sampled clusters.
+
+    Examples:
+
+        Load a toy dataset:
+
+        >>> from er_evaluation.datasets import load_rldata10000_disambiguations
+        >>> reference, predictions = load_rldata10000_disambiguations()
+
+        Sample a set of ground truth clusters uniformly at random:
+
+        >>> sample = sample_clusters(reference, weights="uniform", sample_prop=0.2)
+
+        Compute pairwise_precision on the sample:
+
+        >>> from er_evaluation.metrics import pairwise_precision
+        >>> pairwise_precision(predictions.name, sample)
+        0.96
+
+        Compare to the true precision on the full data:
+
+        >>> pairwise_precision(predictions.name, reference)
+        0.7028571428571428
+        
+        The metric computed on a sample is over-optimistic (0.96 versus true precision of 0.7). Instead, use an estimator to accurately estimate pairwise precision from a sample, which returns a point estimate and its standard deviation estimate:
+
+        >>> from er_evaluation.estimators import pairwise_precision_design_estimate
+        >>> pairwise_precision_design_estimate(predictions.name, sample, weights="uniform")
+        (0.7633453805063894, 0.04223296142335369)
+    """
     membership = MembershipVector(membership)
     np.random.seed(random_state)
 

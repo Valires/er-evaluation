@@ -7,11 +7,12 @@ API Doc
 
    data_structures
    datasets
-   summary
-   metrics
    error_analysis
-   plots
    estimators
+   metrics
+   plots
+   summary
+   utils
 
 .. toctree::
    :titlesonly:
