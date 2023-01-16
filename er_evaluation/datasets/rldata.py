@@ -1,10 +1,7 @@
-from collections import namedtuple
 from er_evaluation.utils import load_module_tsv
 
 DATA_MODULE = "er_evaluation.datasets.raw_data"
 RLDATA_MODULE = DATA_MODULE + ".rldata"
-
-RLPredictions = namedtuple("RLPredictions", ["name", "name_by", "name_bm", "name_bd"])
 
 
 def _make_rldisambiguations(rldata):
@@ -24,14 +21,14 @@ def _make_rldisambiguations(rldata):
         rldata (DataFrame): RLdata500 or RLdata10000 dataframe (see :meth:`er_evaluation.datasets.load_rldata500`).
 
     Returns:
-        RLPredictions: Named tuple with the four disambiguations.
+        dict: Dictionary with the four disambiguations.
     """
     disamb_name = rldata["fname_c1"] + " " + rldata["lname_c1"]
     disamb_name_by = disamb_name + " " + rldata["by"]
     disamb_name_bm = disamb_name + " " + rldata["bm"]
     disamb_name_bd = disamb_name + " " + rldata["bd"]
 
-    return RLPredictions(disamb_name, disamb_name_by, disamb_name_bm, disamb_name_bd)
+    return dict(name=disamb_name, name_by=disamb_name_by, name_bm=disamb_name_bm, name_bd=disamb_name_bd)
 
 
 def load_rldata500():
@@ -64,8 +61,8 @@ def load_rldata500_disambiguations():
     """
     Load reference and predicted disambiguations for the RLdata500 dataset.
 
-    The reference disambiguation is the series of true unique identifiers for RLdata500. 
-    
+    The reference disambiguation is the series of true unique identifiers for RLdata500.
+
     Predicted disambiguations are a set of four toy disambiguations meant to showcase and test features of this package. The four predicted disambiguations are:
 
     * **name**: Disambiguation based on exact matching first name and last name.
@@ -73,11 +70,11 @@ def load_rldata500_disambiguations():
     * **name_bm**: Disambiguation based on exact matching first name, last name, and birth month.
     * **name_bd**: Disambiguation based on exact matching first name, last name, and birth day.
 
-    These are returned in a named tuple called "RLPredictions" with the above named elements.
+    These are returned in a dictionary with the above named elements.
 
     Returns:
-        tuple: tuple of the form ``(reference, predictions)``, where ``reference`` is the ground truth disambiguation and ``predictions`` is a named tuple with four toy disambiguations.
-    
+        tuple: tuple of the form ``(reference, predictions)``, where ``reference`` is the ground truth disambiguation and ``predictions`` is a dictionary with four toy disambiguations.
+
     Examples:
 
         Load ground truth and the set of four toy predictions:
@@ -100,7 +97,7 @@ def load_rldata500_disambiguations():
         1.0
     """
     rldata500 = load_rldata500()
-    reference = load_module_tsv(RLDATA_MODULE, "identity.RLdata500.tsv").iloc[:,0]
+    reference = load_module_tsv(RLDATA_MODULE, "identity.RLdata500.tsv").iloc[:, 0]
 
     disambiguations = _make_rldisambiguations(rldata500)
 
@@ -137,8 +134,8 @@ def load_rldata10000_disambiguations():
     """
     Load reference and predicted disambiguations for the RLdata10000 dataset.
 
-    The reference disambiguation is the series of true unique identifiers for RLdata10000. 
-    
+    The reference disambiguation is the series of true unique identifiers for RLdata10000.
+
     Predicted disambiguations are a set of four toy disambiguations meant to showcase and test features of this package. The four predicted disambiguations are:
 
     * **name**: Disambiguation based on exact matching first name and last name.
@@ -146,11 +143,11 @@ def load_rldata10000_disambiguations():
     * **name_bm**: Disambiguation based on exact matching first name, last name, and birth month.
     * **name_bd**: Disambiguation based on exact matching first name, last name, and birth day.
 
-    These are returned in a named tuple called "RLPredictions" with the above named elements.
+    These are returned in a dictionary with the above named elements.
 
     Returns:
-        tuple: tuple of the form ``(reference, predictions)``, where ``reference`` is the ground truth disambiguation and ``predictions`` is a named tuple with four toy disambiguations.
-    
+        tuple: tuple of the form ``(reference, predictions)``, where ``reference`` is the ground truth disambiguation and ``predictions`` is a dictionary with four toy disambiguations.
+
     Examples:
 
         Load ground truth and the set of four toy predictions:
@@ -173,7 +170,7 @@ def load_rldata10000_disambiguations():
         0.501937984496124
     """
     rldata10000 = load_rldata10000()
-    reference = load_module_tsv(RLDATA_MODULE, "identity.RLdata10000.tsv").iloc[:,0]
+    reference = load_module_tsv(RLDATA_MODULE, "identity.RLdata10000.tsv").iloc[:, 0]
 
     disambiguations = _make_rldisambiguations(rldata10000)
 

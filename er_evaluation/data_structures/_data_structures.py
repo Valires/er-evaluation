@@ -30,9 +30,9 @@ class MembershipVector(pd.Series):
             super().__init__(data=data, **kwargs)
             if ismembership(self):
                 if len(self) == 0:
-                    logging.warning("Membership vector is empty.")
+                    logging.info("Membership vector is empty.")
                 if self.hasnans:
-                    logging.warning("Membership vector contains NA values.")
+                    logging.info("Membership vector contains NA values.")
             else:
                 logging.critical(f"Invalid membership vector: {self}")
                 raise ValueError(f"Invalid membership vector: {self}")

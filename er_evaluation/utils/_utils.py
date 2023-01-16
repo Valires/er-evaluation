@@ -8,6 +8,23 @@ import pandas as pd
 from er_evaluation.data_structures import MembershipVector
 
 
+def load_module_parquet(module, filename):
+    """
+    Load parquet file from a submodule using pyarrow engine.
+
+    Args:
+        module (string): Path to a module, such as "er_evaluation.datasets.raw_data.rldata"
+        filename (string): Name of the parquet file.
+
+    Returns:
+        pandas DataFrame
+    """
+    with resources.open_binary(module, filename) as f:
+        data = pd.read_parquet(f, engine="pyarrow")
+
+    return data
+
+
 def load_module_tsv(module, filename, dtype=str):
     """
     Load tsv file from a submodule.
@@ -54,18 +71,18 @@ def sample_clusters(membership, weights="uniform", sample_prop=0.2, replace=True
         Compute pairwise_precision on the sample:
 
         >>> from er_evaluation.metrics import pairwise_precision
-        >>> pairwise_precision(predictions.name_by, sample)
+        >>> pairwise_precision(predictions['name_by'], sample)
         0.96
 
         Compare to the true precision on the full data:
 
-        >>> pairwise_precision(predictions.name_by, reference)
+        >>> pairwise_precision(predictions['name_by'], reference)
         0.7028571428571428
-        
+
         The metric computed on a sample is over-optimistic (0.96 versus true precision of 0.7). Instead, use an estimator to accurately estimate pairwise precision from a sample, which returns a point estimate and its standard deviation estimate:
 
         >>> from er_evaluation.estimators import pairwise_precision_design_estimate
-        >>> pairwise_precision_design_estimate(predictions.name_by, sample, weights="uniform")
+        >>> pairwise_precision_design_estimate(predictions['name_by'], sample, weights="uniform")
         (0.7633453805063894, 0.04223296142335369)
     """
     membership = MembershipVector(membership)
@@ -73,7 +90,10 @@ def sample_clusters(membership, weights="uniform", sample_prop=0.2, replace=True
 
     if isinstance(weights, pd.Series):
         selected_clusters = np.random.choice(
-            weights.index, size=int(sample_prop * membership.nunique()), replace=replace, p=weights.values/np.sum(weights.values)
+            weights.index,
+            size=int(sample_prop * membership.nunique()),
+            replace=replace,
+            p=weights.values / np.sum(weights.values),
         )
     elif isinstance(weights, str):
         if weights == "uniform":
@@ -87,9 +107,13 @@ def sample_clusters(membership, weights="uniform", sample_prop=0.2, replace=True
                 replace=replace,
             )
         else:
-            raise ValueError(f"Invalid weights argument. Valid strings are 'uniform' or 'cluster_size', instead got {weights}")
+            raise ValueError(
+                f"Invalid weights argument. Valid strings are 'uniform' or 'cluster_size', instead got {weights}"
+            )
     else:
-        raise ValueError(f"Invalid weights argument. Should be a string or a pandas Series, instead got type {type(weights)}.")
+        raise ValueError(
+            f"Invalid weights argument. Should be a string or a pandas Series, instead got type {type(weights)}."
+        )
 
     return membership[membership.isin(selected_clusters)]
 
