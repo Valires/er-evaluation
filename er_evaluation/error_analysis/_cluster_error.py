@@ -3,7 +3,11 @@ import pandas as pd
 from scipy.special import comb
 
 from er_evaluation.data_structures import MembershipVector
-from er_evaluation.error_analysis._record_error import expected_size_difference_from_table, record_error_table, error_metrics_from_table
+from er_evaluation.error_analysis._record_error import (
+    error_metrics_from_table,
+    expected_size_difference_from_table,
+    record_error_table,
+)
 from er_evaluation.utils import relevant_prediction_subset
 
 
@@ -38,7 +42,6 @@ def error_metrics(prediction, sample):
     """
     error_table = record_error_table(prediction, sample)
     return error_metrics_from_table(error_table)
-
 
 
 def count_extra_links(prediction, sample):

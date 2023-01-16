@@ -6,6 +6,7 @@ API Doc
 .. autosummary::
 
    data_structures
+   datasets
    summary
    metrics
    error_analysis
@@ -18,6 +19,7 @@ API Doc
    :hidden:
 
    er_evaluation.data_structures
+   er_evaluation.datasets
    er_evaluation.error_analysis
    er_evaluation.estimators
    er_evaluation.metrics
