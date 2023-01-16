@@ -4,6 +4,7 @@ scipy
 plotly
 igraph
 scikit-learn
+pyarrow
 
 pip
 bump2version

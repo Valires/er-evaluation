@@ -18,6 +18,7 @@ requirements = (
         "plotly",
         "igraph",
         "scikit-learn",
+        "pyarrow",
     ],
 )
 
