@@ -1,0 +1,10 @@
+# Development environment for ER-Evaluation
+
+name: er-evaluation
+
+dependencies:
+  - python=3.10
+  - pip>=22
+  - pip:
+    - -r requirements_dev.txt
+    - -e .
