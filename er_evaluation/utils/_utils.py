@@ -54,18 +54,18 @@ def sample_clusters(membership, weights="uniform", sample_prop=0.2, replace=True
         Compute pairwise_precision on the sample:
 
         >>> from er_evaluation.metrics import pairwise_precision
-        >>> pairwise_precision(predictions.name, sample)
+        >>> pairwise_precision(predictions.name_by, sample)
         0.96
 
         Compare to the true precision on the full data:
 
-        >>> pairwise_precision(predictions.name, reference)
+        >>> pairwise_precision(predictions.name_by, reference)
         0.7028571428571428
         
         The metric computed on a sample is over-optimistic (0.96 versus true precision of 0.7). Instead, use an estimator to accurately estimate pairwise precision from a sample, which returns a point estimate and its standard deviation estimate:
 
         >>> from er_evaluation.estimators import pairwise_precision_design_estimate
-        >>> pairwise_precision_design_estimate(predictions.name, sample, weights="uniform")
+        >>> pairwise_precision_design_estimate(predictions.name_by, sample, weights="uniform")
         (0.7633453805063894, 0.04223296142335369)
     """
     membership = MembershipVector(membership)
