@@ -84,16 +84,16 @@ def load_rldata500_disambiguations():
         Compute pairwise precision for each prediction:
 
         >>> from er_evaluation.metrics import pairwise_precision
-        >>> pairwise_precision(predictions.name, reference)
+        >>> pairwise_precision(predictions["name"], reference)
         0.4523809523809524
 
-        >>> pairwise_precision(predictions.name_by, reference)
+        >>> pairwise_precision(predictions["name_by"], reference)
         1.0
 
-        >>> pairwise_precision(predictions.name_bm, reference)
+        >>> pairwise_precision(predictions["name_bm"], reference)
         0.7619047619047619
 
-        >>> pairwise_precision(predictions.name_bd, reference)
+        >>> pairwise_precision(predictions["name_bd"], reference)
         1.0
     """
     rldata500 = load_rldata500()
@@ -157,16 +157,16 @@ def load_rldata10000_disambiguations():
         Compute pairwise precision for each prediction:
 
         >>> from er_evaluation.metrics import pairwise_precision
-        >>> pairwise_precision(predictions.name, reference)
+        >>> pairwise_precision(predictions["name"], reference)
         0.04653923780125846
 
-        >>> pairwise_precision(predictions.name_by, reference)
+        >>> pairwise_precision(predictions["name_by"], reference)
         0.7028571428571428
 
-        >>> pairwise_precision(predictions.name_bm, reference)
+        >>> pairwise_precision(predictions["name_bm"], reference)
         0.3076086956521739
 
-        >>> pairwise_precision(predictions.name_bd, reference)
+        >>> pairwise_precision(predictions["name_bd"], reference)
         0.501937984496124
     """
     rldata10000 = load_rldata10000()
