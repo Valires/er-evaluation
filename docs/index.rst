@@ -1,13 +1,19 @@
-Welcome to ER-Evaluation's documentation!
-=========================================
+👋 Welcome to ER-Evaluation's documentation!
+============================================
 
 .. currentmodule:: er_evaluation
 
-ER-Evaluation is a Python package for the evaluation of entity resolution (ER) systems. It provides data structure definitions, summary statistics, visualizations, error analysis tools, and statistically principled performance estimators.
+**ER-Evaluation** is a Python package for the evaluation of entity resolution (ER) systems. It provides data structure definitions, summary statistics, visualizations, error analysis tools, and statistically principled performance estimators.
+
+🤔 How to get started
+---------------------
 
 To get started, please refer to the :doc:`README <readme>` page and the :doc:`API documentation <er_evaluation>`.
 
-Use the project's `Discussion <https://github.com/OlivierBinette/ER-Evaluation/discussions>`_ page to ask questions and the `Issues <https://github.com/OlivierBinette/ER-Evaluation/issues>`_ page to request features and submit report bugs.
+Use the project's `Discussion <https://github.com/OlivierBinette/ER-Evaluation/discussions>`_ page to ask questions and the `Issues <https://github.com/OlivierBinette/ER-Evaluation/issues>`_ page to request features and report bugs.
+
+🚀 Quick links
+--------------
 
 .. grid:: 2
 
