@@ -56,7 +56,7 @@ Please acknowledge the publications below if you use ER-Evaluation:
 **ER-Evaluation** is an extension of the `PatentsView/PatentsView-Evaluation <https://github.com/PatentsView/PatentsView-Evaluation/>`_ project sponsored by the American Institutes for Research and the U.S. Patents and Trademarks Office. We aim to provide a unified source of evaluation tools for entity resolution systems which are maintained as an open source academic project.
 
 ❤️ Funding
-^^^^^^^^^
+^^^^^^^^^^
 
 This project was made possible through support from the Natural Sciences and Engineering Research Council of Canada, Fonds de Recherche du Québec - Nature et Technologies, Duke University, the American Institutes for Research, and the U.S. Patents and Trademarks Office.
 

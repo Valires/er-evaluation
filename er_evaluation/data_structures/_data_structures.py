@@ -25,7 +25,7 @@ class MembershipVector(pd.Series):
         >>> membership = MembershipVector(membership)  # Does nothing.
     """
 
-    def __init__(self, data=None, **kwargs):
+    def __init__(self, data=None, dropna=False, **kwargs):
         if not isinstance(data, MembershipVector):
             super().__init__(data=data, **kwargs)
             if ismembership(self):
@@ -37,7 +37,10 @@ class MembershipVector(pd.Series):
                 logging.critical(f"Invalid membership vector: {self}")
                 raise ValueError(f"Invalid membership vector: {self}")
 
-    def __new__(cls, data=None, **kwargs):
+        if dropna:
+            self.dropna(inplace=True)
+
+    def __new__(cls, data=None, dropna=False, **kwargs):
         if isinstance(data, MembershipVector):
             return data
         return super().__new__(cls)

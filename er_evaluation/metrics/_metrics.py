@@ -5,8 +5,13 @@ import pandas as pd
 import sklearn.metrics as sm
 from scipy.special import comb
 
-from er_evaluation.data_structures import MembershipVector, ismembership
-from er_evaluation.error_analysis import error_indicator
+from er_evaluation.data_structures import MembershipVector
+from er_evaluation.error_analysis import (
+    error_indicator,
+    expected_relative_extra_from_table,
+    expected_relative_missing_from_table,
+    record_error_table,
+)
 from er_evaluation.summary import number_of_links
 from er_evaluation.utils import expand_grid
 
@@ -90,9 +95,12 @@ def pairwise_precision(prediction, reference):
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
         >>> pairwise_precision(prediction, reference)
         0.4
+
+    Notes:
+        NA values are dropped from membership vectors prior to computing the metric.
     """
-    prediction = MembershipVector(prediction)
-    reference = MembershipVector(reference)
+    prediction = MembershipVector(prediction, dropna=True)
+    reference = MembershipVector(reference, dropna=True)
 
     inner = pd.concat(
         {"prediction": prediction, "reference": reference},
@@ -136,9 +144,12 @@ def pairwise_recall(prediction, reference):
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
         >>> pairwise_recall(prediction, reference)
         0.4
+
+    Notes:
+        NA values are dropped from membership vectors prior to computing the metric.
     """
-    prediction = MembershipVector(prediction)
-    reference = MembershipVector(reference)
+    prediction = MembershipVector(prediction, dropna=True)
+    reference = MembershipVector(reference, dropna=True)
 
     return pairwise_precision(reference, prediction)
 
@@ -169,9 +180,12 @@ def pairwise_f(prediction, reference, beta=1.0):
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
         >>> pairwise_f(prediction, reference)
         0.4000000000000001
+
+    Notes:
+        NA values are dropped from membership vectors prior to computing the metric.
     """
-    prediction = MembershipVector(prediction)
-    reference = MembershipVector(reference)
+    prediction = MembershipVector(prediction, dropna=True)
+    reference = MembershipVector(reference, dropna=True)
 
     P = pairwise_precision(prediction, reference)
     R = pairwise_recall(prediction, reference)
@@ -204,9 +218,12 @@ def cluster_precision(prediction, reference):
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
         >>> cluster_precision(prediction, reference)
         0.4
+
+    Notes:
+        NA values are dropped from membership vectors prior to computing the metric.
     """
-    prediction = MembershipVector(prediction)
-    reference = MembershipVector(reference)
+    prediction = MembershipVector(prediction, dropna=True)
+    reference = MembershipVector(reference, dropna=True)
 
     inner = pd.concat(
         {"prediction": prediction, "reference": reference},
@@ -244,9 +261,12 @@ def cluster_recall(prediction, reference):
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
         >>> cluster_recall(prediction, reference)
         0.5
+
+    Notes:
+        NA values are dropped from membership vectors prior to computing the metric.
     """
-    prediction = MembershipVector(prediction)
-    reference = MembershipVector(reference)
+    prediction = MembershipVector(prediction, dropna=True)
+    reference = MembershipVector(reference, dropna=True)
 
     return cluster_precision(reference, prediction)
 
@@ -277,9 +297,12 @@ def cluster_f(prediction, reference, beta=1.0):
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
         >>> cluster_f(prediction, reference)
         0.4444444444444445
+
+    Notes:
+        NA values are dropped from membership vectors prior to computing the metric.
     """
-    prediction = MembershipVector(prediction)
-    reference = MembershipVector(reference)
+    prediction = MembershipVector(prediction, dropna=True)
+    reference = MembershipVector(reference, dropna=True)
 
     P = cluster_precision(prediction, reference)
     R = cluster_recall(prediction, reference)
@@ -317,9 +340,12 @@ def b_cubed_precision(prediction, reference):
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
         >>> b_cubed_precision(prediction, reference)
         0.6458333333333333
+
+    Notes:
+        NA values are dropped from membership vectors prior to computing the metric.
     """
-    prediction = MembershipVector(prediction)
-    reference = MembershipVector(reference)
+    prediction = MembershipVector(prediction, dropna=True)
+    reference = MembershipVector(reference, dropna=True)
 
     inner = pd.concat(
         {"prediction": prediction, "reference": reference},
@@ -328,22 +354,10 @@ def b_cubed_precision(prediction, reference):
         copy=False,
     )
 
-    intersection_sizes = inner.value_counts()
-    ref_cluster_sizes = inner.reference.value_counts()
-    ref_cluster_sizes.index.name = "reference"
-    pred_cluster_sizes = inner.prediction.value_counts()
-    pred_cluster_sizes.index.name = "prediction"
+    error_table = record_error_table(inner.prediction, inner.reference)
+    errors = expected_relative_extra_from_table(error_table)
 
-    n_clusters = inner.reference.nunique()
-
-    df = (
-        inner.merge(intersection_sizes.reset_index(name="intersection_size"), how="left")
-        .merge(ref_cluster_sizes.reset_index(name="ref_cluster_size"), how="left")
-        .merge(pred_cluster_sizes.reset_index(name="pred_cluster_size"), how="left")
-    )
-    df = df[df.intersection_size > 0]
-
-    return (df.intersection_size / (df.ref_cluster_size * df.pred_cluster_size * n_clusters)).sum()
+    return 1 - np.mean(errors)
 
 
 def b_cubed_recall(prediction, reference):
@@ -376,9 +390,12 @@ def b_cubed_recall(prediction, reference):
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
         >>> b_cubed_recall(prediction, reference)
         0.7638888888888888
+
+    Notes:
+        NA values are dropped from membership vectors prior to computing the metric.
     """
-    prediction = MembershipVector(prediction)
-    reference = MembershipVector(reference)
+    prediction = MembershipVector(prediction, dropna=True)
+    reference = MembershipVector(reference, dropna=True)
 
     inner = pd.concat(
         {"prediction": prediction, "reference": reference},
@@ -387,22 +404,10 @@ def b_cubed_recall(prediction, reference):
         copy=False,
     )
 
-    intersection_sizes = inner.value_counts()
-    ref_cluster_sizes = inner.reference.value_counts()
-    ref_cluster_sizes.index.name = "reference"
-    pred_cluster_sizes = inner.prediction.value_counts()
-    pred_cluster_sizes.index.name = "prediction"
+    error_table = record_error_table(inner.prediction, inner.reference)
+    errors = expected_relative_missing_from_table(error_table)
 
-    n_clusters = inner.reference.nunique()
-
-    df = (
-        inner.merge(intersection_sizes.reset_index(name="intersection_size"), how="left")
-        .merge(ref_cluster_sizes.reset_index(name="ref_cluster_size"), how="left")
-        .merge(pred_cluster_sizes.reset_index(name="pred_cluster_size"), how="left")
-    )
-    df = df[df.intersection_size > 0]
-
-    return (df.intersection_size / (df.ref_cluster_size**2 * n_clusters)).sum()
+    return 1 - np.mean(errors)
 
 
 def b_cubed_f(prediction, reference, beta=1.0):
@@ -431,9 +436,12 @@ def b_cubed_f(prediction, reference, beta=1.0):
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
         >>> b_cubed_f(prediction, reference)
         0.6999178981937603
+
+    Notes:
+        NA values are dropped from membership vectors prior to computing the metric.
     """
-    prediction = MembershipVector(prediction)
-    reference = MembershipVector(reference)
+    prediction = MembershipVector(prediction, dropna=True)
+    reference = MembershipVector(reference, dropna=True)
 
     P = b_cubed_precision(prediction, reference)
     R = b_cubed_recall(prediction, reference)
@@ -448,13 +456,13 @@ def wrap_sklearn_metric(sklearn_metric):
         sklearn_metric (function): cluster metric to wrap.
 
     Notes:
-        * The prediction and reference membership vectors are inner joined before this metric is computed.
+        * The prediction and reference membership vectors are inner joined and NA values are dropped before this metric is computed.
     """
 
     @wraps(sklearn_metric)
-    def func(prediction, reference, **kw):
-        prediction = MembershipVector(prediction)
-        reference = MembershipVector(reference)
+    def func(prediction, reference, **kwargs):
+        prediction = MembershipVector(prediction, dropna=True)
+        reference = MembershipVector(reference, dropna=True)
 
         inner = pd.concat(
             {"prediction": prediction, "reference": reference},
@@ -465,7 +473,7 @@ def wrap_sklearn_metric(sklearn_metric):
         prediction_codes = pd.Categorical(inner.prediction).codes.astype(np.int64)
         reference_codes = pd.Categorical(inner.reference).codes.astype(np.int64)
 
-        return sklearn_metric(reference_codes, prediction_codes, **kw)
+        return sklearn_metric(reference_codes, prediction_codes, **kwargs)
 
     return func
 
@@ -484,10 +492,8 @@ def cluster_homogeneity(prediction, reference):
 
     Notes:
         * The prediction and reference membership vectors are inner joined before this metric is computed.
+        * NA values are dropped from membership vectors prior to computing the metric.
     """
-    prediction = MembershipVector(prediction)
-    reference = MembershipVector(reference)
-
     return wrap_sklearn_metric(sm.homogeneity_score)(prediction, reference)
 
 
@@ -505,10 +511,8 @@ def cluster_completeness(prediction, reference):
 
     Notes:
         * The prediction and reference membership vectors are inner joined before this metric is computed.
+        * NA values are dropped from membership vectors prior to computing the metric.
     """
-    prediction = MembershipVector(prediction)
-    reference = MembershipVector(reference)
-
     return wrap_sklearn_metric(sm.completeness_score)(prediction, reference)
 
 
@@ -526,10 +530,8 @@ def cluster_v_measure(prediction, reference, beta=1.0):
 
     Notes:
         * The prediction and reference membership vectors are inner joined before this metric is computed.
+        * NA values are dropped from membership vectors prior to computing the metric.
     """
-    prediction = MembershipVector(prediction)
-    reference = MembershipVector(reference)
-
     return wrap_sklearn_metric(sm.v_measure_score)(prediction, reference, beta=beta)
 
 
@@ -547,10 +549,8 @@ def rand_score(prediction, reference):
 
     Notes:
         * The prediction and reference membership vectors are inner joined before this metric is computed.
+        * NA values are dropped from membership vectors prior to computing the metric.
     """
-    prediction = MembershipVector(prediction)
-    reference = MembershipVector(reference)
-
     return wrap_sklearn_metric(sm.rand_score)(prediction, reference)
 
 
@@ -568,8 +568,6 @@ def adjusted_rand_score(prediction, reference):
 
     Notes:
         * The prediction and reference membership vectors are inner joined before this metric is computed.
+        * NA values are dropped from membership vectors prior to computing the metric.
     """
-    prediction = MembershipVector(prediction)
-    reference = MembershipVector(reference)
-
     return wrap_sklearn_metric(sm.adjusted_rand_score)(prediction, reference)

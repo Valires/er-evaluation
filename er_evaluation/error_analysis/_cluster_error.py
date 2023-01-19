@@ -5,6 +5,7 @@ from scipy.special import comb
 from er_evaluation.data_structures import MembershipVector
 from er_evaluation.error_analysis._record_error import (
     error_metrics_from_table,
+    expected_relative_missing_from_table,
     expected_size_difference_from_table,
     record_error_table,
 )
@@ -17,10 +18,10 @@ def error_metrics(prediction, sample):
 
     Error metrics included:
 
-    * Expected extra links (see :meth:`er_evaluation.error_analysis.expected_extra_links`)
-    * Expected relative extra links (see :meth:`er_evaluation.error_analysis.expected_relative_extra_links`)
-    * Expected missing links (see :meth:`er_evaluation.error_analysis.expected_missing_links`)
-    * Expected relative missing links (see :meth:`er_evaluation.error_analysis.expected_relative_missing_links`)
+    * Expected extra links (see :meth:`er_evaluation.error_analysis.expected_extra`)
+    * Expected relative extra links (see :meth:`er_evaluation.error_analysis.expected_relative_extra`)
+    * Expected missin elements (see :meth:`er_evaluation.error_analysis.expected_missing`)
+    * Expected relative missin elements (see :meth:`er_evaluation.error_analysis.expected_relative_missing`)
     * Error indicator (see :meth:`er_evaluation.error_analysis.error_indicator`)
 
     Args:
@@ -34,24 +35,32 @@ def error_metrics(prediction, sample):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,6,7, 8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c3"])
         >>> error_metrics(prediction, sample)  # doctest: +SKIP
-        expected_extra_links	expected_relative_extra_links	expected_missing_links	expected_relative_missing_links	error_indicator
+        expected_extra	expected_relative_extra	expected_missing	expected_relative_missing	error_indicator
         reference
         c1	0.333333	0.166667	1.333333	0.444444	1
         c2	0.500000	0.250000	1.000000	0.500000	1
         c3	1.000000	0.333333	0.000000	0.000000	0
+
+    Notes:
+        The sample is restricted to the set of records which are present in the prediction.
     """
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
+
+    sample = sample[sample.index.isin(prediction.index)]
+
     error_table = record_error_table(prediction, sample)
     return error_metrics_from_table(error_table)
 
 
-def count_extra_links(prediction, sample):
+def count_extra(prediction, sample):
     r"""
-    Count the number of extraneous links to sampled clusters.
+    Count the number of extraneous elements to sampled clusters.
 
-    Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the count of extraneous links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the counts of extraneous links.
+    Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the count of extraneous elements for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the counts of extraneous elements.
 
-    Count of Extraneous Links
-        For a given sampled cluster :math:`c` with records :math:`r \in c`, let :math:`A_r` be the set of records which are erroneously linked to :math:`r` in the predicted clustering. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`A_r = \hat c(r) \backslash c` Then the count of extraneous links for :math:`c` is
+    Count of extraneous elements
+        For a given sampled cluster :math:`c` with records :math:`r \in c`, let :math:`A_r` be the set of records which are erroneously linked to :math:`r` in the predicted clustering. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`A_r = \hat c(r) \backslash c` Then the count of extraneous elements for :math:`c` is
 
         .. math::
 
@@ -62,20 +71,25 @@ def count_extra_links(prediction, sample):
         sample (Series): Membership vector representing a set of true clusters.
 
     Returns:
-        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the count of extraneous links.
+        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the count of extraneous elements.
 
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
-        >>> count_extra_links(prediction, sample)
+        >>> count_extra(prediction, sample)
         sample
         c1    1
         c2    1
         c4    2
-        Name: count_extra_links, dtype: int64
+        Name: count_extra, dtype: int64
+
+    Notes:
+        The sample is restricted to the set of records which are present in the prediction.
     """
-    prediction = MembershipVector(prediction)
-    sample = MembershipVector(sample)
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
+
+    sample = sample[sample.index.isin(prediction.index)]
 
     relevant_predictions = relevant_prediction_subset(prediction, sample)
 
@@ -100,7 +114,7 @@ def count_extra_links(prediction, sample):
         return np.sum(p * (u - p))
 
     result = outer.groupby("sample").agg(lambd).prediction
-    result.rename("count_extra_links", inplace=True)
+    result.rename("count_extra", inplace=True)
 
     return result
 
@@ -132,20 +146,28 @@ def expected_size_difference(prediction, sample):
         c2   -0.5
         c3    1.0
         Name: expected_size_diff, dtype: float64
+
+    Notes:
+        The sample is restricted to the set of records which are present in the prediction.
     """
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
+
+    sample = sample[sample.index.isin(prediction.index)]
+
     error_table = record_error_table(prediction, sample)
 
     return expected_size_difference_from_table(error_table)
 
 
-def expected_extra_links(prediction, sample):
+def expected_extra(prediction, sample):
     r"""
-    Expected number of extraneous links to records in sampled clusters.
+    Expected number of extraneous elements to records in sampled clusters.
 
-    Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the expected number of extraneous links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of extraneous links.
+    Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the expected number of extraneous elements for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of extraneous elements.
 
-    Expected Number of Extraneous Links
-        For a given sampled cluster :math:`c` with records :math:`r \in c`, let :math:`A_r` be the set of records which are erroneously linked to :math:`r` in the predicted clustering. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`A_r = \hat c(r) \backslash c` Then the expected number of extraneous links for :math:`c` is
+    Expected Number of extraneous elements
+        For a given sampled cluster :math:`c` with records :math:`r \in c`, let :math:`A_r` be the set of records which are erroneously linked to :math:`r` in the predicted clustering. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`A_r = \hat c(r) \backslash c` Then the expected number of extraneous elements for :math:`c` is
 
         .. math::
 
@@ -158,38 +180,43 @@ def expected_extra_links(prediction, sample):
         sample (Series): Membership vector representing a set of true clusters.
 
     Returns:
-        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the expected number of extraneous links.
+        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the expected number of extraneous elements.
 
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
-        >>> expected_extra_links(prediction, sample)
+        >>> expected_extra(prediction, sample)
         sample
         c1    0.333333
         c2    0.500000
         c4    2.000000
-        Name: expected_extra_links, dtype: float64
-    """
-    prediction = MembershipVector(prediction)
-    sample = MembershipVector(sample)
+        Name: expected_extra, dtype: float64
 
-    result = count_extra_links(prediction, sample)
+    Notes:
+        The sample is restricted to the set of records which are present in the prediction.
+    """
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
+
+    sample = sample[sample.index.isin(prediction.index)]
+
+    result = count_extra(prediction, sample)
     sizes = sample.groupby(sample).size()
 
     result = result / sizes
-    result.rename("expected_extra_links", inplace=True)
+    result.rename("expected_extra", inplace=True)
 
     return result
 
 
-def expected_relative_extra_links(prediction, sample):
+def expected_relative_extra(prediction, sample):
     r"""
-    Expected relative number of extraneous links to records in sampled clusters.
+    Expected relative number of extraneous elements to records in sampled clusters.
 
-    Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the expected number of relative extraneous links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of relative extraneous links.
+    Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the expected number of relative extraneous elements for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of relative extraneous elements.
 
-    Expected Relative Number of Extraneous Links
-        For a given sampled cluster :math:`c` with records :math:`r \in c`, let :math:`A_r` be the set of records which are erroneously linked to :math:`r` in the predicted clustering. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`A_r = \hat c(r) \backslash c` Then the expected number of extraneous links for :math:`c` is
+    Expected Relative Number of extraneous elements
+        For a given sampled cluster :math:`c` with records :math:`r \in c`, let :math:`A_r` be the set of records which are erroneously linked to :math:`r` in the predicted clustering. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`A_r = \hat c(r) \backslash c` Then the expected number of extraneous elements for :math:`c` is
 
         .. math::
 
@@ -202,20 +229,25 @@ def expected_relative_extra_links(prediction, sample):
         sample (Series): Membership vector representing a set of true clusters.
 
     Returns:
-        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the expected number of extraneous links.
+        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the expected number of extraneous elements.
 
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
-        >>> expected_relative_extra_links(prediction, sample)
+        >>> expected_relative_extra(prediction, sample)
         sample
         c1    0.166667
         c2    0.250000
         c4    0.666667
-        Name: expected_relative_extra_links, dtype: float64
+        Name: expected_relative_extra, dtype: float64
+
+    Notes:
+        The sample is restricted to the set of records which are present in the prediction.
     """
-    prediction = MembershipVector(prediction)
-    sample = MembershipVector(sample)
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
+
+    sample = sample[sample.index.isin(prediction.index)]
 
     relevant_predictions = relevant_prediction_subset(prediction, sample)
 
@@ -244,19 +276,19 @@ def expected_relative_extra_links(prediction, sample):
     result = outer.groupby("sample").agg(lambd).prediction
     sizes = sample.groupby(sample).size()
     result = result / sizes
-    result.rename("expected_relative_extra_links", inplace=True)
+    result.rename("expected_relative_extra", inplace=True)
 
     return result
 
 
-def count_missing_links(prediction, sample):
+def count_missing(prediction, sample):
     r"""
-    Count the number of missing links to sampled clusters.
+    Count the number of missin elements to sampled clusters.
 
-    Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the count of missing links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the counts of missing links.
+    Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the count of missin elements for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the counts of missin elements.
 
-    Count of Missing Links
-        For a given sampled cluster :math:`c` with records :math:`r \in c`, let :math:`B_r` be the set of records which are missing from the predicted cluster containing :math:`r`. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`B_r = c \backslash \hat c(r)`. Then the count of missing links for :math:`c` is
+    Count of missin elements
+        For a given sampled cluster :math:`c` with records :math:`r \in c`, let :math:`B_r` be the set of records which are missing from the predicted cluster containing :math:`r`. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`B_r = c \backslash \hat c(r)`. Then the count of missin elements for :math:`c` is
 
         .. math::
 
@@ -267,20 +299,25 @@ def count_missing_links(prediction, sample):
         sample (Series): Membership vector representing a set of true clusters.
 
     Returns:
-        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the count of extraneous links.
+        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the count of extraneous elements.
 
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
-        >>> count_missing_links(prediction, sample)
+        >>> count_missing(prediction, sample)
         sample
         c1    4
         c2    2
         c4    0
-        Name: count_missing_links, dtype: int64
+        Name: count_missing, dtype: int64
+
+    Notes:
+        The sample is restricted to the set of records which are present in the prediction.
     """
-    prediction = MembershipVector(prediction)
-    sample = MembershipVector(sample)
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
+
+    sample = sample[sample.index.isin(prediction.index)]
 
     relevant_predictions = relevant_prediction_subset(prediction, sample)
 
@@ -302,19 +339,19 @@ def count_missing_links(prediction, sample):
         return np.sum(p * (n - p))
 
     result = outer.groupby("sample").agg(lambd).prediction
-    result.rename("count_missing_links", inplace=True)
+    result.rename("count_missing", inplace=True)
 
     return result
 
 
-def expected_missing_links(prediction, sample):
+def expected_missing(prediction, sample):
     r"""
-    Expected number of missing links to records in sampled clusters.
+    Expected number of missin elements to records in sampled clusters.
 
-    Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the expected relative number of missing links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of missing links.
+    Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the expected relative number of missin elements for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of missin elements.
 
-    Expected Number of Missing Links
-        For a given sampled cluster  :math:`c` with records  :math:`r \in c`, let :math:`B_r` be the set of records which are missing from the predicted cluster containing :math:`r`. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`B_r = c \backslash \hat c(r)`. Then the expected number of missing links for
+    Expected Number of missin elements
+        For a given sampled cluster  :math:`c` with records  :math:`r \in c`, let :math:`B_r` be the set of records which are missing from the predicted cluster containing :math:`r`. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`B_r = c \backslash \hat c(r)`. Then the expected number of missin elements for
 
         .. math::
 
@@ -325,38 +362,43 @@ def expected_missing_links(prediction, sample):
         sample (Series): Membership vector representing a set of true clusters.
 
     Returns:
-        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the expected number of missing links.
+        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the expected number of missin elements.
 
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
-        >>> expected_missing_links(prediction, sample)
+        >>> expected_missing(prediction, sample)
         sample
         c1    1.333333
         c2    1.000000
         c4    0.000000
-        Name: expected_missing_links, dtype: float64
-    """
-    prediction = MembershipVector(prediction)
-    sample = MembershipVector(sample)
+        Name: expected_missing, dtype: float64
 
-    result = count_missing_links(prediction, sample)
+    Notes:
+        The sample is restricted to the set of records which are present in the prediction.
+    """
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
+
+    sample = sample[sample.index.isin(prediction.index)]
+
+    result = count_missing(prediction, sample)
     sizes = sample.groupby(sample).size()
 
     result = result / sizes
-    result.rename("expected_missing_links", inplace=True)
+    result.rename("expected_missing", inplace=True)
 
     return result
 
 
-def expected_relative_missing_links(prediction, sample):
+def expected_relative_missing(prediction, sample):
     r"""
-    Expected relative number of missing links to records in sampled clusters.
+    Expected relative number of missin elements to records in sampled clusters.
 
-    Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the expected number of missing links for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected relative number of missing links.
+    Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the expected number of missin elements for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected relative number of missin elements.
 
-    Expected Relative Number of Missing Links
-        For a given sampled cluster  :math:`c` with records  :math:`r \in c`, let :math:`B_r` be the set of records which are missing from the predicted cluster containing :math:`r`. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`B_r = c \backslash \hat c(r)`. Then the expected number of missing links for :math:`c` is
+    Expected Relative Number of missin elements
+        For a given sampled cluster  :math:`c` with records  :math:`r \in c`, let :math:`B_r` be the set of records which are missing from the predicted cluster containing :math:`r`. That is, if :math:`\hat c(r)` is the predicted cluster containing :math:`r`, then :math:`B_r = c \backslash \hat c(r)`. Then the expected number of missin elements for :math:`c` is
 
         .. math::
 
@@ -367,28 +409,26 @@ def expected_relative_missing_links(prediction, sample):
         sample (Series): Membership vector representing a set of true clusters.
 
     Returns:
-        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the expected relative number of missing links.
+        Series: Pandas Series indexed by true cluster identifiers (unique values in `sample`) and with values corresponding to the expected relative number of missin elements.
 
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
-        >>> expected_relative_missing_links(prediction, sample)
+        >>> expected_relative_missing(prediction, sample)
         sample
         c1    0.444444
         c2    0.500000
         c4    0.000000
-        Name: expected_relative_missing_links, dtype: float64
+        Name: expected_relative_missing, dtype: float64
+
+    Notes:
+        The sample is restricted to the set of records which are present in the prediction.
     """
-    prediction = MembershipVector(prediction)
-    sample = MembershipVector(sample)
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
 
-    result = count_missing_links(prediction, sample)
-    sizes = sample.groupby(sample).size()
-
-    result = result / sizes**2
-    result.rename("expected_relative_missing_links", inplace=True)
-
-    return result
+    error_table = record_error_table(prediction, sample)
+    return expected_relative_missing_from_table(error_table)
 
 
 def error_indicator(prediction, sample):
@@ -414,9 +454,13 @@ def error_indicator(prediction, sample):
         c4    0
         Name: error_indicator, dtype: int64
 
+    Notes:
+        The sample is restricted to the set of records which are present in the prediction.
     """
-    prediction = MembershipVector(prediction)
-    sample = MembershipVector(sample)
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
+
+    sample = sample[sample.index.isin(prediction.index)]
 
     relevant_predictions = relevant_prediction_subset(prediction, sample)
 
@@ -471,9 +515,14 @@ def splitting_entropy(prediction, sample, alpha=1):
         c2    2.000000
         c4    1.000000
         Name: splitting_entropy_1, dtype: float64
+
+    Notes:
+        The sample is restricted to the set of records which are present in the prediction.
     """
-    prediction = MembershipVector(prediction)
-    sample = MembershipVector(sample)
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
+
+    sample = sample[sample.index.isin(prediction.index)]
 
     relevant_predictions = relevant_prediction_subset(prediction, sample)
 

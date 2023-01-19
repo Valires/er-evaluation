@@ -2,6 +2,17 @@
 Changelog
 =========
 
+Unreleased
+----------
+
+* Improve documentation
+* Add handling of NA values
+* Bug fixes
+* Add datasets module
+* Add visualization functions
+* Performance improvements
+* BREAKING: error_analysis functions have been renamed.
+
 1.2.0 (January 11, 2022)
 ------------------------
 

@@ -1,4 +1,4 @@
-import warnings
+import logging
 
 import numpy as np
 import pandas as pd
@@ -8,9 +8,9 @@ from er_evaluation.data_structures import MembershipVector
 from er_evaluation.error_analysis import (
     cluster_sizes_from_table,
     error_indicator_from_table,
-    expected_missing_links_from_table,
-    expected_relative_extra_links_from_table,
-    expected_relative_missing_links_from_table,
+    expected_missing_from_table,
+    expected_relative_extra_from_table,
+    expected_relative_missing_from_table,
     expected_size_difference_from_table,
     record_error_table,
 )
@@ -119,11 +119,11 @@ def validate_prediction_sample(prediction, sample):
     Raises:
         AssertionError
     """
-    prediction = MembershipVector(prediction)
-    sample = MembershipVector(sample)
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
 
     if not all(sample.index.isin(prediction.index)):
-        warnings.warn("Some sample elements are not in the prediction.")
+        logging.info("Some sample elements are not in the prediction.")
 
 
 def validate_weights(sample, weights):
@@ -170,8 +170,8 @@ def pairwise_precision_design_estimate(prediction, sample, weights):
     References:
         [1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230
     """
-    prediction = MembershipVector(prediction)
-    sample = MembershipVector(sample)
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
 
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
@@ -239,8 +239,8 @@ def pairwise_recall_design_estimate(prediction, sample, weights):
     References:
         [1] Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: arxiv:2210.01230
     """
-    prediction = MembershipVector(prediction)
-    sample = MembershipVector(sample)
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
 
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
@@ -292,14 +292,14 @@ def pairwise_f_design_estimate(prediction, sample, weights, beta=1.0):
         >>> pairwise_f_design_estimate(prediction, sample, weights)
         (0.36213991769547327, 0.19753086419753088)
     """
-    prediction = MembershipVector(prediction)
-    sample = MembershipVector(sample)
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
 
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
     cs = cluster_sizes_from_table(error_table)
-    E_miss = expected_missing_links_from_table(error_table)
+    E_miss = expected_missing_from_table(error_table)
     E_size = expected_size_difference_from_table(error_table)
     weights = 1 / cs
 
@@ -329,8 +329,8 @@ def cluster_precision_design_estimate(prediction, sample, weights):
         >>> cluster_precision_design_estimate(prediction, sample, weights="uniform")
         (0.6354166666666666, 0.38188130791298663)
     """
-    prediction = MembershipVector(prediction)
-    sample = MembershipVector(sample)
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
 
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
@@ -364,8 +364,8 @@ def cluster_recall_design_estimate(prediction, sample, weights):
         >>> cluster_recall_design_estimate(prediction, sample, weights="uniform")
         (0.6666666666666666, 0.3333333333333333)
     """
-    prediction = MembershipVector(prediction)
-    sample = MembershipVector(sample)
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
 
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
@@ -399,13 +399,13 @@ def b_cubed_precision_design_estimate(prediction, sample, weights):
         >>> b_cubed_precision_design_estimate(prediction, sample, weights)
         (0.7916666666666667, 0.0416666666666673)
     """
-    prediction = MembershipVector(prediction)
-    sample = MembershipVector(sample)
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
 
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    E_extra_rel = expected_relative_extra_links_from_table(error_table)
+    E_extra_rel = expected_relative_extra_from_table(error_table)
 
     N = (1 - E_extra_rel) * weights
     D = weights
@@ -434,13 +434,13 @@ def b_cubed_recall_design_estimate(prediction, sample, weights):
         >>> b_cubed_recall_design_estimate(prediction, sample, weights)
         (0.5277777777777778, 0.027777777777778203)
     """
-    prediction = MembershipVector(prediction)
-    sample = MembershipVector(sample)
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
 
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    E_miss_rel = expected_relative_missing_links_from_table(error_table)
+    E_miss_rel = expected_relative_missing_from_table(error_table)
 
     N = (1 - E_miss_rel) * weights
     D = weights

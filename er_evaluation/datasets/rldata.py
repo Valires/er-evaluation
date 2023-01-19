@@ -73,13 +73,13 @@ def load_rldata500_disambiguations():
     These are returned in a dictionary with the above named elements.
 
     Returns:
-        tuple: tuple of the form ``(reference, predictions)``, where ``reference`` is the ground truth disambiguation and ``predictions`` is a dictionary with four toy disambiguations.
+        tuple: tuple of the form ``(predictions, reference)``, where ``reference`` is the ground truth disambiguation and ``predictions`` is a dictionary with four toy disambiguations.
 
     Examples:
 
         Load ground truth and the set of four toy predictions:
 
-        >>> reference, predictions = load_rldata500_disambiguations()
+        >>> predictions, reference = load_rldata500_disambiguations()
 
         Compute pairwise precision for each prediction:
 
@@ -101,7 +101,7 @@ def load_rldata500_disambiguations():
 
     disambiguations = _make_rldisambiguations(rldata500)
 
-    return reference, disambiguations
+    return disambiguations, reference
 
 
 def load_rldata10000():
@@ -146,13 +146,13 @@ def load_rldata10000_disambiguations():
     These are returned in a dictionary with the above named elements.
 
     Returns:
-        tuple: tuple of the form ``(reference, predictions)``, where ``reference`` is the ground truth disambiguation and ``predictions`` is a dictionary with four toy disambiguations.
+        tuple: tuple of the form ``(predictions, reference)``, where ``reference`` is the ground truth disambiguation and ``predictions`` is a dictionary with four toy disambiguations.
 
     Examples:
 
         Load ground truth and the set of four toy predictions:
 
-        >>> reference, predictions = load_rldata10000_disambiguations()
+        >>> predictions, reference = load_rldata10000_disambiguations()
 
         Compute pairwise precision for each prediction:
 
@@ -174,4 +174,4 @@ def load_rldata10000_disambiguations():
 
     disambiguations = _make_rldisambiguations(rldata10000)
 
-    return reference, disambiguations
+    return disambiguations, reference

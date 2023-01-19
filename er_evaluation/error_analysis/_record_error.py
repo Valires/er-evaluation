@@ -1,8 +1,6 @@
-import numpy as np
 import pandas as pd
-from scipy.special import comb
 
-from er_evaluation.data_structures import MembershipVector, membership_to_clusters
+from er_evaluation.data_structures import MembershipVector
 from er_evaluation.utils import relevant_prediction_subset
 
 
@@ -12,10 +10,10 @@ def error_metrics_from_table(error_table):
 
     Error metrics included:
 
-    * Expected extra links (see :meth:`er_evaluation.error_analysis.expected_extra_links`)
-    * Expected relative extra links (see :meth:`er_evaluation.error_analysis.expected_relative_extra_links`)
-    * Expected missing links (see :meth:`er_evaluation.error_analysis.expected_missing_links`)
-    * Expected relative missing links (see :meth:`er_evaluation.error_analysis.expected_relative_missing_links`)
+    * Expected extra elements (see :meth:`er_evaluation.error_analysis.expected_extra`)
+    * Expected relative extra elements (see :meth:`er_evaluation.error_analysis.expected_relative_extra`)
+    * Expected missin elements (see :meth:`er_evaluation.error_analysis.expected_missing`)
+    * Expected relative missin elements (see :meth:`er_evaluation.error_analysis.expected_relative_missing`)
     * Error indicator (see :meth:`er_evaluation.error_analysis.error_indicator`)
 
     Args:
@@ -29,7 +27,7 @@ def error_metrics_from_table(error_table):
         >>> sample = pd.Series(index=[1,2,3,4,5,6,7, 8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c3"])
         >>> error_table = record_error_table(prediction, sample)
         >>> error_metrics_from_table(prediction, sample)  # doctest: +SKIP
-        expected_extra_links	expected_relative_extra_links	expected_missing_links	expected_relative_missing_links	error_indicator
+        expected_extra	expected_relative_extra	expected_missing	expected_relative_missing	error_indicator
         reference
         c1	0.333333	0.166667	1.333333	0.444444	1
         c2	0.500000	0.250000	1.000000	0.500000	1
@@ -37,10 +35,10 @@ def error_metrics_from_table(error_table):
     """
     return pd.concat(
         [
-            expected_extra_links_from_table(error_table),
-            expected_relative_extra_links_from_table(error_table),
-            expected_missing_links_from_table(error_table),
-            expected_relative_missing_links_from_table(error_table),
+            expected_extra_from_table(error_table),
+            expected_relative_extra_from_table(error_table),
+            expected_missing_from_table(error_table),
+            expected_relative_missing_from_table(error_table),
             error_indicator_from_table(error_table),
         ],
         axis=1,
@@ -62,7 +60,7 @@ def record_error_table(prediction, sample):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,6,7], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3"])
         >>> record_error_table(prediction, sample)  # doctest: +SKIP
-                    prediction	reference	pred_cluster_size	ref_cluster_size	extra_links	    missing_links
+                    prediction	reference	pred_cluster_size	ref_cluster_size	extra	    missing
         index
         1	    1	        c1	        2	                3.0	                0.0             1.0
         2	    1	        c1	        2	                3.0	                0.0	            1.0
@@ -71,10 +69,12 @@ def record_error_table(prediction, sample):
         5	    2	        c2	        2	                2.0	                1.0	            1.0
         6	    4	        c3	        3	                2.0	                1.0	            0.0
         7	    4	        c3	        3	                2.0	                1.0	            0.0
-        8	    4	        NaN	        3	                NaN	                NaN	            NaN
+
+    Notes:
+        sample is subsetted to only include indices present in prediction.
     """
-    prediction = MembershipVector(prediction)
-    sample = MembershipVector(sample)
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
 
     sample = sample[sample.index.isin(prediction.index)]
     prediction = relevant_prediction_subset(prediction, sample)
@@ -96,26 +96,15 @@ def record_error_table(prediction, sample):
         .merge(ref_cluster_size, on="reference", how="left")
     )
     error_table.set_index("index", inplace=True)
+    error_table.dropna(inplace=True)
 
-    pred_clusters = membership_to_clusters(prediction)
-    ref_clusters = membership_to_clusters(sample)
+    intersection_size = error_table.groupby(["prediction", "reference"]).size()
+    intersection_size.name = "intersection_size"
+    error_table = error_table.merge(intersection_size.reset_index(), on=["prediction", "reference"], how="left")
+    error_table["extra"] = error_table["pred_cluster_size"] - error_table["intersection_size"]
+    error_table["missing"] = error_table["ref_cluster_size"] - error_table["intersection_size"]
 
-    def A_r(row):
-        if pd.isna(row.reference):
-            A_r = np.nan
-        else:
-            A_r = len(np.setdiff1d(pred_clusters[row.prediction], ref_clusters[row.reference]))
-        return A_r
-
-    def B_r(row):
-        if pd.isna(row.reference):
-            A_r = np.nan
-        else:
-            A_r = len(np.setdiff1d(ref_clusters[row.reference], pred_clusters[row.prediction]))
-        return A_r
-
-    error_table["extra_links"] = error_table.apply(A_r, axis=1)
-    error_table["missing_links"] = error_table.apply(B_r, axis=1)
+    error_table.drop(labels="intersection_size", axis=1, inplace=True)
 
     return error_table
 
@@ -160,159 +149,159 @@ def expected_size_difference_from_table(error_table):
     return result["expected_size_diff"]
 
 
-def expected_extra_links_from_table(error_table):
+def expected_extra_from_table(error_table):
     """
-    Compute expected extra links from record error table.
+    Compute expected extra elements from record error table.
 
-    See :meth:`er_evaluation.error_analysis.expected_extra_links`.
+    See :meth:`er_evaluation.error_analysis.expected_extra`.
 
     Args:
         error_table (DataFrame): Record error table.
 
     Returns:
-        Series: Expected extra links for each reference cluster.
+        Series: Expected extra elements for each reference cluster.
 
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,6,7], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3"])
         >>> error_table = record_error_table(prediction, sample)
-        >>> expected_extra_links_from_table(error_table)
+        >>> expected_extra_from_table(error_table)
         reference
         c1    0.333333
         c2    0.500000
         c3    1.000000
-        Name: expected_extra_links, dtype: float64
+        Name: expected_extra, dtype: float64
 
-        The result is the same as calling :meth:`er_evaluation.error_analysis.expected_extra_links` directly on ``prediction`` and ``sample``:
+        The result is the same as calling :meth:`er_evaluation.error_analysis.expected_extra` directly on ``prediction`` and ``sample``:
 
-        >>> from er_evaluation.error_analysis import expected_extra_links
-        >>> expected_extra_links(prediction, sample)
+        >>> from er_evaluation.error_analysis import expected_extra
+        >>> expected_extra(prediction, sample)
         sample
         c1    0.333333
         c2    0.500000
         c3    1.000000
-        Name: expected_extra_links, dtype: float64
+        Name: expected_extra, dtype: float64
     """
     error_table = error_table.copy()
-    result = error_table.groupby("reference").agg({"extra_links": "mean"})
-    return result["extra_links"].rename("expected_extra_links")
+    result = error_table.groupby("reference").agg({"extra": "mean"})
+    return result["extra"].rename("expected_extra")
 
 
-def expected_missing_links_from_table(error_table):
+def expected_missing_from_table(error_table):
     """
-    Compute expected missing links from record error table.
+    Compute expected missin elements from record error table.
 
-    See :meth:`er_evaluation.error_analysis.expected_missing_links`.
+    See :meth:`er_evaluation.error_analysis.expected_missing`.
 
     Args:
         error_table (DataFrame): Record error table.
 
     Returns:
-        Series: Expected missing links for each reference cluster.
+        Series: Expected missin elements for each reference cluster.
 
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,6,7], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3"])
         >>> error_table = record_error_table(prediction, sample)
-        >>> expected_missing_links_from_table(error_table)
+        >>> expected_missing_from_table(error_table)
         reference
         c1    1.333333
         c2    1.000000
         c3    0.000000
-        Name: expected_missing_links, dtype: float64
+        Name: expected_missing, dtype: float64
 
-        The result is the same as calling :meth:`er_evaluation.error_analysis.expected_missing_links` directly on ``prediction`` and ``sample``:
+        The result is the same as calling :meth:`er_evaluation.error_analysis.expected_missing` directly on ``prediction`` and ``sample``:
 
-        >>> from er_evaluation.error_analysis import expected_missing_links
-        >>> expected_missing_links(prediction, sample)
+        >>> from er_evaluation.error_analysis import expected_missing
+        >>> expected_missing(prediction, sample)
         sample
         c1    1.333333
         c2    1.000000
         c3    0.000000
-        Name: expected_missing_links, dtype: float64
+        Name: expected_missing, dtype: float64
     """
     error_table = error_table.copy()
-    result = error_table.groupby("reference").agg({"missing_links": "mean"})
-    return result["missing_links"].rename("expected_missing_links")
+    result = error_table.groupby("reference").agg({"missing": "mean"})
+    return result["missing"].rename("expected_missing")
 
 
-def expected_relative_extra_links_from_table(error_table):
+def expected_relative_extra_from_table(error_table):
     """
-    Compute expected relative extra links from record error table.
+    Compute expected relative extra elements from record error table.
 
-    See :meth:`er_evaluation.error_analysis.expected_relative_extra_links`.
+    See :meth:`er_evaluation.error_analysis.expected_relative_extra`.
 
     Args:
         error_table (DataFrame): Record error table.
 
     Returns:
-        Series: Expected relative extra links for each reference cluster.
+        Series: Expected relative extra elements for each reference cluster.
 
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,6,7], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3"])
         >>> error_table = record_error_table(prediction, sample)
-        >>> expected_relative_extra_links_from_table(error_table)
+        >>> expected_relative_extra_from_table(error_table)
         reference
         c1    0.166667
         c2    0.250000
         c3    0.333333
-        Name: expected_relative_extra_links, dtype: float64
+        Name: expected_relative_extra, dtype: float64
 
-        The result is the same as calling :meth:`er_evaluation.error_analysis.expected_relative_extra_links` directly on ``prediction`` and ``sample``:
+        The result is the same as calling :meth:`er_evaluation.error_analysis.expected_relative_extra` directly on ``prediction`` and ``sample``:
 
-        >>> from er_evaluation.error_analysis import expected_relative_extra_links
-        >>> expected_relative_extra_links(prediction, sample)
+        >>> from er_evaluation.error_analysis import expected_relative_extra
+        >>> expected_relative_extra(prediction, sample)
         sample
         c1    0.166667
         c2    0.250000
         c3    0.333333
-        Name: expected_relative_extra_links, dtype: float64
+        Name: expected_relative_extra, dtype: float64
     """
     error_table = error_table.copy()
-    error_table["expected_relative_extra_links"] = error_table["extra_links"] / error_table["pred_cluster_size"]
-    result = error_table.groupby("reference").agg({"expected_relative_extra_links": "mean"})
-    return result["expected_relative_extra_links"]
+    error_table["expected_relative_extra"] = error_table["extra"] / error_table["pred_cluster_size"]
+    result = error_table.groupby("reference").agg({"expected_relative_extra": "mean"})
+    return result["expected_relative_extra"]
 
 
-def expected_relative_missing_links_from_table(error_table):
+def expected_relative_missing_from_table(error_table):
     """
-    Compute expected relative missing links from record error table.
+    Compute expected relative missin elements from record error table.
 
-    See :meth:`er_evaluation.error_analysis.expected_relative_missing_links`.
+    See :meth:`er_evaluation.error_analysis.expected_relative_missing`.
 
     Args:
         error_table (DataFrame): Record error table.
 
     Returns:
-        Series: Expected relative missing links for each reference cluster.
+        Series: Expected relative missin elements for each reference cluster.
 
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,6,7], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3"])
         >>> error_table = record_error_table(prediction, sample)
-        >>> expected_relative_missing_links_from_table(error_table)
+        >>> expected_relative_missing_from_table(error_table)
         reference
         c1    0.444444
         c2    0.500000
         c3    0.000000
-        Name: expected_relative_missing_links, dtype: float64
+        Name: expected_relative_missing, dtype: float64
 
-        The result is the same as calling :meth:`er_evaluation.error_analysis.expected_relative_missing_links` directly on ``prediction`` and ``sample``:
+        The result is the same as calling :meth:`er_evaluation.error_analysis.expected_relative_missing` directly on ``prediction`` and ``sample``:
 
-        >>> from er_evaluation.error_analysis import expected_relative_missing_links
-        >>> expected_relative_missing_links(prediction, sample)
+        >>> from er_evaluation.error_analysis import expected_relative_missing
+        >>> expected_relative_missing(prediction, sample)
         sample
         c1    0.444444
         c2    0.500000
         c3    0.000000
-        Name: expected_relative_missing_links, dtype: float64
+        Name: expected_relative_missing, dtype: float64
 
     """
     error_table = error_table.copy()
-    error_table["expected_relative_missing_links"] = error_table["missing_links"] / error_table["ref_cluster_size"]
-    result = error_table.groupby("reference").agg({"expected_relative_missing_links": "mean"})
-    return result["expected_relative_missing_links"]
+    error_table["expected_relative_missing"] = error_table["missing"] / error_table["ref_cluster_size"]
+    result = error_table.groupby("reference").agg({"expected_relative_missing": "mean"})
+    return result["expected_relative_missing"]
 
 
 def error_indicator_from_table(error_table):
@@ -349,7 +338,7 @@ def error_indicator_from_table(error_table):
         Name: error_indicator, dtype: int64
     """
     error_table = error_table.copy()
-    error_table["error_indicator"] = (error_table["extra_links"] != 0) | (error_table["missing_links"] != 0)
+    error_table["error_indicator"] = (error_table["extra"] != 0) | (error_table["missing"] != 0)
     error_table["error_indicator"] = error_table["error_indicator"].astype(int)
     result = error_table.groupby("reference").agg({"error_indicator": "first"})
     return result["error_indicator"]

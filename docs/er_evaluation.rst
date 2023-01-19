@@ -19,6 +19,7 @@ API Doc
    :maxdepth: 4
    :hidden:
 
+   all_functions
    er_evaluation.data_structures
    er_evaluation.datasets
    er_evaluation.error_analysis

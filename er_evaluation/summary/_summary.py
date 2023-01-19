@@ -47,7 +47,7 @@ def summary_statistics(membership, names=None):
     if names is not None:
         statistics.update(
             {
-                "homonimy_rate": homonimy_rate(membership, names),
+                "homonymy_rate": homonymy_rate(membership, names),
                 "name_variation_rate": name_variation_rate(membership, names),
             }
         )
@@ -236,24 +236,24 @@ def cluster_hill_number(membership, alpha=1):
         return np.sum(probs**alpha) ** (1 / (1 - alpha))
 
 
-def homonimy_rate(membership, names):
+def homonymy_rate(membership, names):
     r"""
-    Compute the homonimy rate of a given clustering with a set of associated names.
+    Compute the homonymy rate of a given clustering with a set of associated names.
 
-    Homonimy rate:
-        The homonimy rate is the proportion of clusters which share a name with another cluster.
+    homonymy rate:
+        The homonymy rate is the proportion of clusters which share a name with another cluster.
 
     Args:
         membership (Series): Membership vector representation of a clustering.
         names (Series): Series indexed by cluster elements and with values corresponding to the associated name. Note that the index of `membership` should be included in the index of `names`.
 
     Returns:
-        float: Homonimy rate
+        float: homonymy rate
 
     Examples:
         >>> membership = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> names = pd.Series(index=[1,2,3,4,5,6,7,8], data=["n1", "n2", "n3", "n4", "n3", "n1", "n2", "n8"])
-        >>> homonimy_rate(membership, names)
+        >>> homonymy_rate(membership, names)
         0.5
     """
     membership = MembershipVector(membership)
