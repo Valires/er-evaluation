@@ -415,7 +415,7 @@ def expected_relative_missing(prediction, sample):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
         >>> expected_relative_missing(prediction, sample)
-        sample
+        reference
         c1    0.444444
         c2    0.500000
         c4    0.000000

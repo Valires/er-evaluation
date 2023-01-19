@@ -45,7 +45,9 @@ def load_pv_disambiguations():
 
         >>> predictions, reference = load_pv_disambiguations()
         >>> from er_evaluation.estimators import pairwise_precision_design_estimate
-        >>> pairwise_precision_design_estimate(predictions["disamb_inventor_id_20211230"], reference, weights="cluster_size")
+        >>> import pandas as pd
+        >>> prediction = predictions[pd.Timestamp('2021-12-30 00:00:00')]
+        >>> pairwise_precision_design_estimate(prediction, reference, weights="cluster_size")
         (0.9138044762074499, 0.018549986866583837)
 
     References:

@@ -339,7 +339,7 @@ def b_cubed_precision(prediction, reference):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
         >>> b_cubed_precision(prediction, reference)
-        0.6458333333333333
+        0.6458333333333334
 
     Notes:
         NA values are dropped from membership vectors prior to computing the metric.
@@ -435,7 +435,7 @@ def b_cubed_f(prediction, reference, beta=1.0):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> reference = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])
         >>> b_cubed_f(prediction, reference)
-        0.6999178981937603
+        0.6999178981937602
 
     Notes:
         NA values are dropped from membership vectors prior to computing the metric.

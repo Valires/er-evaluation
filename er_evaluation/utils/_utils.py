@@ -62,7 +62,7 @@ def sample_clusters(membership, weights="uniform", sample_prop=0.2, replace=True
         Load a toy dataset:
 
         >>> from er_evaluation.datasets import load_rldata10000_disambiguations
-        >>> reference, predictions = load_rldata10000_disambiguations()
+        >>> predictions, reference = load_rldata10000_disambiguations()
 
         Sample a set of ground truth clusters uniformly at random:
 
