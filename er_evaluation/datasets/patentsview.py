@@ -48,7 +48,7 @@ def load_pv_disambiguations():
         >>> import pandas as pd
         >>> prediction = predictions[pd.Timestamp('2021-12-30 00:00:00')]
         >>> pairwise_precision_design_estimate(prediction, reference, weights="cluster_size")
-        (0.9138044762074499, 0.018549986866583837)
+        (0.9131787709880134, 0.018619907220335144)
 
     References:
         1. Binette, Olivier, Sarvo Madhavan, Jack Butler, Beth Anne Card, Emily Melluso and Christina Jones. 2023. **PatentsView-Evaluation: Evaluation Datasets and Tools to Advance Research on Inventor Name Disambiguation**. arXiv e-prints: arxiv:2301.03591. Available online at https://arxiv.org/abs/2301.03591

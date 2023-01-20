@@ -291,7 +291,7 @@ def expected_relative_missing_from_table(error_table):
 
         >>> from er_evaluation.error_analysis import expected_relative_missing
         >>> expected_relative_missing(prediction, sample)
-        sample
+        reference
         c1    0.444444
         c2    0.500000
         c3    0.000000
@@ -331,7 +331,7 @@ def error_indicator_from_table(error_table):
 
         >>> from er_evaluation.error_analysis import error_indicator
         >>> error_indicator(prediction, sample)
-        sample
+        reference
         c1    1
         c2    1
         c3    0

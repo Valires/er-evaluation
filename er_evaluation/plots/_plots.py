@@ -295,7 +295,7 @@ def plot_estimates(predictions, sample_weights, estimators=DEFAULT_ESTIMATORS, t
     return fig
 
 
-def plot_cluster_errors(prediction, reference, x="expected_relative_extra", y="expected_relative_missing", opacity=0.5):
+def plot_cluster_errors(prediction, reference, x="expected_relative_extra", y="expected_relative_missing", opacity=0.5, **kwargs):
     """
     Scatter plot of two cluster-wise error metrics.
 
@@ -319,7 +319,7 @@ def plot_cluster_errors(prediction, reference, x="expected_relative_extra", y="e
     """
     errors = error_metrics(prediction, reference)
 
-    fig = px.scatter(errors, x=x, y=y, opacity=opacity, marginal_x="histogram", marginal_y="histogram")
+    fig = px.scatter(errors, x=x, y=y, opacity=opacity, marginal_x="histogram", marginal_y="histogram", **kwargs)
     fig.update_layout(title_text="Cluster-Wise Error Metrics")
 
     return fig
