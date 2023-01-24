@@ -365,7 +365,6 @@ def cluster_sizes_from_table(error_table):
         c3    2.0
         Name: ref_cluster_size, dtype: float64
     """
-    error_table = error_table.copy()
     result = error_table.groupby("reference").agg({"ref_cluster_size": "mean"})
     return result["ref_cluster_size"]
 

@@ -134,7 +134,6 @@ def validate_weights(sample, weights):
 def _prepare_args(prediction, sample, weights):
     validate_prediction_sample(prediction, sample)
     sample = sample[sample.index.isin(prediction.index)]
-    prediction = relevant_prediction_subset(prediction, sample)
 
     weights = _parse_weights(sample, weights)
     validate_weights(sample, weights)
@@ -316,7 +315,7 @@ def cluster_precision_design_estimate(prediction, sample, weights):
     Given a predicted disambiguation `prediction`, a set of ground truth clusters `sample`, and a set of cluster sampling weights `weights` (e.g., inverse probability weights for each cluster), this returns a cluster precision estimate together with its estimated standard deviation.
 
     Args:
-        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier. This should cover the entire target population for which cluster precision is being computed.
         sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
         weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string "uniform" for uniform sampling weights, or "cluster_size" for inverse cluster size sampling weights.
 
@@ -327,7 +326,11 @@ def cluster_precision_design_estimate(prediction, sample, weights):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,6,7, 8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c3"])
         >>> cluster_precision_design_estimate(prediction, sample, weights="uniform")
-        (0.6354166666666666, 0.38188130791298663)
+        (0.26171875, 0.23593232610221093)
+
+    Notes:
+
+        * This estimator requires ``prediction`` to cover the entire population of interest from which sampled clusters were obtained. Do not subset ``prediction`` in any way.
     """
     prediction = MembershipVector(prediction, dropna=True)
     sample = MembershipVector(sample, dropna=True)
@@ -336,10 +339,10 @@ def cluster_precision_design_estimate(prediction, sample, weights):
 
     error_table = record_error_table(prediction, sample)
     cs = cluster_sizes_from_table(error_table)
-    E_delta = error_indicator_from_table(error_table)
+    E_delta = 1 - error_indicator_from_table(error_table)
 
-    N = len(prediction) * E_delta * weights
-    D = len(cs) * cs * weights
+    N = len(prediction) * E_delta * weights / prediction.nunique()
+    D = cs * weights
 
     return (ratio_estimator(N, D), std_dev(N, D))
 
@@ -362,7 +365,7 @@ def cluster_recall_design_estimate(prediction, sample, weights):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,6,7, 8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c3"])
         >>> cluster_recall_design_estimate(prediction, sample, weights="uniform")
-        (0.6666666666666666, 0.3333333333333333)
+        (0.3333333333333333, 0.3333333333333333)
     """
     prediction = MembershipVector(prediction, dropna=True)
     sample = MembershipVector(sample, dropna=True)
@@ -370,10 +373,51 @@ def cluster_recall_design_estimate(prediction, sample, weights):
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    E_delta = error_indicator_from_table(error_table)
+    E_delta = 1 - error_indicator_from_table(error_table)
 
     N = E_delta * weights
     D = weights
+
+    return (ratio_estimator(N, D), std_dev(N, D))
+
+
+def cluster_f_design_estimate(prediction, sample, weights, beta=1.0):
+    """
+    Cluster F-score design estimator.
+
+    Given a predicted disambiguation `prediction`, a set of ground truth clusters `sample`, and a set of cluster sampling weights `weights` (e.g., inverse probability weights for each cluster), this returns a cluster F-score estimate together with its estimated standard deviation.
+
+    Args:
+        prediction (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier. This should cover the entire target population for which cluster f-score is being computed.
+        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string "uniform" for uniform sampling weights, or "cluster_size" for inverse cluster size sampling weights.
+        beta (float): F-score weight.
+
+    Returns:
+        tuple: Cluster F-score estimate and standard deviation estimate.
+
+    Examples:
+        >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
+        >>> sample = pd.Series(index=[1,2,3,4,5,6,7, 8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c3"])
+        >>> cluster_f_design_estimate(prediction, sample, weights="uniform")
+
+    Notes:
+
+        * This estimator requires ``prediction`` to cover the entire population of interest from which sampled clusters were obtained. Do not subset ``prediction`` in any way.
+    """
+    prediction = MembershipVector(prediction, dropna=True)
+    sample = MembershipVector(sample, dropna=True)
+
+    prediction, sample, weights = _prepare_args(prediction, sample, weights)
+
+    error_table = record_error_table(prediction, sample)
+    cs = cluster_sizes_from_table(error_table)
+    E_delta = 1 - error_indicator_from_table(error_table)
+
+    multiplier = len(prediction) * (1 + beta**2) / prediction.nunique()
+
+    N = multiplier * E_delta * weights
+    D = beta**2 * len(prediction) / prediction.nunique() + cs * weights
 
     return (ratio_estimator(N, D), std_dev(N, D))
 

@@ -295,7 +295,9 @@ def plot_estimates(predictions, sample_weights, estimators=DEFAULT_ESTIMATORS, t
     return fig
 
 
-def plot_cluster_errors(prediction, reference, x="expected_relative_extra", y="expected_relative_missing", opacity=0.5, **kwargs):
+def plot_cluster_errors(
+    prediction, reference, x="expected_relative_extra", y="expected_relative_missing", opacity=0.5, **kwargs
+):
     """
     Scatter plot of two cluster-wise error metrics.
 
@@ -358,5 +360,8 @@ def plot_comparison(predictions, metrics=DEFAULT_COMPARISON_METRICS, **kwargs):
     fig.update_layout(title_text="Disambiguation Similarity")
     for i, name in enumerate(metrics.keys()):
         fig.layout.annotations[i].update(text=name, font_size=14)
+
+    fig.update_xaxes(title="Prediction")
+    fig.update_yaxes(title="Reference")
 
     return fig
