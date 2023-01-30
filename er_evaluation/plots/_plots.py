@@ -179,6 +179,7 @@ def plot_summaries(predictions, names=None, type="line", **kwargs):
         predictions (dict): Dictionary of predictions for which to plot the summary statistics.
         names (Series, optional): Series with cluster element names. Used to compute the homonymy rate and the name variation rate. Defaults to None.
         type (str, optional): One of "line" for a line plot, or "bar" for a bar plot. Defaults to "line".
+        **kwargs (optional): Additional arguments to pass to plotly express for plot creation.
 
     Returns:
         plotly Figure
@@ -239,6 +240,7 @@ def plot_metrics(predictions, reference, metrics=DEFAULT_METRICS, type="line", *
         reference (Series): Reference membership vector representing the ground truth.
         metrics (dict, optional): Dictionary of metrics to display. Defaults to DEFAULT_METRICS.
         type (str, optional): One of "line" for a line plot or "bar" for a bar plot. Defaults to "line".
+        **kwargs (optional): Additional arguments to pass to plotly express for plot creation.
 
     Returns:
         plotly Figure
@@ -272,6 +274,7 @@ def plot_estimates(predictions, sample_weights, estimators=DEFAULT_ESTIMATORS, t
         sample_weights (dict): Dictionary with an element named "sample" containing sampled clusters, and an element named "weights" containing the sampling weights.
         estimators (dict, optional): Dictionary of estimators to use. Defaults to DEFAULT_ESTIMATORS.
         type (str, optional): One of "line" for a line plot or "bar" for a bar plot. Defaults to "line".
+        **kwargs (optional): Additional arguments to pass to plotly express for plot creation.
 
     Returns:
         plotly Figure.
@@ -316,6 +319,7 @@ def plot_cluster_errors(
         x (str, optional): x-axis metric to plot. Defaults to "expected_relative_extra".
         y (str, optional): y-axis metric to plot. Defaults to "expected_relative_missing".
         opacity (float, optional): Opacity. Defaults to 0.5.
+        **kwargs (optional): Additional arguments to pass to plotly express for plot creation.
 
     Returns:
         plotly Figure
@@ -337,6 +341,7 @@ def plot_comparison(predictions, metrics=DEFAULT_COMPARISON_METRICS, **kwargs):
     Args:
         predictions (dict): dictionary of membership vectors to compare.
         metrics (dict, optional): Dictionary of metrics to compute. Defaults to DEFAULT_COMPARISON_METRICS.
+        **kwargs (optional): Additional arguments to pass to plotly express for plot creation.
 
     Examples:
         >>> from er_evaluation.datasets import load_pv_disambiguations
