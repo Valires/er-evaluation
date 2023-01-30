@@ -171,7 +171,7 @@ def plot_entropy_curve(membership, q_range=None, groupby=None, name=None):
     return fig
 
 
-def plot_summaries(predictions, names=None, type="line"):
+def plot_summaries(predictions, names=None, type="line", **kwargs):
     """
     Plot summary statistics
 
@@ -211,6 +211,7 @@ def plot_summaries(predictions, names=None, type="line"):
             "Homonymy Rate",
         ),
         shared_xaxes=True,
+        **kwargs
     )
 
     plots = [["average_cluster_size", "matching_rate"], ["H0", "H1"]]
@@ -229,7 +230,7 @@ def plot_summaries(predictions, names=None, type="line"):
     return fig
 
 
-def plot_metrics(predictions, reference, metrics=DEFAULT_METRICS, type="line"):
+def plot_metrics(predictions, reference, metrics=DEFAULT_METRICS, type="line", **kwargs):
     """
     Plot performance metrics.
 
@@ -251,9 +252,9 @@ def plot_metrics(predictions, reference, metrics=DEFAULT_METRICS, type="line"):
     table = metrics_table(predictions, {"reference": reference}, metrics=metrics)
 
     if type == "line":
-        fig = px.line(table, x="prediction", y="value", color="metric")
+        fig = px.line(table, x="prediction", y="value", color="metric", **kwargs)
     elif type == "bar":
-        fig = px.bar(table, x="metric", y="value", color="prediction", barmode="group")
+        fig = px.bar(table, x="metric", y="value", color="prediction", barmode="group", **kwargs)
     else:
         raise ValueError(f"Unknown plot type {type}. Should be one of ['line', 'bar'].")
 
@@ -262,7 +263,7 @@ def plot_metrics(predictions, reference, metrics=DEFAULT_METRICS, type="line"):
     return fig
 
 
-def plot_estimates(predictions, sample_weights, estimators=DEFAULT_ESTIMATORS, type="line"):
+def plot_estimates(predictions, sample_weights, estimators=DEFAULT_ESTIMATORS, type="line", **kwargs):
     """
     Plot representative performance estimates.
 
@@ -284,9 +285,9 @@ def plot_estimates(predictions, sample_weights, estimators=DEFAULT_ESTIMATORS, t
     table = estimates_table(predictions, samples_weights={"sample": sample_weights}, estimators=estimators)
 
     if type == "line":
-        fig = px.line(table, x="prediction", y="value", color="estimator", error_y="std")
+        fig = px.line(table, x="prediction", y="value", color="estimator", error_y="std", **kwargs)
     elif type == "bar":
-        fig = px.bar(table, x="estimator", y="value", color="prediction", barmode="group", error_y="std")
+        fig = px.bar(table, x="estimator", y="value", color="prediction", barmode="group", error_y="std", **kwargs)
     else:
         raise ValueError(f"Unknown plot type {type}. Should be one of ['line', 'bar'].")
 
