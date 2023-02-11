@@ -7,8 +7,8 @@ from plotly.subplots import make_subplots
 from er_evaluation.data_structures import MembershipVector
 from er_evaluation.error_analysis import error_metrics
 from er_evaluation.estimators import (
-    cluster_precision_design_estimate,
-    cluster_recall_design_estimate,
+    b_cubed_precision_design_estimate,
+    b_cubed_recall_design_estimate,
     estimates_table,
     pairwise_precision_design_estimate,
     pairwise_recall_design_estimate,
@@ -31,8 +31,8 @@ DEFAULT_COMPARISON_METRICS = {
 DEFAULT_ESTIMATORS = {
     "Pairwise precision": pairwise_precision_design_estimate,
     "Pairwise recall": pairwise_recall_design_estimate,
-    "Cluster precision": cluster_precision_design_estimate,
-    "Cluster recall": cluster_recall_design_estimate,
+    "B3 precision": b_cubed_precision_design_estimate,
+    "B3 recall": b_cubed_recall_design_estimate,
 }
 
 
