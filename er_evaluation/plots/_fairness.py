@@ -23,7 +23,7 @@ def plot_performance_disparities(
         prediction (Series): Predicted clustering.
         reference (Series): Reference clustering.
         weights (str or Series): Weights for sampled clusters, or one of "uniform" or "cluster_size".
-        protected_feature (Series): Series with protected attribute for all predicted cluster elements. Should be categorical.
+        protected_feature (Series): Series index by reference cluster IDs and with values corresponding to group assignment.
         estimator: Function to use for performance estimation. Defaults to pairwise_f_design_estimate.
         estimator_name (str, optional): Name of the estimator to use in the plot labels. Defaults to "Pairwise F-score".
         max_subgroups (int, optional): Number of subgroups to display. Defaults to 10.
@@ -55,13 +55,13 @@ def _make_scores_df(prediction, reference, weights, protected_feature, protected
 
     def apply_estimator(x):
         return estimators[x["_scorer"]](
-            prediction[protected_data == x[protected_feature]],
-            reference[protected_data == x[protected_feature]],
+            prediction,
+            reference[reference.isin(protected_data[protected_data == x[protected_feature]].index)],
             weights=weights,
         )
 
     table[["_score", "_std"]] = table.apply(lambda x: apply_estimator(x), axis=1).to_list()
-    table["_count"] = table.apply(lambda x: reference[protected_data == x[protected_feature]].nunique(), axis=1)
+    table["_count"] = table.apply(lambda x: reference[reference.isin(protected_data[protected_data == x[protected_feature]].index)].nunique(), axis=1)
     table[["_baseline", "_baseline_std"]] = table.apply(
         lambda x: estimators[x["_scorer"]](prediction, reference, weights=weights), axis=1
     ).to_list()

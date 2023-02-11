@@ -171,7 +171,7 @@ def plot_entropy_curve(membership, q_range=None, groupby=None, name=None):
     return fig
 
 
-def plot_summaries(predictions, names=None, type="line", **kwargs):
+def plot_summaries(predictions, names=None, type="line", line_shape="spline", markers=True, **kwargs):
     """
     Plot summary statistics
 
@@ -194,7 +194,7 @@ def plot_summaries(predictions, names=None, type="line", **kwargs):
     summaries["prediction"] = predictions.keys()
 
     if type == "line":
-        plt = px.line
+        plt = lambda *args, **kwargs: px.line(*args, line_shape=line_shape, markers=markers, **kwargs)
     elif type == "bar":
         plt = px.bar
     else:
@@ -265,7 +265,7 @@ def plot_metrics(predictions, reference, metrics=DEFAULT_METRICS, type="line", *
     return fig
 
 
-def plot_estimates(predictions, sample_weights, estimators=DEFAULT_ESTIMATORS, type="line", **kwargs):
+def plot_estimates(predictions, sample_weights, estimators=DEFAULT_ESTIMATORS, type="line", markers=True, line_shape="spline", **kwargs):
     """
     Plot representative performance estimates.
 
@@ -288,7 +288,7 @@ def plot_estimates(predictions, sample_weights, estimators=DEFAULT_ESTIMATORS, t
     table = estimates_table(predictions, samples_weights={"sample": sample_weights}, estimators=estimators)
 
     if type == "line":
-        fig = px.line(table, x="prediction", y="value", color="estimator", error_y="std", **kwargs)
+        fig = px.line(table, x="prediction", y="value", color="estimator", error_y="std", line_shape=line_shape, markers=markers, **kwargs)
     elif type == "bar":
         fig = px.bar(table, x="estimator", y="value", color="prediction", barmode="group", error_y="std", **kwargs)
     else:
@@ -300,7 +300,7 @@ def plot_estimates(predictions, sample_weights, estimators=DEFAULT_ESTIMATORS, t
 
 
 def plot_cluster_errors(
-    prediction, reference, x="expected_relative_extra", y="expected_relative_missing", opacity=0.5, **kwargs
+    prediction, reference, x="expected_relative_extra", y="expected_relative_missing", groupby=None, weights=None, opacity=0.5, **kwargs
 ):
     """
     Scatter plot of two cluster-wise error metrics.
@@ -318,15 +318,31 @@ def plot_cluster_errors(
         reference (Series): Reference clustering.
         x (str, optional): x-axis metric to plot. Defaults to "expected_relative_extra".
         y (str, optional): y-axis metric to plot. Defaults to "expected_relative_missing".
+        groupby (Series, optional): Optional Series with grouping values (corresponding to color elements). Should be indexed by cluster identifier, with values corresponding to group assignment.
+        weights (Series, optional): Optional Series with cluster weights. Should be indexed by cluster identifier, with values corresponding to cluster weight.
         opacity (float, optional): Opacity. Defaults to 0.5.
         **kwargs (optional): Additional arguments to pass to plotly express for plot creation.
 
     Returns:
         plotly Figure
+
+    Note:
+        Weights are not accounted for in the marginal histograms.
+    
     """
     errors = error_metrics(prediction, reference)
+    size = None
+    color = None
+    if weights is not None:
+        size = "weight"
+        weights.name = "weight"
+        errors = errors.merge(weights, left_index=True, right_index=True, how="left")
+    if groupby is not None:
+        color = "color"
+        groupby.name = "color"
+        errors = errors.merge(groupby, left_index=True, right_index=True, how="left")
 
-    fig = px.scatter(errors, x=x, y=y, opacity=opacity, marginal_x="histogram", marginal_y="histogram", **kwargs)
+    fig = px.scatter(errors, x=x, y=y, opacity=opacity, marginal_x="histogram", marginal_y="histogram", size=size, color=color, **kwargs)
     fig.update_layout(title_text="Cluster-Wise Error Metrics")
 
     return fig
