@@ -42,7 +42,7 @@ Please refer to the documentation website `er-evaluation.readthedocs.io <https:/
 Coming soon.
 
 .. image:: examples.png
-   :width: 600
+   :width: 800
 
 
 
