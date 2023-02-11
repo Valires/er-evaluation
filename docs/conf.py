@@ -108,8 +108,6 @@ html_theme_options = {
     # Add light/dark mode and documentation version switcher:
     "navbar_end": ["navbar-icon-links"],
 }
-html_logo = "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/noto-emoji/343/magnifying-glass-tilted-left_1f50d.jpg"
-
 
 html_last_updated_fmt = "%b %d, %Y"
 
