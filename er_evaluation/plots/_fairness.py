@@ -61,7 +61,10 @@ def _make_scores_df(prediction, reference, weights, protected_feature, protected
         )
 
     table[["_score", "_std"]] = table.apply(lambda x: apply_estimator(x), axis=1).to_list()
-    table["_count"] = table.apply(lambda x: reference[reference.isin(protected_data[protected_data == x[protected_feature]].index)].nunique(), axis=1)
+    table["_count"] = table.apply(
+        lambda x: reference[reference.isin(protected_data[protected_data == x[protected_feature]].index)].nunique(),
+        axis=1,
+    )
     table[["_baseline", "_baseline_std"]] = table.apply(
         lambda x: estimators[x["_scorer"]](prediction, reference, weights=weights), axis=1
     ).to_list()
@@ -114,7 +117,7 @@ def _add_differences_traces(
             go.Scatter(
                 x=[score, baseline],
                 y=[subgroup, subgroup],
-                hoverinfo='skip',
+                hoverinfo="skip",
                 error_x=dict(array=stds, color="black", thickness=0.75),
                 marker=dict(color=["white", "#222222"], symbol=0, size=6),
                 legendgroup=legendgroup,

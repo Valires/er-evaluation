@@ -12,9 +12,7 @@ from er_evaluation.plots._plots import (
     plot_summaries,
 )
 
-from er_evaluation.plots._fairness import (
-    plot_performance_disparities
-)
+from er_evaluation.plots._fairness import plot_performance_disparities
 
 __all__ = [
     "compare_plots",
