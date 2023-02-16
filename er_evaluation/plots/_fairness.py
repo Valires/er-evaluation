@@ -3,8 +3,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
+from er_evaluation.estimators import pairwise_f_estimator
 from er_evaluation.utils import expand_grid
-from er_evaluation.estimators import pairwise_f_design_estimate
 
 
 def plot_performance_disparities(
@@ -12,7 +12,7 @@ def plot_performance_disparities(
     reference,
     weights,
     protected_feature,
-    estimator=pairwise_f_design_estimate,
+    estimator=pairwise_f_estimator,
     estimator_name="Pairwise F-score",
     max_subgroups=10,
 ):

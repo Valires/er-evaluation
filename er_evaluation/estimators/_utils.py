@@ -1,8 +1,18 @@
-import pandas as pd
-import numpy as np
 import logging
-from er_evaluation.summary import cluster_sizes
+import functools
+import numpy as np
+import pandas as pd
+
 from er_evaluation.data_structures import MembershipVector
+from er_evaluation.summary import cluster_sizes
+
+
+def ratio__of_means_estimator(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        N, D = func(*args, **kwargs)
+        return (ratio_estimator(N, D), std_dev(N, D))
+    return wrapper
 
 
 def ratio_estimator(B, A):
@@ -67,17 +77,6 @@ def validate_prediction_sample(prediction, sample):
 def validate_weights(sample, weights):
     assert isinstance(weights, pd.Series)
     assert all(weights.index.isin(sample.unique()))
-
-
-def _prepare_args(prediction, sample, weights):
-    validate_prediction_sample(prediction, sample)
-    sample = sample[sample.index.isin(prediction.index)]
-
-    weights = _parse_weights(sample, weights)
-    validate_weights(sample, weights)
-    weights = weights[weights.index.isin(sample.values)]
-
-    return prediction, sample, weights
 
 
 def _parse_weights(sample, weights):

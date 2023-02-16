@@ -12,12 +12,19 @@ from er_evaluation.error_analysis import (
     expected_size_difference_from_table,
     record_error_table,
 )
+from er_evaluation.estimators._utils import validate_prediction_sample, _parse_weights, validate_weights, ratio__of_means_estimator
 from er_evaluation.utils import expand_grid
-from er_evaluation.estimators._utils import (
-    ratio_estimator,
-    std_dev,
-    _prepare_args,
-)
+
+
+def _prepare_args(prediction, sample, weights):
+    validate_prediction_sample(prediction, sample)
+    sample = sample[sample.index.isin(prediction.index)]
+
+    weights = _parse_weights(sample, weights)
+    validate_weights(sample, weights)
+    weights = weights[weights.index.isin(sample.values)]
+
+    return prediction, sample, weights
 
 
 def estimates_table(predictions, samples_weights, estimators):
@@ -69,7 +76,8 @@ def estimates_table(predictions, samples_weights, estimators):
     return params
 
 
-def pairwise_precision_design_estimate(prediction, sample, weights):
+@ratio__of_means_estimator
+def pairwise_precision_estimator(prediction, sample, weights):
     r"""
     Design estimator for pairwise precision.
 
@@ -135,10 +143,11 @@ def pairwise_precision_design_estimate(prediction, sample, weights):
     sorted_weights = weights.sort_index()
     N, D = (N * sorted_weights, D * sorted_weights)
 
-    return (ratio_estimator(N, D), std_dev(N, D))
+    return N, D
 
 
-def pairwise_recall_design_estimate(prediction, sample, weights):
+@ratio__of_means_estimator
+def pairwise_recall_estimator(prediction, sample, weights):
     r"""
     Design estimator for pairwise recall.
 
@@ -193,10 +202,11 @@ def pairwise_recall_design_estimate(prediction, sample, weights):
     sorted_weights = weights.sort_index()
     N, D = (N * sorted_weights, D * sorted_weights)
 
-    return (ratio_estimator(N, D), std_dev(N, D))
+    return N, D
 
 
-def pairwise_f_design_estimate(prediction, sample, weights, beta=1.0):
+@ratio__of_means_estimator
+def pairwise_f_estimator(prediction, sample, weights, beta=1.0):
     """
     Design estimator for pairwise F-score.
 
@@ -232,10 +242,11 @@ def pairwise_f_design_estimate(prediction, sample, weights, beta=1.0):
     N = cs * (cs - 1 - E_miss) * weights
     D = cs * (cs - 1 + beta**2 * E_size / (1 + beta**2)) * weights
 
-    return (ratio_estimator(N, D), std_dev(N, D))
+    return N, D
 
 
-def cluster_precision_design_estimate(prediction, sample, weights):
+@ratio__of_means_estimator
+def cluster_precision_estimator(prediction, sample, weights):
     """
     Cluster precision design estimator.
 
@@ -271,10 +282,11 @@ def cluster_precision_design_estimate(prediction, sample, weights):
     N = len(prediction) * E_delta * weights / prediction.nunique()
     D = cs * weights
 
-    return (ratio_estimator(N, D), std_dev(N, D))
+    return N, D
 
 
-def cluster_recall_design_estimate(prediction, sample, weights):
+@ratio__of_means_estimator
+def cluster_recall_estimator(prediction, sample, weights):
     """
     Cluster recall design estimator.
 
@@ -305,10 +317,11 @@ def cluster_recall_design_estimate(prediction, sample, weights):
     N = E_delta * weights
     D = weights
 
-    return (ratio_estimator(N, D), std_dev(N, D))
+    return N, D
 
 
-def cluster_f_design_estimate(prediction, sample, weights, beta=1.0):
+@ratio__of_means_estimator
+def cluster_f_estimator(prediction, sample, weights, beta=1.0):
     """
     Cluster F-score design estimator.
 
@@ -346,10 +359,11 @@ def cluster_f_design_estimate(prediction, sample, weights, beta=1.0):
     N = multiplier * E_delta * weights
     D = beta**2 * len(prediction) / prediction.nunique() + cs * weights
 
-    return (ratio_estimator(N, D), std_dev(N, D))
+    return N, D
 
 
-def b_cubed_precision_design_estimate(prediction, sample, weights):
+@ratio__of_means_estimator
+def b_cubed_precision_estimator(prediction, sample, weights):
     """
     B-cubed precision design estimator.
 
@@ -381,10 +395,11 @@ def b_cubed_precision_design_estimate(prediction, sample, weights):
     N = (1 - E_extra_rel) * weights
     D = weights
 
-    return (ratio_estimator(N, D), std_dev(N, D))
+    return N, D
 
 
-def b_cubed_recall_design_estimate(prediction, sample, weights):
+@ratio__of_means_estimator
+def b_cubed_recall_estimator(prediction, sample, weights):
     """
     B-cubed recall design estimator.
 
@@ -416,4 +431,4 @@ def b_cubed_recall_design_estimate(prediction, sample, weights):
     N = (1 - E_miss_rel) * weights
     D = weights
 
-    return (ratio_estimator(N, D), std_dev(N, D))
+    return N, D

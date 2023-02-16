@@ -7,11 +7,12 @@ from plotly.subplots import make_subplots
 from er_evaluation.data_structures import MembershipVector
 from er_evaluation.error_analysis import error_metrics
 from er_evaluation.estimators import (
-    b_cubed_precision_design_estimate,
-    b_cubed_recall_design_estimate,
+    b_cubed_precision_estimator,
+    b_cubed_recall_estimator,
     estimates_table,
-    pairwise_precision_design_estimate,
-    pairwise_recall_design_estimate,
+    pairwise_precision_estimator,
+    pairwise_recall_estimator,
+    summary_estimates_table,
 )
 from er_evaluation.metrics import cluster_precision, cluster_recall, metrics_table, pairwise_precision, pairwise_recall
 from er_evaluation.summary import cluster_hill_number, cluster_sizes_distribution, summary_statistics
@@ -29,10 +30,10 @@ DEFAULT_COMPARISON_METRICS = {
 }
 
 DEFAULT_ESTIMATORS = {
-    "Pairwise precision": pairwise_precision_design_estimate,
-    "Pairwise recall": pairwise_recall_design_estimate,
-    "B3 precision": b_cubed_precision_design_estimate,
-    "B3 recall": b_cubed_recall_design_estimate,
+    "Pairwise precision": pairwise_precision_estimator,
+    "Pairwise recall": pairwise_recall_estimator,
+    "B3 precision": b_cubed_precision_estimator,
+    "B3 recall": b_cubed_recall_estimator,
 }
 
 
@@ -227,6 +228,69 @@ def plot_summaries(predictions, names=None, type="line", line_shape="spline", ma
 
     fig.update_annotations(font_size=14)
     fig.update_layout(title_text="Disambiguation Summary Statistics")
+
+    return fig
+
+
+def add_ests_to_summaries(fig, predictions, sample, weights, names=None):
+    params = summary_estimates_table(sample, weights, predictions, names)
+
+    plots = [
+        (1, 1, 'Avg Cluster Size Estimate'),
+        (1, 2, 'Matching Rate Estimate'),
+    ]
+    if names is not None:
+        plots += [
+            (3, 1, 'Name Variation Estimate'),
+            (3, 2, 'Homonymy Rate Estimate')
+        ]
+
+    fig.update_traces(legendgroup=0, name="summary")
+    fig.update_traces(selector=0, showlegend=True)
+    for k, (i, j, estimate) in enumerate(plots):
+        dat = params.query(f"estimate == '{estimate}'")
+        n = len(dat)
+        fig.add_trace(
+            go.Scatter(
+                name="estimate",
+                x=dat["prediction"], 
+                y=dat["value"],
+                line=dict(color="black", dash="dot", width=1, shape="spline"),
+                marker=dict(color="black", size=4),
+                legendgroup=1,
+                showlegend=(k == 0),
+            ),
+            row=i,
+            col=j,
+        )
+        fig.add_trace(
+            go.Scatter(
+                name="estimate",
+                x=dat["prediction"], 
+                y=dat["value"] - 2*dat["std"],
+                line=dict(color="black", dash="dot", width=0, shape="spline"),
+                mode="lines",
+                legendgroup=1,
+                showlegend=False,
+            ),
+            row=i,
+            col=j,
+        )
+        fig.add_trace(
+            go.Scatter(
+                name="estimate",
+                x=dat["prediction"], 
+                y=dat["value"] + 2*dat["std"],
+                fill="tonexty",
+                fillcolor='rgba(0, 0, 0, 0.1)',
+                line=dict(color="black", dash="dot", width=0, shape="spline"),
+                mode="lines",
+                legendgroup=1,
+                showlegend=False,
+            ),
+            row=i,
+            col=j,
+        )
 
     return fig
 
