@@ -13,6 +13,7 @@ from er_evaluation.estimators import (
     pairwise_precision_estimator,
     pairwise_recall_estimator,
     summary_estimates_table,
+    pairwise_f_estimator,
 )
 from er_evaluation.metrics import cluster_precision, cluster_recall, metrics_table, pairwise_precision, pairwise_recall
 from er_evaluation.summary import cluster_hill_number, cluster_sizes_distribution, summary_statistics
@@ -26,7 +27,7 @@ DEFAULT_METRICS = {
 
 DEFAULT_COMPARISON_METRICS = {
     "Pairwise precision": pairwise_precision,
-    "Pairwise recall": pairwise_recall,
+    "Pairwise F1": pairwise_f_estimator,
 }
 
 DEFAULT_ESTIMATORS = {
@@ -330,7 +331,7 @@ def plot_metrics(predictions, reference, metrics=DEFAULT_METRICS, type="line", *
 
 
 def plot_estimates(
-    predictions, sample_weights, estimators=DEFAULT_ESTIMATORS, type="line", markers=True, line_shape="spline", **kwargs
+    predictions, sample_weights, estimators=DEFAULT_ESTIMATORS, type="line", line_shape="spline", **kwargs
 ):
     """
     Plot representative performance estimates.
@@ -359,9 +360,9 @@ def plot_estimates(
             x="prediction",
             y="value",
             color="estimator",
+            symbol="estimator",
             error_y="std",
             line_shape=line_shape,
-            markers=markers,
             **kwargs,
         )
     elif type == "bar":
