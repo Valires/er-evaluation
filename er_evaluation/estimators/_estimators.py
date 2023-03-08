@@ -2,10 +2,12 @@ import numpy as np
 import pandas as pd
 from scipy.special import comb
 
+from er_evaluation.summary import cluster_sizes
 from er_evaluation.data_structures import MembershipVector
 from er_evaluation.error_analysis import (
     cluster_sizes_from_table,
     error_indicator_from_table,
+    error_indicator,
     expected_missing_from_table,
     expected_relative_extra_from_table,
     expected_relative_missing_from_table,
@@ -275,12 +277,11 @@ def cluster_precision_estimator(prediction, sample, weights):
 
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
-    error_table = record_error_table(prediction, sample)
-    cs = cluster_sizes_from_table(error_table)
-    E_delta = 1 - error_indicator_from_table(error_table)
+    cs = cluster_sizes(sample)
+    E_delta = 1 - error_indicator(prediction, sample)
 
-    N = len(prediction) * E_delta * weights / prediction.nunique()
-    D = cs * weights
+    N = len(prediction) * E_delta * weights
+    D = prediction.nunique() * cs * weights
 
     return N, D
 
