@@ -41,7 +41,7 @@ Please refer to the documentation website `er-evaluation.readthedocs.io <https:/
 
 Coming soon.
 
-.. image:: examples.png
+.. image:: https://raw.githubusercontent.com/OlivierBinette/er-evaluation/main/examples.png
    :width: 800
 
 
