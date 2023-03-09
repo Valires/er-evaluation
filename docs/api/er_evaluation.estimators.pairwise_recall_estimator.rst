@@ -1,6 +1,6 @@
-cluster_f_design_estimate
+pairwise_recall_estimator
 =========================
 
 .. currentmodule:: er_evaluation.estimators
 
-.. autofunction:: cluster_f_design_estimate
+.. autofunction:: pairwise_recall_estimator

@@ -1,6 +1,6 @@
-pairwise_f_design_estimate
+avg_cluster_size_estimator
 ==========================
 
 .. currentmodule:: er_evaluation.estimators
 
-.. autofunction:: pairwise_f_design_estimate
+.. autofunction:: avg_cluster_size_estimator

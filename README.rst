@@ -70,7 +70,12 @@ Please acknowledge the publications below if you use ER-Evaluation:
 
 This project was made possible through support from the Natural Sciences and Engineering Research Council of Canada, Fonds de Recherche du Québec - Nature et Technologies, Duke University, the American Institutes for Research, and the U.S. Patents and Trademarks Office.
 
-📝 License
-----------
+📝 Public License
+-----------------
 
 * `GNU Affero General Public License v3 <https://www.gnu.org/licenses/agpl-3.0.en.html>`_
+
+📝 Commercial Licensing
+-----------------------
+
+* Get in touch.
