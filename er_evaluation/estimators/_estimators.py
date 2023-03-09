@@ -341,6 +341,7 @@ def cluster_f_estimator(prediction, sample, weights, beta=1.0):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,6,7, 8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c3"])
         >>> cluster_f_estimator(prediction, sample, weights="uniform")
+        (0.29446064139941686, 0.2760765154789527)
 
     Notes:
 

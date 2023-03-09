@@ -44,10 +44,10 @@ def load_pv_disambiguations():
         Estimate pairwise precision for PatentsView's 2021/12/30 disambiguation:
 
         >>> predictions, reference = load_pv_disambiguations()
-        >>> from er_evaluation.estimators import pairwise_precision_design_estimate
+        >>> from er_evaluation.estimators import pairwise_precision_estimator
         >>> import pandas as pd
         >>> prediction = predictions[pd.Timestamp('2021-12-30 00:00:00')]
-        >>> pairwise_precision_design_estimate(prediction, reference, weights="cluster_size")
+        >>> pairwise_precision_estimator(prediction, reference, weights="cluster_size")
         (0.9131787709880134, 0.018619907220335144)
 
     References:

@@ -15,7 +15,7 @@ from er_evaluation.estimators import (
     summary_estimates_table,
     pairwise_f_estimator,
 )
-from er_evaluation.metrics import cluster_precision, cluster_recall, metrics_table, pairwise_precision, pairwise_recall
+from er_evaluation.metrics import cluster_precision, cluster_recall, metrics_table, pairwise_precision, pairwise_recall, pairwise_f
 from er_evaluation.summary import cluster_hill_number, cluster_sizes_distribution, summary_statistics
 
 DEFAULT_METRICS = {
@@ -27,7 +27,7 @@ DEFAULT_METRICS = {
 
 DEFAULT_COMPARISON_METRICS = {
     "Pairwise precision": pairwise_precision,
-    "Pairwise F1": pairwise_f_estimator,
+    "Pairwise F1": pairwise_f,
 }
 
 DEFAULT_ESTIMATORS = {
