@@ -46,7 +46,7 @@ def estimates_table(predictions, samples_weights, estimators):
         >>> from er_evaluation.estimators import *
         >>> predictions = {"prediction_1": pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])}
         >>> samples_weights = {"sample_1": {"sample": pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"]), "weights": pd.Series(1, index=["c1", "c2", "c4"])}}
-        >>> estimators = {"precision": pairwise_precision_design_estimate, "recall": pairwise_recall_design_estimate}
+        >>> estimators = {"precision": pairwise_precision_estimator, "recall": pairwise_recall_estimator}
         >>> estimates_table(predictions, samples_weights, estimators) # doctest: +NORMALIZE_WHITESPACE
             prediction	    sample_weights	estimator	value	    std
         0	prediction_1	sample_1	    precision	0.388889	0.254588
@@ -100,7 +100,7 @@ def pairwise_precision_estimator(prediction, sample, weights):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
         >>> weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights
-        >>> pairwise_precision_design_estimate(prediction, sample, weights)
+        >>> pairwise_precision_estimator(prediction, sample, weights)
         (0.3888888888888889, 0.2545875386086578)
 
     References:
@@ -170,7 +170,7 @@ def pairwise_recall_estimator(prediction, sample, weights):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
         >>> weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights
-        >>> pairwise_recall_design_estimate(prediction, sample, weights)
+        >>> pairwise_recall_estimator(prediction, sample, weights)
         (0.296875, 0.10825317547305482)
 
     References:
@@ -227,7 +227,7 @@ def pairwise_f_estimator(prediction, sample, weights, beta=1.0):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5], data=["c1", "c1", "c1", "c2", "c2"])
         >>> weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights
-        >>> pairwise_f_design_estimate(prediction, sample, weights)
+        >>> pairwise_f_estimator(prediction, sample, weights)
         (0.36213991769547327, 0.19753086419753088)
     """
     prediction = MembershipVector(prediction, dropna=True)
@@ -265,7 +265,7 @@ def cluster_precision_estimator(prediction, sample, weights):
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,6,7, 8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c3"])
-        >>> cluster_precision_design_estimate(prediction, sample, weights="uniform")
+        >>> cluster_precision_estimator(prediction, sample, weights="uniform")
         (0.26171875, 0.23593232610221093)
 
     Notes:
@@ -304,7 +304,7 @@ def cluster_recall_estimator(prediction, sample, weights):
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,6,7, 8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c3"])
-        >>> cluster_recall_design_estimate(prediction, sample, weights="uniform")
+        >>> cluster_recall_estimator(prediction, sample, weights="uniform")
         (0.3333333333333333, 0.3333333333333333)
     """
     prediction = MembershipVector(prediction, dropna=True)
@@ -340,7 +340,7 @@ def cluster_f_estimator(prediction, sample, weights, beta=1.0):
     Examples:
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,6,7, 8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c3"])
-        >>> cluster_f_design_estimate(prediction, sample, weights="uniform")
+        >>> cluster_f_estimator(prediction, sample, weights="uniform")
 
     Notes:
 
@@ -382,7 +382,7 @@ def b_cubed_precision_estimator(prediction, sample, weights):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5], data=["c1", "c1", "c1", "c2", "c2"])
         >>> weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights
-        >>> b_cubed_precision_design_estimate(prediction, sample, weights)
+        >>> b_cubed_precision_estimator(prediction, sample, weights)
         (0.7916666666666667, 0.0416666666666673)
     """
     prediction = MembershipVector(prediction, dropna=True)
@@ -418,7 +418,7 @@ def b_cubed_recall_estimator(prediction, sample, weights):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5], data=["c1", "c1", "c1", "c2", "c2"])
         >>> weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights
-        >>> b_cubed_recall_design_estimate(prediction, sample, weights)
+        >>> b_cubed_recall_estimator(prediction, sample, weights)
         (0.5277777777777778, 0.027777777777778203)
     """
     prediction = MembershipVector(prediction, dropna=True)
