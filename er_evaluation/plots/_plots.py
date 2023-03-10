@@ -15,7 +15,14 @@ from er_evaluation.estimators import (
     summary_estimates_table,
     pairwise_f_estimator,
 )
-from er_evaluation.metrics import cluster_precision, cluster_recall, metrics_table, pairwise_precision, pairwise_recall, pairwise_f
+from er_evaluation.metrics import (
+    cluster_precision,
+    cluster_recall,
+    metrics_table,
+    pairwise_precision,
+    pairwise_recall,
+    pairwise_f,
+)
 from er_evaluation.summary import cluster_hill_number, cluster_sizes_distribution, summary_statistics
 
 DEFAULT_METRICS = {
@@ -237,14 +244,11 @@ def add_ests_to_summaries(fig, predictions, sample, weights, names=None):
     params = summary_estimates_table(sample, weights, predictions, names)
 
     plots = [
-        (1, 1, 'Avg Cluster Size Estimate'),
-        (1, 2, 'Matching Rate Estimate'),
+        (1, 1, "Avg Cluster Size Estimate"),
+        (1, 2, "Matching Rate Estimate"),
     ]
     if names is not None:
-        plots += [
-            (3, 1, 'Name Variation Estimate'),
-            (3, 2, 'Homonymy Rate Estimate')
-        ]
+        plots += [(3, 1, "Name Variation Estimate"), (3, 2, "Homonymy Rate Estimate")]
 
     fig.update_traces(legendgroup=0, name="summary")
     fig.update_traces(selector=0, showlegend=True)
@@ -254,7 +258,7 @@ def add_ests_to_summaries(fig, predictions, sample, weights, names=None):
         fig.add_trace(
             go.Scatter(
                 name="estimate",
-                x=dat["prediction"], 
+                x=dat["prediction"],
                 y=dat["value"],
                 line=dict(color="black", dash="dot", width=1, shape="spline"),
                 marker=dict(color="black", size=4),
@@ -267,8 +271,8 @@ def add_ests_to_summaries(fig, predictions, sample, weights, names=None):
         fig.add_trace(
             go.Scatter(
                 name="estimate",
-                x=dat["prediction"], 
-                y=dat["value"] - 2*dat["std"],
+                x=dat["prediction"],
+                y=dat["value"] - 2 * dat["std"],
                 line=dict(color="black", dash="dot", width=0, shape="spline"),
                 mode="lines",
                 legendgroup=1,
@@ -280,10 +284,10 @@ def add_ests_to_summaries(fig, predictions, sample, weights, names=None):
         fig.add_trace(
             go.Scatter(
                 name="estimate",
-                x=dat["prediction"], 
-                y=dat["value"] + 2*dat["std"],
+                x=dat["prediction"],
+                y=dat["value"] + 2 * dat["std"],
                 fill="tonexty",
-                fillcolor='rgba(0, 0, 0, 0.1)',
+                fillcolor="rgba(0, 0, 0, 0.1)",
                 line=dict(color="black", dash="dot", width=0, shape="spline"),
                 mode="lines",
                 legendgroup=1,

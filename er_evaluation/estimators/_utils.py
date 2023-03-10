@@ -7,11 +7,12 @@ from er_evaluation.data_structures import MembershipVector
 from er_evaluation.summary import cluster_sizes
 
 
-def ratio__of_means_estimator(func):
+def ratio_of_means_estimator(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         N, D = func(*args, **kwargs)
         return (ratio_estimator(N, D), std_dev(N, D))
+
     return wrapper
 
 

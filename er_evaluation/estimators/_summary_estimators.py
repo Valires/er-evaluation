@@ -1,6 +1,11 @@
 import pandas as pd
 
-from er_evaluation.estimators._utils import ratio__of_means_estimator, validate_prediction_sample, _parse_weights, validate_weights
+from er_evaluation.estimators._utils import (
+    ratio__of_means_estimator,
+    validate_prediction_sample,
+    _parse_weights,
+    validate_weights,
+)
 from er_evaluation.summary import cluster_sizes
 from er_evaluation.data_structures import MembershipVector
 from er_evaluation.utils import expand_grid
@@ -14,7 +19,7 @@ def summary_estimates_table(sample, weights, predictions, names=None):
     if names is not None:
         estimators["Name Variation Estimate"] = name_variation_estimator
         estimators["Homonymy Rate Estimate"] = homonymy_rate_estimator
-        
+
     params = expand_grid(prediction=predictions, estimate=estimators)
 
     def lambd(pred_key, est_key):

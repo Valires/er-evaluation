@@ -2,19 +2,24 @@ import numpy as np
 import pandas as pd
 from scipy.special import comb
 
-from er_evaluation.summary import cluster_sizes
 from er_evaluation.data_structures import MembershipVector
 from er_evaluation.error_analysis import (
-    cluster_sizes_from_table,
-    error_indicator_from_table,
-    error_indicator,
-    expected_missing_from_table,
-    expected_relative_extra_from_table,
-    expected_relative_missing_from_table,
-    expected_size_difference_from_table,
     record_error_table,
 )
-from er_evaluation.estimators._utils import validate_prediction_sample, _parse_weights, validate_weights, ratio__of_means_estimator
+from er_evaluation.estimators._from_table import (
+    _pairwise_f_estimator_from_table,
+    _cluster_precision_estimator_from_table,
+    _cluster_recall_estimator_from_table,
+    _cluster_f_estimator_from_table,
+    _b_cubed_precision_estimator_from_table,
+    _b_cubed_recall_estimator_from_table,
+)
+from er_evaluation.estimators._utils import (
+    validate_prediction_sample,
+    _parse_weights,
+    validate_weights,
+    ratio_of_means_estimator,
+)
 from er_evaluation.utils import expand_grid
 
 
@@ -78,7 +83,7 @@ def estimates_table(predictions, samples_weights, estimators):
     return params
 
 
-@ratio__of_means_estimator
+@ratio_of_means_estimator
 def pairwise_precision_estimator(prediction, sample, weights):
     r"""
     Design estimator for pairwise precision.
@@ -148,7 +153,7 @@ def pairwise_precision_estimator(prediction, sample, weights):
     return N, D
 
 
-@ratio__of_means_estimator
+@ratio_of_means_estimator
 def pairwise_recall_estimator(prediction, sample, weights):
     r"""
     Design estimator for pairwise recall.
@@ -207,7 +212,6 @@ def pairwise_recall_estimator(prediction, sample, weights):
     return N, D
 
 
-@ratio__of_means_estimator
 def pairwise_f_estimator(prediction, sample, weights, beta=1.0):
     """
     Design estimator for pairwise F-score.
@@ -236,18 +240,9 @@ def pairwise_f_estimator(prediction, sample, weights, beta=1.0):
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    cs = cluster_sizes_from_table(error_table)
-    E_miss = expected_missing_from_table(error_table)
-    E_size = expected_size_difference_from_table(error_table)
-    weights = 1 / cs
-
-    N = cs * (cs - 1 - E_miss) * weights
-    D = cs * (cs - 1 + beta**2 * E_size / (1 + beta**2)) * weights
-
-    return N, D
+    return _pairwise_f_estimator_from_table(error_table, weights, beta)
 
 
-@ratio__of_means_estimator
 def cluster_precision_estimator(prediction, sample, weights):
     """
     Cluster precision design estimator.
@@ -276,17 +271,10 @@ def cluster_precision_estimator(prediction, sample, weights):
     sample = MembershipVector(sample, dropna=True)
 
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
-
-    cs = cluster_sizes(sample)
-    E_delta = 1 - error_indicator(prediction, sample)
-
-    N = len(prediction) * E_delta * weights
-    D = prediction.nunique() * cs * weights
-
-    return N, D
+    error_table = record_error_table(prediction, sample)
+    return _cluster_precision_estimator_from_table(error_table, weights, len(prediction), prediction.nunique())
 
 
-@ratio__of_means_estimator
 def cluster_recall_estimator(prediction, sample, weights):
     """
     Cluster recall design estimator.
@@ -313,15 +301,9 @@ def cluster_recall_estimator(prediction, sample, weights):
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    E_delta = 1 - error_indicator_from_table(error_table)
-
-    N = E_delta * weights
-    D = weights
-
-    return N, D
+    return _cluster_recall_estimator_from_table(error_table, weights)
 
 
-@ratio__of_means_estimator
 def cluster_f_estimator(prediction, sample, weights, beta=1.0):
     """
     Cluster F-score design estimator.
@@ -353,18 +335,9 @@ def cluster_f_estimator(prediction, sample, weights, beta=1.0):
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    cs = cluster_sizes_from_table(error_table)
-    E_delta = 1 - error_indicator_from_table(error_table)
-
-    multiplier = len(prediction) * (1 + beta**2) / prediction.nunique()
-
-    N = multiplier * E_delta * weights
-    D = beta**2 * len(prediction) / prediction.nunique() + cs * weights
-
-    return N, D
+    return _cluster_f_estimator_from_table(error_table, weights, len(prediction), prediction.nunique(), beta)
 
 
-@ratio__of_means_estimator
 def b_cubed_precision_estimator(prediction, sample, weights):
     """
     B-cubed precision design estimator.
@@ -392,15 +365,9 @@ def b_cubed_precision_estimator(prediction, sample, weights):
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    E_extra_rel = expected_relative_extra_from_table(error_table)
-
-    N = (1 - E_extra_rel) * weights
-    D = weights
-
-    return N, D
+    return _b_cubed_precision_estimator_from_table(error_table, weights)
 
 
-@ratio__of_means_estimator
 def b_cubed_recall_estimator(prediction, sample, weights):
     """
     B-cubed recall design estimator.
@@ -428,9 +395,4 @@ def b_cubed_recall_estimator(prediction, sample, weights):
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    E_miss_rel = expected_relative_missing_from_table(error_table)
-
-    N = (1 - E_miss_rel) * weights
-    D = weights
-
-    return N, D
+    return _b_cubed_recall_estimator_from_table(error_table, weights)
