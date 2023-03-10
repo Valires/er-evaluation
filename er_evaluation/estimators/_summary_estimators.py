@@ -1,7 +1,7 @@
 import pandas as pd
 
 from er_evaluation.estimators._utils import (
-    ratio__of_means_estimator,
+    ratio_of_means_estimator,
     validate_prediction_sample,
     _parse_weights,
     validate_weights,
@@ -61,7 +61,7 @@ def _prepare_summary_est_args(sample, weights, prediction=None, names=None):
     return sample, weights, prediction, names
 
 
-@ratio__of_means_estimator
+@ratio_of_means_estimator
 def matching_rate_estimator(sample, weights, prediction=None, names=None):
     sample, weights, prediction, names = _prepare_summary_est_args(sample, weights, prediction, names)
 
@@ -72,7 +72,7 @@ def matching_rate_estimator(sample, weights, prediction=None, names=None):
     return N, D
 
 
-@ratio__of_means_estimator
+@ratio_of_means_estimator
 def avg_cluster_size_estimator(sample, weights, prediction=None, names=None):
     sample, weights, prediction, names = _prepare_summary_est_args(sample, weights, prediction, names)
 
@@ -83,7 +83,7 @@ def avg_cluster_size_estimator(sample, weights, prediction=None, names=None):
     return N, D
 
 
-@ratio__of_means_estimator
+@ratio_of_means_estimator
 def name_variation_estimator(sample, weights, prediction=None, names=None):
     sample, weights, prediction, names = _prepare_summary_est_args(sample, weights, prediction, names)
 
@@ -95,7 +95,7 @@ def name_variation_estimator(sample, weights, prediction=None, names=None):
     return N, D
 
 
-@ratio__of_means_estimator
+@ratio_of_means_estimator
 def homonymy_rate_estimator(sample, weights, prediction=None, names=None):
     sample, weights, prediction, names = _prepare_summary_est_args(sample, weights, prediction, names)
 
