@@ -43,7 +43,7 @@ def load_module_tsv(module, filename, dtype=str):
     return data
 
 
-def sample_clusters(membership, weights="uniform", sample_prop=0.2, replace=True, random_state=1):
+def sample_clusters(membership, weights="uniform", sample_prop=0.2, size=None, replace=True, random_state=1):
     """
     Sample clusters from a membership vector.
 
@@ -88,10 +88,15 @@ def sample_clusters(membership, weights="uniform", sample_prop=0.2, replace=True
     membership = MembershipVector(membership)
     np.random.seed(random_state)
 
+    if size is not None:
+        sample_size = size
+    else:
+        sample_size = int(sample_prop * membership.nunique())
+
     if isinstance(weights, pd.Series):
         selected_clusters = np.random.choice(
             weights.index,
-            size=int(sample_prop * membership.nunique()),
+            size=sample_size,
             replace=replace,
             p=weights.values / np.sum(weights.values),
         )
@@ -103,7 +108,7 @@ def sample_clusters(membership, weights="uniform", sample_prop=0.2, replace=True
         elif weights == "cluster_size":
             selected_clusters = np.random.choice(
                 membership.values,
-                size=int(sample_prop * membership.nunique()),
+                size=sample_size,
                 replace=replace,
             )
         else:
