@@ -142,11 +142,9 @@ def expected_size_difference_from_table(error_table):
         c3    1.0
         Name: expected_size_diff, dtype: float64
     """
-    error_table = error_table.copy()
-    error_table["expected_size_diff"] = error_table["pred_cluster_size"] - error_table["ref_cluster_size"]
-    result = error_table.groupby("reference").agg({"expected_size_diff": "mean"})
-
-    return result["expected_size_diff"]
+    result = expected_extra_from_table(error_table) - expected_missing_from_table(error_table)
+    result.name = "expected_size_diff"
+    return result
 
 
 def expected_extra_from_table(error_table):

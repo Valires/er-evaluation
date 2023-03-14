@@ -25,7 +25,6 @@ def _pairwise_precision_estimator_from_table(error_table, weights):
 def _pairwise_recall_estimator_from_table(error_table, weights):
     cs = cluster_sizes_from_table(error_table)
     E_miss = expected_missing_from_table(error_table)
-    E_size = expected_size_difference_from_table(error_table)
 
     N = cs * (cs - 1 - E_miss) * weights
     D = cs * (cs - 1) * weights
