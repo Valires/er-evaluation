@@ -37,7 +37,6 @@ def _pairwise_f_estimator_from_table(error_table, weights, beta=1.0):
     cs = cluster_sizes_from_table(error_table)
     E_miss = expected_missing_from_table(error_table)
     E_size = expected_size_difference_from_table(error_table)
-    weights = 1 / cs
 
     N = cs * (cs - 1 - E_miss) * weights
     D = cs * (cs - 1 + beta**2 * E_size / (1 + beta**2)) * weights
