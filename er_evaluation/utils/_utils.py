@@ -103,7 +103,7 @@ def sample_clusters(membership, weights="uniform", sample_prop=0.2, size=None, r
     elif isinstance(weights, str):
         if weights == "uniform":
             selected_clusters = np.random.choice(
-                membership.unique(), size=int(sample_prop * membership.nunique()), replace=replace
+                membership.unique(), size=sample_size, replace=replace
             )
         elif weights == "cluster_size":
             selected_clusters = np.random.choice(

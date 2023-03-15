@@ -20,7 +20,7 @@ from er_evaluation.estimators._utils import (
     validate_weights,
     ratio_of_means_estimator,
 )
-from er_evaluation.utils import expand_grid
+from er_evaluation.utils import expand_grid, relevant_prediction_subset
 
 
 def _prepare_args(prediction, sample, weights):

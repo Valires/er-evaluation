@@ -74,7 +74,7 @@ def _cluster_f_estimator_from_table(error_table, weights, len_prediction, nuniqu
     multiplier = len_prediction * (1 + beta**2) / nunique_prediction
 
     N = multiplier * E_delta * weights
-    D = beta**2 * len_prediction / nunique_prediction + cs * weights
+    D = (beta**2 * len_prediction / nunique_prediction + cs) * weights
 
     return N, D
 
