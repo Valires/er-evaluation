@@ -357,6 +357,7 @@ def plot_estimates(
         >>> fig.show() # doctest: +SKIP
     """
     table = estimates_table(predictions, samples_weights={"sample": sample_weights}, estimators=estimators)
+    table["std_2"] = 2*table["std"]
 
     if type == "line":
         fig = px.line(
@@ -365,12 +366,12 @@ def plot_estimates(
             y="value",
             color="estimator",
             symbol="estimator",
-            error_y="std",
+            error_y="std_2",
             line_shape=line_shape,
             **kwargs,
         )
     elif type == "bar":
-        fig = px.bar(table, x="estimator", y="value", color="prediction", barmode="group", error_y="std", **kwargs)
+        fig = px.bar(table, x="estimator", y="value", color="prediction", barmode="group", error_y="std_2", **kwargs)
     else:
         raise ValueError(f"Unknown plot type {type}. Should be one of ['line', 'bar'].")
 
