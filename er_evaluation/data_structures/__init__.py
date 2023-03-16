@@ -21,7 +21,7 @@ A clustering of a set of elements :math:`E` is a partition of :math:`E` into a s
 We use the following data structures to represent clusterings:
 
 Membership vector
-    A membership vector is a pandas :py:class:`Series` indexed by the elements of :math:`E` and with values corresponding to cluster identifiers. That is, the memebership vector maps elements to clusters. Example::
+    A membership vector is a pandas :py:class:`Series` indexed by the elements of :math:`E` and with values corresponding to cluster identifiers. That is, the membership vector maps elements to clusters. Example::
 
         >>> import pandas as pd
         >>> pd.Series(["c1", "c1", "c1", "c2", "c2", "c3"], index=[0,1,2,3,4,5])
@@ -32,6 +32,8 @@ Membership vector
         4    c2
         5    c3
         dtype: object
+    
+    Note that using integer indices and values for membership vectors will lead to significantly faster computation. See :py:meth:`er_evaluation.data_structures.compress_memberships`.
 
 Clusters dictionary
     A clusters dictionary is a Python :py:class:`dict` with keys corresponding to cluster identifiers and values being list of cluster elements. Example::
@@ -78,6 +80,10 @@ Contents
     graph_to_membership()
     graph_to_clusters()
     graph_to_pairs()
+
+* Compress membership vectors to integer values, for faster computation::
+
+    compress_memberships()
 """
 from er_evaluation.data_structures._data_structures import (
     MembershipVector,
