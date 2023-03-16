@@ -5,6 +5,24 @@ import pandas as pd
 from igraph import Graph
 
 
+def compress_memberships(*memberships):
+    """
+    Compress membership vectors to int values, preserving index compatibility.
+
+    Args:
+        series (list): list of membership vectors (Series) to compress
+    
+    Returns:
+        List of Series with int codes for index and values. Index are compatible accross the Series.
+    """
+    compressed = pd.concat(memberships, axis=1)
+    compressed.index = pd.Categorical(compressed.index).codes
+    for col in compressed.columns:
+        compressed[col] = pd.Categorical(compressed[col]).codes
+    
+    return [compressed[col] for col in compressed.columns]
+
+
 class MembershipVector(pd.Series):
     """
     Series wrapper to validate membership vector format and log potential issues.

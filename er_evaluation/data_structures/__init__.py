@@ -81,6 +81,7 @@ Contents
 """
 from er_evaluation.data_structures._data_structures import (
     MembershipVector,
+    compress_memberships,
     clusters_to_graph,
     clusters_to_membership,
     clusters_to_pairs,
@@ -100,6 +101,7 @@ from er_evaluation.data_structures._data_structures import (
 )
 
 __all__ = [
+    "compress_memberships",
     "clusters_to_graph",
     "clusters_to_membership",
     "clusters_to_pairs",
