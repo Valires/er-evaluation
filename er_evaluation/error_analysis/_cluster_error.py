@@ -8,6 +8,7 @@ from er_evaluation.error_analysis._record_error import (
     expected_relative_missing_from_table,
     expected_size_difference_from_table,
     record_error_table,
+    error_indicator_from_table,
 )
 from er_evaluation.utils import relevant_prediction_subset
 
@@ -460,30 +461,8 @@ def error_indicator(prediction, sample):
     prediction = MembershipVector(prediction, dropna=True)
     sample = MembershipVector(sample, dropna=True)
 
-    sample = sample[sample.index.isin(prediction.index)]
-
-    relevant_predictions = relevant_prediction_subset(prediction, sample)
-
-    outer = pd.concat(
-        {"prediction": relevant_predictions, "sample": sample},
-        axis=1,
-        copy=False,
-        join="outer",
-    )
-
-    def lambd(sample_cluster):
-        p = pd.value_counts(sample_cluster)
-        u = outer.prediction.value_counts()[p.index].values
-
-        if len(p) == 1 and p.values[0] == sum(u):
-            return 0
-        else:
-            return 1
-
-    result = outer.groupby("sample").agg(lambd).prediction
-    result.rename("error_indicator", inplace=True)
-
-    return result
+    error_table = record_error_table(prediction, sample)
+    return error_indicator_from_table(error_table)
 
 
 def splitting_entropy(prediction, sample, alpha=1):
