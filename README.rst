@@ -60,22 +60,7 @@ Please acknowledge the publications below if you use ER-Evaluation:
 - Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: `arxiv:2210.01230 <https://arxiv.org/abs/2210.01230>`_
 - Upcoming: "A Statistical Evaluation Framework for Black-Box Entity Resolution Systems With Application to Inventor Name Disambiguation"
 
-🙏 Acknowledgements
--------------------
-
-**ER-Evaluation** is an extension of the `PatentsView/PatentsView-Evaluation <https://github.com/PatentsView/PatentsView-Evaluation/>`_ project sponsored by the American Institutes for Research and the U.S. Patents and Trademarks Office. We aim to provide a unified source of evaluation tools for entity resolution systems which are maintained as an open source academic project.
-
-❤️ Funding
-^^^^^^^^^^
-
-This project was made possible through support from the Natural Sciences and Engineering Research Council of Canada, Fonds de Recherche du Québec - Nature et Technologies, Duke University, the American Institutes for Research, and the U.S. Patents and Trademarks Office.
-
 📝 Public License
 -----------------
 
 * `GNU Affero General Public License v3 <https://www.gnu.org/licenses/agpl-3.0.en.html>`_
-
-📝 Commercial Licensing
------------------------
-
-* Get in touch.

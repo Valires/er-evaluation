@@ -14,6 +14,18 @@ def compress_memberships(*memberships):
     
     Returns:
         List of Series with int codes for index and values. Index are compatible accross the Series.
+
+    Examples:
+        >>> membership = pd.Series(["c1", "c1", "c1", "c2", "c2", "c3"], index=[0,1,2,3,4,5])
+        >>> compressed, = compress_memberships(membership)
+        >>> compressed
+        0    0
+        1    0
+        2    0
+        3    1
+        4    1
+        5    2
+        Name: 0, dtype: int8
     """
     compressed = pd.concat(memberships, axis=1)
     compressed.index = pd.Categorical(compressed.index).codes

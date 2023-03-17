@@ -24,6 +24,9 @@ requirements = (
 
 test_requirements = [
     "pytest>=3",
+    "testbook",
+    "jupyter",
+    "pyhamcrest",
 ]
 
 setup(
@@ -41,7 +44,7 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
     ],
-    description=" An End-to-End Evaluation Framework for Entity Resolution Systems.",
+    description="An End-to-End Evaluation Framework for Entity Resolution Systems.",
     install_requires=requirements,
     license="GNU Affero General Public License v3",
     long_description=readme + "\n\n" + history,
