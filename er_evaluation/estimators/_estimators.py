@@ -232,7 +232,7 @@ def pairwise_f_estimator(prediction, sample, weights, beta=1.0):
         >>> sample = pd.Series(index=[1,2,3,4,5], data=["c1", "c1", "c1", "c2", "c2"])
         >>> weights = pd.Series(1, index=sample.unique()) # Uniform cluster weights
         >>> pairwise_f_estimator(prediction, sample, weights)
-        (0.36213991769547327, 0.19753086419753088)
+        (0.4166666666666667, 0.16666666666666666)
     """
     prediction = MembershipVector(prediction, dropna=True)
     sample = MembershipVector(sample, dropna=True)

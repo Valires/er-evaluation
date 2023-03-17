@@ -329,7 +329,7 @@ def error_indicator_from_table(error_table):
 
         >>> from er_evaluation.error_analysis import error_indicator
         >>> error_indicator(prediction, sample)
-        sample
+        reference
         c1    1
         c2    1
         c3    0

@@ -449,7 +449,7 @@ def error_indicator(prediction, sample):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,5])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
         >>> error_indicator(prediction, sample)
-        sample
+        reference
         c1    1
         c2    1
         c4    0
