@@ -2,7 +2,7 @@
 Changelog
 =========
 
-Unreleased
+2.0.0 (March 27, 2022)
 ----------
 
 * Improve documentation
@@ -12,6 +12,11 @@ Unreleased
 * Add visualization functions
 * Performance improvements
 * BREAKING: error_analysis functions have been renamed.
+* BREAKING: estimators have been renamed.
+* Added estimators support for sensitivity analyses
+* Added fairness plots
+* Performance improvements
+* Added `compress_memberships()` function for performance improvements.
 
 1.2.0 (January 11, 2022)
 ------------------------
