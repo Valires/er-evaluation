@@ -3,7 +3,7 @@ Changelog
 =========
 
 2.0.0 (March 27, 2022)
-----------
+----------------------
 
 * Improve documentation
 * Add handling of NA values
