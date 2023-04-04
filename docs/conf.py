@@ -39,6 +39,7 @@ extensions = [
     "sphinx_design",
     "sphinx_automodapi.automodapi",
     "sphinx_mdinclude",
+    "sphinx.ext.graphviz",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -172,7 +173,7 @@ texinfo_documents = [
         "ER-Evaluation Documentation",
         author,
         "er_evaluation",
-        "One line description of project.",
+        "An End-to-End Evaluation Framework for Entity Resolution Systems.",
         "Miscellaneous",
     ),
 ]
