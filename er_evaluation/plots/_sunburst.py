@@ -55,36 +55,24 @@ def build_sunburst_data(dt_regressor, feature_names, X, y, color_function=None, 
         else:
             node_color = color_function(node_y_values)
 
+        node_label = "" if parent is None else f"{feature_names[parent_feature]} {'≤' if decision == 'True' else '>'} {parent_threshold:.2f}"
+
+        node_data.append({
+            "id": f"node_{node_id}",
+            "parent": f"node_{parent}" if parent is not None else "",
+            "label": node_label,
+            "value": tree.n_node_samples[node_id],
+            "color": node_color,
+            "path": path
+        })
+
         if tree.children_left[node_id] != -1:
             left_child_id = tree.children_left[node_id]
             right_child_id = tree.children_right[node_id]
 
-            node_label = "Root" if parent is None else f"{feature_names[parent_feature]} {'≤' if decision == 'True' else '>'} {parent_threshold:.2f}"
-
-            node_data.append({
-                "id": f"node_{node_id}",
-                "parent": f"node_{parent}" if parent is not None else "",
-                "label": node_label,
-                "value": tree.n_node_samples[node_id],
-                "color": node_color,
-                "path": path
-            })
-
-            new_path = path + [node_label]
+            new_path = path + [node_label] if len(node_label) > 0 else path
             node_data.extend(build_sunburst_data_recursive(left_child_id, tree, feature_names, X, y, decision_paths, node_id, tree.feature[node_id], tree.threshold[node_id], 'True', new_path))
             node_data.extend(build_sunburst_data_recursive(right_child_id, tree, feature_names, X, y, decision_paths, node_id, tree.feature[node_id], tree.threshold[node_id], 'False', new_path))
-        else:
-            node_label = f"{label}: {tree.value[node_id][0][0]:.2f}"
-
-            new_path = path + [node_label]
-            node_data.append({
-                "id": f"node_{node_id}",
-                "parent": f"node_{parent}" if parent is not None else "",
-                "label": node_label,
-                "value": tree.n_node_samples[node_id],
-                "color": node_color,
-                "path": new_path
-            })
 
         return node_data
     
@@ -143,10 +131,11 @@ def plot_dt_regressor_sunburst(dt_regressor, X, y, feature_names, label="Value",
             colors=[item["color"] for item in sunburst_data],
             colorbar=dict(title=label)
         ),
-        hovertemplate='<b>%{label}</b><br>Size: %{value}<br>'+label+': %{color:.2f}<extra></extra>',
+        hovertemplate='<b>'+label+':</b> %{color:.2f}<br><b>Size:</b> %{value}<br><b>Path:</b><br>    %{customdata}<extra></extra>',
         branchvalues="total",
+        customdata=["<br>    ".join(item["path"] + [item["label"]]) for item in sunburst_data],
     ))
 
-    fig.update_layout(margin=dict(t=10, l=10, r=10, b=10))
+    fig.update_layout(margin=dict(t=0, l=0, r=0, b=0))
 
     return fig

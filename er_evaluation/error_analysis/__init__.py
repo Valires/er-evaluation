@@ -108,6 +108,7 @@ from er_evaluation.error_analysis._record_error import (
     pred_cluster_sizes_from_table,
     record_error_table,
 )
+from er_evaluation.error_analysis._subgroup_discovery import fit_dt_regressor
 
 __all__ = [
     "count_extra",
@@ -128,6 +129,7 @@ __all__ = [
     "expected_relative_extra_from_table",
     "expected_relative_missing_from_table",
     "expected_size_difference_from_table",
+    "fit_dt_regressor",
     "pred_cluster_sizes_from_table",
     "record_error_table",
 ]
