@@ -250,7 +250,7 @@ def expected_relative_extra_from_table(error_table):
 
         >>> from er_evaluation.error_analysis import expected_relative_extra
         >>> expected_relative_extra(prediction, sample)
-        sample
+        reference
         c1    0.166667
         c2    0.250000
         c3    0.333333

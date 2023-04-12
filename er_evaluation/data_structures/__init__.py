@@ -54,36 +54,6 @@ Graph
         1───2       4
         │   │       │       6
         └─3─┘       5
-
---------
-Contents
---------
-
-* Check that objects satisfy representation definitions using::
-    
-    ismembership()
-    isclusters()
-    ispairs()
-    isgraph()
-
-* Transform between representations using the following functions::
-
-    membership_to_clusters()
-    membership_to_pairs()
-    membership_to_graph()
-    clusters_to_membership()
-    clusters_to_pairs()
-    clusters_to_graph()
-    pairs_to_membership()
-    pairs_to_clusters()
-    pairs_to_graph()
-    graph_to_membership()
-    graph_to_clusters()
-    graph_to_pairs()
-
-* Compress membership vectors to integer values, for faster computation::
-
-    compress_memberships()
 """
 from er_evaluation.data_structures._data_structures import (
     MembershipVector,

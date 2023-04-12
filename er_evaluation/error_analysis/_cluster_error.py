@@ -78,7 +78,7 @@ def count_extra(prediction, sample):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
         >>> count_extra(prediction, sample)
-        sample
+        reference
         c1    1
         c2    1
         c4    2
@@ -95,7 +95,7 @@ def count_extra(prediction, sample):
     relevant_predictions = relevant_prediction_subset(prediction, sample)
 
     outer = pd.concat(
-        {"prediction": relevant_predictions, "sample": sample},
+        {"prediction": relevant_predictions, "reference": sample},
         axis=1,
         copy=False,
         join="outer",
@@ -114,7 +114,7 @@ def count_extra(prediction, sample):
 
         return np.sum(p * (u - p))
 
-    result = outer.groupby("sample").agg(lambd).prediction
+    result = outer.groupby("reference").agg(lambd).prediction
     result.rename("count_extra", inplace=True)
 
     return result
@@ -187,7 +187,7 @@ def expected_extra(prediction, sample):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
         >>> expected_extra(prediction, sample)
-        sample
+        reference
         c1    0.333333
         c2    0.500000
         c4    2.000000
@@ -236,7 +236,7 @@ def expected_relative_extra(prediction, sample):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
         >>> expected_relative_extra(prediction, sample)
-        sample
+        reference
         c1    0.166667
         c2    0.250000
         c4    0.666667
@@ -253,7 +253,7 @@ def expected_relative_extra(prediction, sample):
     relevant_predictions = relevant_prediction_subset(prediction, sample)
 
     outer = pd.concat(
-        {"prediction": relevant_predictions, "sample": sample},
+        {"prediction": relevant_predictions, "reference": sample},
         axis=1,
         copy=False,
         join="outer",
@@ -272,9 +272,9 @@ def expected_relative_extra(prediction, sample):
 
         return np.sum(p * (u - p) / u)
 
-    outer.groupby("sample").agg(lambd)
+    outer.groupby("reference").agg(lambd)
 
-    result = outer.groupby("sample").agg(lambd).prediction
+    result = outer.groupby("reference").agg(lambd).prediction
     sizes = sample.groupby(sample).size()
     result = result / sizes
     result.rename("expected_relative_extra", inplace=True)
@@ -306,7 +306,7 @@ def count_missing(prediction, sample):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
         >>> count_missing(prediction, sample)
-        sample
+        reference
         c1    4
         c2    2
         c4    0
@@ -323,7 +323,7 @@ def count_missing(prediction, sample):
     relevant_predictions = relevant_prediction_subset(prediction, sample)
 
     outer = pd.concat(
-        {"prediction": relevant_predictions, "sample": sample},
+        {"prediction": relevant_predictions, "reference": sample},
         axis=1,
         copy=False,
         join="outer",
@@ -339,7 +339,7 @@ def count_missing(prediction, sample):
 
         return np.sum(p * (n - p))
 
-    result = outer.groupby("sample").agg(lambd).prediction
+    result = outer.groupby("reference").agg(lambd).prediction
     result.rename("count_missing", inplace=True)
 
     return result
@@ -369,7 +369,7 @@ def expected_missing(prediction, sample):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
         >>> expected_missing(prediction, sample)
-        sample
+        reference
         c1    1.333333
         c2    1.000000
         c4    0.000000
@@ -489,7 +489,7 @@ def splitting_entropy(prediction, sample, alpha=1):
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
         >>> sample = pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"])
         >>> splitting_entropy(prediction, sample)
-        sample
+        reference
         c1    1.889882
         c2    2.000000
         c4    1.000000
@@ -506,7 +506,7 @@ def splitting_entropy(prediction, sample, alpha=1):
     relevant_predictions = relevant_prediction_subset(prediction, sample)
 
     outer = pd.concat(
-        {"prediction": relevant_predictions, "sample": sample},
+        {"prediction": relevant_predictions, "reference": sample},
         axis=1,
         copy=False,
         join="outer",
@@ -524,7 +524,7 @@ def splitting_entropy(prediction, sample, alpha=1):
 
         return (np.sum(u**alpha)) ** (1 / (1 - alpha))
 
-    result = outer.groupby("sample").agg(lambd).prediction
+    result = outer.groupby("reference").agg(lambd).prediction
     result.rename(f"splitting_entropy_{alpha}", inplace=True)
 
     return result
