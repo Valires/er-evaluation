@@ -5,7 +5,7 @@ plotly
 igraph
 scikit-learn
 pyarrow
-ethicolr
+ethnicolr
 streamlit
 
 pip
