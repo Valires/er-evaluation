@@ -5,6 +5,8 @@ plotly
 igraph
 scikit-learn
 pyarrow
+ethicolr
+streamlit
 
 pip
 bump2version
