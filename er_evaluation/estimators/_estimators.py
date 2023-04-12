@@ -6,13 +6,13 @@ from er_evaluation.data_structures import MembershipVector
 from er_evaluation.error_analysis import (
     record_error_table,
 )
-from er_evaluation.estimators._from_table import (
-    _pairwise_f_estimator_from_table,
-    _cluster_precision_estimator_from_table,
-    _cluster_recall_estimator_from_table,
-    _cluster_f_estimator_from_table,
-    _b_cubed_precision_estimator_from_table,
-    _b_cubed_recall_estimator_from_table,
+from er_evaluation.estimators.from_table import (
+    pairwise_f_estimator_from_table,
+    cluster_precision_estimator_from_table,
+    cluster_recall_estimator_from_table,
+    cluster_f_estimator_from_table,
+    b_cubed_precision_estimator_from_table,
+    b_cubed_recall_estimator_from_table,
 )
 from er_evaluation.estimators._utils import (
     validate_prediction_sample,
@@ -20,7 +20,7 @@ from er_evaluation.estimators._utils import (
     validate_weights,
     ratio_of_means_estimator,
 )
-from er_evaluation.utils import expand_grid, relevant_prediction_subset
+from er_evaluation.utils import expand_grid
 
 
 def _prepare_args(prediction, sample, weights):
@@ -240,7 +240,7 @@ def pairwise_f_estimator(prediction, sample, weights, beta=1.0):
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    return _pairwise_f_estimator_from_table(error_table, weights, beta)
+    return pairwise_f_estimator_from_table(error_table, weights, beta)
 
 
 def cluster_precision_estimator(prediction, sample, weights):
@@ -272,7 +272,7 @@ def cluster_precision_estimator(prediction, sample, weights):
 
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
     error_table = record_error_table(prediction, sample)
-    return _cluster_precision_estimator_from_table(error_table, weights, len(prediction), prediction.nunique())
+    return cluster_precision_estimator_from_table(error_table, weights, len(prediction), prediction.nunique())
 
 
 def cluster_recall_estimator(prediction, sample, weights):
@@ -301,7 +301,7 @@ def cluster_recall_estimator(prediction, sample, weights):
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    return _cluster_recall_estimator_from_table(error_table, weights)
+    return cluster_recall_estimator_from_table(error_table, weights)
 
 
 def cluster_f_estimator(prediction, sample, weights, beta=1.0):
@@ -335,7 +335,7 @@ def cluster_f_estimator(prediction, sample, weights, beta=1.0):
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    return _cluster_f_estimator_from_table(error_table, weights, len(prediction), prediction.nunique(), beta)
+    return cluster_f_estimator_from_table(error_table, weights, len(prediction), prediction.nunique(), beta)
 
 
 def b_cubed_precision_estimator(prediction, sample, weights):
@@ -365,7 +365,7 @@ def b_cubed_precision_estimator(prediction, sample, weights):
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    return _b_cubed_precision_estimator_from_table(error_table, weights)
+    return b_cubed_precision_estimator_from_table(error_table, weights)
 
 
 def b_cubed_recall_estimator(prediction, sample, weights):
@@ -395,4 +395,4 @@ def b_cubed_recall_estimator(prediction, sample, weights):
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    return _b_cubed_recall_estimator_from_table(error_table, weights)
+    return b_cubed_recall_estimator_from_table(error_table, weights)
