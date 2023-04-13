@@ -26,3 +26,5 @@ jobs:
           pip install -r requirements_dev.txt
           pip install -e .
           pytest --doctest-modules --ignore-glob=examples/*
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
