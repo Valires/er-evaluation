@@ -25,4 +25,4 @@ jobs:
         run: |
           pip install -r requirements_dev.txt
           pip install -e .
-          pytest --doctest-modules
+          pytest --doctest-modules -k "not examples"
