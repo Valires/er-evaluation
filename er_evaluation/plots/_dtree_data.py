@@ -21,20 +21,20 @@ def create_igraph_tree(dt_regressor, feature_names):
             A list of colors representing the predicted value at each node.
 
     Examples:
-    >>> from sklearn.tree import DecisionTreeRegressor
-    >>> import numpy as np
+        >>> from sklearn.tree import DecisionTreeRegressor
+        >>> import numpy as np
 
-    >>> # Generate some example data
-    >>> X = np.random.randn(100, 2)
-    >>> y = np.random.randn(100)
-    >>> feature_names = ['feature1', 'feature2']
+        >>> # Generate some example data
+        >>> X = np.random.randn(100, 2)
+        >>> y = np.random.randn(100)
+        >>> feature_names = ['feature1', 'feature2']
 
-    >>> # Fit a decision tree regressor
-    >>> dt_regressor = DecisionTreeRegressor()
-    >>> dt_regressor.fit(X, y)  # doctest: +SKIP
+        >>> # Fit a decision tree regressor
+        >>> dt_regressor = DecisionTreeRegressor()
+        >>> dt_regressor.fit(X, y)  # doctest: +SKIP
 
-    >>> # Create an igraph tree representation
-    >>> g, labels, node_sizes, colors = create_igraph_tree(dt_regressor, feature_names)
+        >>> # Create an igraph tree representation
+        >>> g, labels, node_sizes, colors = create_igraph_tree(dt_regressor, feature_names)
     """
     n_nodes = dt_regressor.tree_.node_count
     children_left = dt_regressor.tree_.children_left
@@ -96,23 +96,23 @@ def build_sunburst_data(dt_regressor, feature_names, X, y, weights=None, color_f
         list of dict: A list of dictionaries containing the sunburst data for the current node and its children.
 
     Examples:
-    >>> from sklearn.tree import DecisionTreeRegressor
-    >>> import numpy as np
-    >>> X = np.array([[1], [2], [3], [4], [5]])
-    >>> y = np.array([2, 4, 6, 8, 10])
-    >>> dt_regressor = DecisionTreeRegressor(max_depth=2)
-    >>> dt_regressor.fit(X, y)  # doctest: +SKIP
-    >>> feature_names = ['x']
-    >>> sunburst_data = build_sunburst_data(dt_regressor, feature_names, X, y)
-    >>> len(sunburst_data)
-        7
-    >>> sunburst_data[6]  # doctest: +SKIP
-        {'id': 'node_6',
-        'parent': 'node_4',
-        'label': 'Value: 9.00',
-        'value': 2,
-        'color': 9.0,
-        'path': ['Root', 'x > 2.50', 'Value: 9.00']}
+        >>> from sklearn.tree import DecisionTreeRegressor
+        >>> import numpy as np
+        >>> X = np.array([[1], [2], [3], [4], [5]])
+        >>> y = np.array([2, 4, 6, 8, 10])
+        >>> dt_regressor = DecisionTreeRegressor(max_depth=2)
+        >>> dt_regressor.fit(X, y)  # doctest: +SKIP
+        >>> feature_names = ['x']
+        >>> sunburst_data = build_sunburst_data(dt_regressor, feature_names, X, y)
+        >>> len(sunburst_data)
+            7
+        >>> sunburst_data[6]  # doctest: +SKIP
+            {'id': 'node_6',
+            'parent': 'node_4',
+            'label': 'Value: 9.00',
+            'value': 2,
+            'color': 9.0,
+            'path': ['Root', 'x > 2.50', 'Value: 9.00']}
     """
     if weights is None:
         weights = np.ones_like(y)

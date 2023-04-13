@@ -28,18 +28,18 @@ def make_dt_regressor_plot(
     Returns:
     plotly.graph_objs._sunburst.Sunburst: An interactive sunburst chart visualization of the fitted decision tree.
 
-    Example:
-    >>> import pandas as pd
-    >>> import numpy as np
-    >>> from er_evaluation.error_analysis import error_indicator
-    >>> prediction = pd.Series([0, 1, 1])
-    >>> reference = pd.Series([0, 1, 0])
-    >>> y = error_indicator(prediction, reference)
-    >>> weights = np.array([1, 1, 1])
-    >>> features_df = pd.DataFrame({'feature1': [1, 2, 3], 'feature2': [4, 5, 6]})
-    >>> numerical_features = ['feature1']
-    >>> categorical_features = ['feature2']
-    >>> fig = plot_sunburst_chart(y, weights, features_df, numerical_features, categorical_features)
+    Examples:
+        >>> import pandas as pd
+        >>> import numpy as np
+        >>> from er_evaluation.error_analysis import error_indicator
+        >>> prediction = pd.Series([0, 1, 1])
+        >>> reference = pd.Series([0, 1, 0])
+        >>> y = error_indicator(prediction, reference)
+        >>> weights = np.array([1, 1, 1])
+        >>> features_df = pd.DataFrame({'feature1': [1, 2, 3], 'feature2': [4, 5, 6]})
+        >>> numerical_features = ['feature1']
+        >>> categorical_features = ['feature2']
+        >>> fig = make_dt_regressor_plot(y, weights, features_df, numerical_features, categorical_features)
     """
     model = fit_dt_regressor(
         features_df,
@@ -86,17 +86,17 @@ def plot_dt_regressor_tree(dt_regressor, feature_names):
     Returns:
         plotly.graph_objs.Figure: A tree plot of the decision tree regressor.
 
-    Example:
-    >>> from sklearn.tree import DecisionTreeRegressor
-    >>> import numpy as np
-    >>> X = np.array([[1], [2], [3], [4], [5]])
-    >>> y = np.array([2, 4, 6, 8, 10])
-    >>> dt_regressor = DecisionTreeRegressor(max_depth=2)
-    >>> dt_regressor.fit(X, y)  # doctest: +SKIP
-    >>> feature_names = ['x']
-    >>> fig = plot_dt_regressor_sunburst(dt_regressor, X, y, feature_names)
-    >>> isinstance(fig, go.Figure)
-        True
+    Examples:
+        >>> from sklearn.tree import DecisionTreeRegressor
+        >>> import numpy as np
+        >>> X = np.array([[1], [2], [3], [4], [5]])
+        >>> y = np.array([0, 1, 0, 1, 0])
+        >>> dt_regressor = DecisionTreeRegressor(max_depth=2)
+        >>> dt_regressor.fit(X, y)  # doctest: +SKIP
+        >>> feature_names = ['x']
+        >>> fig = plot_dt_regressor_tree(dt_regressor, X, y, feature_names)
+        >>> isinstance(fig, go.Figure)
+            True
     """
     g, labels, node_sizes, colors = create_igraph_tree(dt_regressor, feature_names)
     layout = g.layout_reingold_tilford(mode="in", root=[0])
@@ -180,11 +180,11 @@ def plot_dt_regressor_sunburst(dt_regressor, X, y, feature_names, weights=None, 
     Returns:
         plotly.graph_objs.Figure: A sunburst plot of the decision tree regressor.
 
-    Example:
+    Examples:
         >>> from sklearn.tree import DecisionTreeRegressor
         >>> import numpy as np
         >>> X = np.array([[1], [2], [3], [4], [5]])
-        >>> y = np.array([2, 4, 6, 8, 10])
+        >>> y = np.array([0, 1, 0, 1, 0])
         >>> dt_regressor = DecisionTreeRegressor(max_depth=2)
         >>> dt_regressor.fit(X, y)  # doctest: +SKIP
         >>> feature_names = ['x']
@@ -243,11 +243,11 @@ def plot_dt_regressor_treemap(dt_regressor, X, y, feature_names, weights=None, l
     Returns:
         plotly.graph_objs.Figure: A treemap plot of the decision tree regressor.
 
-    Example:
+    Examples:
         >>> from sklearn.tree import DecisionTreeRegressor
         >>> import numpy as np
         >>> X = np.array([[1], [2], [3], [4], [5]])
-        >>> y = np.array([2, 4, 6, 8, 10])
+        >>> y = np.array([0, 1, 0, 1, 0])
         >>> dt_regressor = DecisionTreeRegressor(max_depth=2)
         >>> dt_regressor.fit(X, y)  # doctest: +SKIP
         >>> feature_names = ['x']

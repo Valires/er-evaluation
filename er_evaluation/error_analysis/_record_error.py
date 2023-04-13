@@ -212,7 +212,7 @@ def expected_missing_from_table(error_table):
 
         >>> from er_evaluation.error_analysis import expected_missing
         >>> expected_missing(prediction, sample)
-        sample
+        reference
         c1    1.333333
         c2    1.000000
         c3    0.000000
