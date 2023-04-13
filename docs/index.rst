@@ -46,6 +46,8 @@ Use the project's `Discussion <https://github.com/OlivierBinette/ER-Evaluation/d
    :hidden:
 
    readme
+   User Guide <userguide>
+   Examples <visualizations>
    er_evaluation
    contributing
    authors

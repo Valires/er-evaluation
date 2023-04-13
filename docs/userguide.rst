@@ -4,6 +4,12 @@
 
 Welcome to the user guide for the ER-Evaluation package, a state-of-the-art tool for evaluating entity resolution systems, including record linkage, deduplication, and identity resolution. This guide covers a broad overview, usage examples, and advanced features.
 
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+
+   dataprep
+
 ------------
 Overview
 ------------

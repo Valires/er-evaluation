@@ -8,7 +8,6 @@ from er_evaluation.datasets import load_pv_data, load_pv_disambiguations
 predictions, reference = load_pv_disambiguations()
 pred = predictions[pd.Timestamp("2021-12-30 00:00:00")]
 
-
 def flatten_mode(x):
     return mode(np.concatenate(x.apply(lambda x: np.unique(x)).values))
 
