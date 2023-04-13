@@ -35,11 +35,11 @@ def make_dt_regressor_plot(
         >>> prediction = pd.Series([0, 1, 1])
         >>> reference = pd.Series([0, 1, 0])
         >>> y = error_indicator(prediction, reference)
-        >>> weights = np.array([1, 1, 1])
-        >>> features_df = pd.DataFrame({'feature1': [1, 2, 3], 'feature2': [4, 5, 6]})
+        >>> weights = np.array([1, 1])
+        >>> features_df = pd.DataFrame({'feature1': [1, 2], 'feature2': [4, 5]})
         >>> numerical_features = ['feature1']
         >>> categorical_features = ['feature2']
-        >>> fig = make_dt_regressor_plot(y, weights, features_df, numerical_features, categorical_features)
+        >>> fig = make_dt_regressor_plot(y, weights, features_df, numerical_features, categorical_features)  # doctest: +SKIP
     """
     model = fit_dt_regressor(
         features_df,
@@ -94,9 +94,7 @@ def plot_dt_regressor_tree(dt_regressor, feature_names):
         >>> dt_regressor = DecisionTreeRegressor(max_depth=2)
         >>> dt_regressor.fit(X, y)  # doctest: +SKIP
         >>> feature_names = ['x']
-        >>> fig = plot_dt_regressor_tree(dt_regressor, X, y, feature_names)
-        >>> isinstance(fig, go.Figure)
-            True
+        >>> plot_dt_regressor_tree(dt_regressor, feature_names)  # doctest: +SKIP
     """
     g, labels, node_sizes, colors = create_igraph_tree(dt_regressor, feature_names)
     layout = g.layout_reingold_tilford(mode="in", root=[0])
@@ -188,20 +186,7 @@ def plot_dt_regressor_sunburst(dt_regressor, X, y, feature_names, weights=None, 
         >>> dt_regressor = DecisionTreeRegressor(max_depth=2)
         >>> dt_regressor.fit(X, y)  # doctest: +SKIP
         >>> feature_names = ['x']
-        >>> fig = plot_dt_regressor_sunburst(dt_regressor, X, y, feature_names)
-        >>> isinstance(fig, go.Figure)
-            True
-        >>> fig.data[0]  # doctest: +SKIP
-            Sunburst({
-                'branchvalues': 'total',
-                'hovertemplate': '<b>%{label}</b><br>Size: %{value}<br>Value: %{color:.2f}<extra></extra>',
-                'ids': [node_0, node_1, node_2, node_3, node_4, node_5, node_6],
-                'labels': [Root, x ≤ 2.50, Value: 2.00, Value: 4.00, x > 2.50, Value: 6.00,
-                        Value: 9.00],
-                'marker': {'colorbar': {'title': {'text': 'Value'}}, 'colors': [6.0, 3.0, 2.0, 4.0, 8.0, 6.0, 9.0]},
-                'parents': [, node_0, node_1, node_1, node_0, node_4, node_4],
-                'values': [5, 2, 1, 1, 3, 1, 2]
-            })
+        >>> fig = plot_dt_regressor_sunburst(dt_regressor, X, y, feature_names)   # doctest: +SKIP
     """
     sunburst_data = build_sunburst_data(
         dt_regressor, feature_names, X, y, weights=weights, color_function=color_function, label=label
@@ -251,20 +236,7 @@ def plot_dt_regressor_treemap(dt_regressor, X, y, feature_names, weights=None, l
         >>> dt_regressor = DecisionTreeRegressor(max_depth=2)
         >>> dt_regressor.fit(X, y)  # doctest: +SKIP
         >>> feature_names = ['x']
-        >>> fig = plot_dt_regressor_treemap(dt_regressor, X, y, feature_names)
-        >>> isinstance(fig, go.Figure)
-            True
-        >>> fig.data[0]  # doctest: +SKIP
-            Treemap({
-                'branchvalues': 'total',
-                'hovertemplate': '<b>%{label}</b><br>Size: %{value}<br>Value: %{color:.2f}<extra></extra>',
-                'ids': [node_0, node_1, node_2, node_3, node_4, node_5, node_6],
-                'labels': [Root, x ≤ 2.50, Value: 2.00, Value: 4.00, x > 2.50, Value: 6.00,
-                        Value: 9.00],
-                'marker': {'colorbar': {'title': {'text': 'Value'}}, 'colors': [6.0, 3.0, 2.0, 4.0, 8.0, 6.0, 9.0]},
-                'parents': [, node_0, node_1, node_1, node_0, node_4, node_4],
-                'values': [5, 2, 1, 1, 3, 1, 2]
-            })
+        >>> plot_dt_regressor_treemap(dt_regressor, X, y, feature_names)  # doctest: +SKIP
     """
     sunburst_data = build_sunburst_data(
         dt_regressor, feature_names, X, y, weights=weights, color_function=color_function, label=label

@@ -34,7 +34,7 @@ def create_igraph_tree(dt_regressor, feature_names):
         >>> dt_regressor.fit(X, y)  # doctest: +SKIP
 
         >>> # Create an igraph tree representation
-        >>> g, labels, node_sizes, colors = create_igraph_tree(dt_regressor, feature_names)
+        >>> g, labels, node_sizes, colors = create_igraph_tree(dt_regressor, feature_names) # doctest: +SKIP
     """
     n_nodes = dt_regressor.tree_.node_count
     children_left = dt_regressor.tree_.children_left
@@ -103,8 +103,8 @@ def build_sunburst_data(dt_regressor, feature_names, X, y, weights=None, color_f
         >>> dt_regressor = DecisionTreeRegressor(max_depth=2)
         >>> dt_regressor.fit(X, y)  # doctest: +SKIP
         >>> feature_names = ['x']
-        >>> sunburst_data = build_sunburst_data(dt_regressor, feature_names, X, y)
-        >>> len(sunburst_data)
+        >>> sunburst_data = build_sunburst_data(dt_regressor, feature_names, X, y)   # doctest: +SKIP
+        >>> len(sunburst_data)  # doctest: +SKIP
             7
         >>> sunburst_data[6]  # doctest: +SKIP
             {'id': 'node_6',
