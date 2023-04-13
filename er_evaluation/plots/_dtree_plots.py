@@ -3,10 +3,20 @@ import plotly.graph_objects as go
 from er_evaluation.error_analysis import fit_dt_regressor
 from er_evaluation.plots._dtree_data import create_igraph_tree, build_sunburst_data
 
-def make_dt_regressor_plot(error_metrics, weights, features_df, numerical_features, categorical_features, type="sunburst", criterion="squared_error", **kwargs):
+
+def make_dt_regressor_plot(
+    error_metrics,
+    weights,
+    features_df,
+    numerical_features,
+    categorical_features,
+    type="sunburst",
+    criterion="squared_error",
+    **kwargs,
+):
     """
     Fit a decision tree regressor to the data and create an interactive sunburst chart visualization of the resulting tree.
-    
+
     Parameters:
     y (Series): Cluster-wise error metrics.
     weights (Series): The sample weights to use during model fitting.
@@ -14,7 +24,7 @@ def make_dt_regressor_plot(error_metrics, weights, features_df, numerical_featur
     numerical_features (list): A list of column names corresponding to the numerical features in the DataFrame.
     categorical_features (list): A list of column names corresponding to the categorical features in the DataFrame.
     **kwargs: Additional keyword arguments to pass to the fit_dt_regressor function.
-    
+
     Returns:
     plotly.graph_objs._sunburst.Sunburst: An interactive sunburst chart visualization of the fitted decision tree.
 
@@ -31,24 +41,28 @@ def make_dt_regressor_plot(error_metrics, weights, features_df, numerical_featur
     >>> fig = plot_sunburst_chart(y, weights, features_df, numerical_features, categorical_features)
     """
     model = fit_dt_regressor(
-        features_df, 
-        error_metrics, 
-        numerical_features, 
-        categorical_features, 
+        features_df,
+        error_metrics,
+        numerical_features,
+        categorical_features,
         sample_weights=weights,
         criterion=criterion,
-        **kwargs
+        **kwargs,
     )
 
     dt_regressor = model.named_steps["regressor"]
     preprocessor = model.named_steps["preprocessor"]
     feature_names = [x.split("__")[1] for x in preprocessor.get_feature_names_out()]
     X = preprocessor.transform(features_df)
-    
+
     if type == "sunburst":
-        return plot_dt_regressor_sunburst(dt_regressor, X, error_metrics, feature_names, weights=weights, label="Avg. Error")
+        return plot_dt_regressor_sunburst(
+            dt_regressor, X, error_metrics, feature_names, weights=weights, label="Avg. Error"
+        )
     elif type == "treemap":
-        return plot_dt_regressor_treemap(dt_regressor, X, error_metrics, feature_names, weights=weights, label="Avg. Error")
+        return plot_dt_regressor_treemap(
+            dt_regressor, X, error_metrics, feature_names, weights=weights, label="Avg. Error"
+        )
     elif type == "tree":
         return plot_dt_regressor_tree(dt_regressor, feature_names)
     else:
@@ -68,54 +82,54 @@ def plot_dt_regressor_tree(dt_regressor, feature_names):
         edge_x.extend([x0, x1, None])
         edge_y.extend([y0, y1, None])
 
-    edge_trace = go.Scatter(
-        x=edge_x, y=edge_y,
-        mode='lines',
-        line=dict(color='black', width=1),
-        hoverinfo='none'
-    )
+    edge_trace = go.Scatter(x=edge_x, y=edge_y, mode="lines", line=dict(color="black", width=1), hoverinfo="none")
 
     node_x = [layout[i][0] for i in range(g.vcount())]
     node_y = [layout[i][1] for i in range(g.vcount())]
     node_trace = go.Scatter(
-    x=node_x, y=node_y,
-    mode='markers',
-    marker=dict(
-        size= 400 * np.sqrt(node_sizes)/np.sum(np.sqrt(node_sizes)),
-        color=colors,
-        colorscale='Blues',
-        showscale=True,
-        colorbar=dict(title='Avg. Error'),
-        line=dict(width=1, color='grey')
-    ),
-    text=[f'Avg. Error: {value:.2f}<br>Size: {size}' for value, size in zip(colors, node_sizes)],
-    hoverinfo='text',
-    textfont=dict(size=10)
-)
+        x=node_x,
+        y=node_y,
+        mode="markers",
+        marker=dict(
+            size=400 * np.sqrt(node_sizes) / np.sum(np.sqrt(node_sizes)),
+            color=colors,
+            colorscale="Blues",
+            showscale=True,
+            colorbar=dict(title="Avg. Error"),
+            line=dict(width=1, color="grey"),
+        ),
+        text=[f"Avg. Error: {value:.2f}<br>Size: {size}" for value, size in zip(colors, node_sizes)],
+        hoverinfo="text",
+        textfont=dict(size=10),
+    )
 
     annotations = [
         go.layout.Annotation(
-            x=layout[i][0], y=layout[i][1],
+            x=layout[i][0],
+            y=layout[i][1],
             text=labels[i],
             xanchor="center",
-            yanchor="top" if i%2 == 0 else "bottom",
-            xref="x", yref="y",
+            yanchor="top" if i % 2 == 0 else "bottom",
+            xref="x",
+            yref="y",
             showarrow=False,
             font=dict(size=10),
-            bgcolor='rgba(255, 255, 255, 0.75)',
+            bgcolor="rgba(255, 255, 255, 0.75)",
             borderpad=1,
         )
         for i in range(g.vcount())
     ]
 
-    fig = go.Figure(data=[edge_trace, node_trace],
-                    layout=go.Layout(
-                        showlegend=False,
-                        xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                        plot_bgcolor='white',
-                        annotations=annotations
-                    ))
+    fig = go.Figure(
+        data=[edge_trace, node_trace],
+        layout=go.Layout(
+            showlegend=False,
+            xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+            yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+            plot_bgcolor="white",
+            annotations=annotations,
+        ),
+    )
     fig.update_layout(yaxis_autorange="reversed")
     fig.update_layout(margin=dict(t=0, l=0, r=0, b=0))
 
@@ -137,7 +151,7 @@ def plot_dt_regressor_sunburst(dt_regressor, X, y, feature_names, weights=None, 
 
     Returns:
         plotly.graph_objs.Figure: A sunburst plot of the decision tree regressor.
-    
+
     Example:
         >>> from sklearn.tree import DecisionTreeRegressor
         >>> import numpy as np
@@ -161,25 +175,29 @@ def plot_dt_regressor_sunburst(dt_regressor, X, y, feature_names, weights=None, 
                 'values': [5, 2, 1, 1, 3, 1, 2]
             })
     """
-    sunburst_data = build_sunburst_data(dt_regressor, feature_names, X, y, weights=weights, color_function=color_function, label=label)
+    sunburst_data = build_sunburst_data(
+        dt_regressor, feature_names, X, y, weights=weights, color_function=color_function, label=label
+    )
 
-    fig = go.Figure(go.Sunburst(
-        ids=[item["id"] for item in sunburst_data],
-        labels=[item["label"] for item in sunburst_data],
-        parents=[item["parent"] for item in sunburst_data],
-        values=[item["value"] for item in sunburst_data],
-        marker=dict(
-            colors=[item["color"] for item in sunburst_data],
-            colorbar=dict(title=label)
-        ),
-        hovertemplate='<b>'+label+':</b> %{color:.2f}<br><b>Size:</b> %{value}<br><b>Path:</b><br>    %{customdata}<extra></extra>',
-        branchvalues="total",
-        customdata=["<br>    ".join(item["path"] + [item["label"]]) for item in sunburst_data],
-    ))
+    fig = go.Figure(
+        go.Sunburst(
+            ids=[item["id"] for item in sunburst_data],
+            labels=[item["label"] for item in sunburst_data],
+            parents=[item["parent"] for item in sunburst_data],
+            values=[item["value"] for item in sunburst_data],
+            marker=dict(colors=[item["color"] for item in sunburst_data], colorbar=dict(title=label)),
+            hovertemplate="<b>"
+            + label
+            + ":</b> %{color:.2f}<br><b>Size:</b> %{value}<br><b>Path:</b><br>    %{customdata}<extra></extra>",
+            branchvalues="total",
+            customdata=["<br>    ".join(item["path"] + [item["label"]]) for item in sunburst_data],
+        )
+    )
 
     fig.update_layout(margin=dict(t=0, l=0, r=0, b=0))
 
     return fig
+
 
 def plot_dt_regressor_treemap(dt_regressor, X, y, feature_names, weights=None, label="Value", color_function=None):
     """
@@ -196,7 +214,7 @@ def plot_dt_regressor_treemap(dt_regressor, X, y, feature_names, weights=None, l
 
     Returns:
         plotly.graph_objs.Figure: A treemap plot of the decision tree regressor.
-    
+
     Example:
         >>> from sklearn.tree import DecisionTreeRegressor
         >>> import numpy as np
@@ -220,21 +238,24 @@ def plot_dt_regressor_treemap(dt_regressor, X, y, feature_names, weights=None, l
                 'values': [5, 2, 1, 1, 3, 1, 2]
             })
     """
-    sunburst_data = build_sunburst_data(dt_regressor, feature_names, X, y, weights=weights, color_function=color_function, label=label)
+    sunburst_data = build_sunburst_data(
+        dt_regressor, feature_names, X, y, weights=weights, color_function=color_function, label=label
+    )
 
-    fig = go.Figure(go.Treemap(
-        ids=[item["id"] for item in sunburst_data],
-        labels=[item["label"] for item in sunburst_data],
-        parents=[item["parent"] for item in sunburst_data],
-        values=[item["value"] for item in sunburst_data],
-        marker=dict(
-            colors=[item["color"] for item in sunburst_data],
-            colorbar=dict(title=label)
-        ),
-        hovertemplate='<b>'+label+':</b> %{color:.2f}<br><b>Size:</b> %{value}<br><b>Path:</b><br>    %{customdata}<extra></extra>',
-        customdata=["<br>    ".join(item["path"] + [item["label"]]) for item in sunburst_data],
-        branchvalues="total"
-    ))
+    fig = go.Figure(
+        go.Treemap(
+            ids=[item["id"] for item in sunburst_data],
+            labels=[item["label"] for item in sunburst_data],
+            parents=[item["parent"] for item in sunburst_data],
+            values=[item["value"] for item in sunburst_data],
+            marker=dict(colors=[item["color"] for item in sunburst_data], colorbar=dict(title=label)),
+            hovertemplate="<b>"
+            + label
+            + ":</b> %{color:.2f}<br><b>Size:</b> %{value}<br><b>Path:</b><br>    %{customdata}<extra></extra>",
+            customdata=["<br>    ".join(item["path"] + [item["label"]]) for item in sunburst_data],
+            branchvalues="total",
+        )
+    )
 
     fig.update_layout(margin=dict(t=0, l=0, r=0, b=0))
 

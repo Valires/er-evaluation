@@ -1,6 +1,6 @@
 
-.. image:: https://github.com/OlivierBinette/er-evaluation/actions/workflows/python-package.yaml/badge.svg
-        :target: https://github.com/OlivierBinette/er-evaluation/actions/workflows/python-package.yaml
+.. image:: https://github.com/Valires/er-evaluation/actions/workflows/python-package.yaml/badge.svg
+        :target: https://github.com/Valires/er-evaluation/actions/workflows/python-package.yaml
 
 .. image:: https://badge.fury.io/py/er-evaluation.svg
         :target: https://badge.fury.io/py/er-evaluation
@@ -28,7 +28,7 @@ Or install the development version using:
 
 .. code:: bash
 
-    pip install git+https://github.com/OlivierBinette/er-evaluation.git
+    pip install git+https://github.com/Valires/er-evaluation.git
 
 
 📖 Documentation
@@ -41,7 +41,7 @@ Please refer to the documentation website `er-evaluation.readthedocs.io <https:/
 
 Coming soon.
 
-.. image:: https://raw.githubusercontent.com/OlivierBinette/er-evaluation/main/examples.png
+.. image:: https://raw.githubusercontent.com/Valires/er-evaluation/main/examples.png
    :width: 800
 
 
@@ -56,7 +56,7 @@ Coming soon.
 
 Please acknowledge the publications below if you use ER-Evaluation:
 
-- Binette, Olivier. (2022). ER-Evaluation: An End-to-End Evaluation Framework for Entity Resolution Systems. Available online at `github.com/OlivierBinette/ER-Evaluation <https://github.com/OlivierBinette/ER-Evaluation>`_
+- Binette, Olivier. (2022). ER-Evaluation: An End-to-End Evaluation Framework for Entity Resolution Systems. Available online at `github.com/Valires/ER-Evaluation <https://github.com/Valires/ER-Evaluation>`_
 - Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: `arxiv:2210.01230 <https://arxiv.org/abs/2210.01230>`_
 - Upcoming: "A Statistical Evaluation Framework for Black-Box Entity Resolution Systems With Application to Inventor Name Disambiguation"
 

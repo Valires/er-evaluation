@@ -1,6 +1,7 @@
 import numpy as np
 from igraph import Graph
 
+
 def create_igraph_tree(dt_regressor, feature_names):
     """
     Recursively builds an igraph Graph for a given decision tree regressor.
@@ -8,9 +9,9 @@ def create_igraph_tree(dt_regressor, feature_names):
     Args:
         dt_regressor (sklearn.tree.DecisionTreeRegressor): Fitted decision tree regressor
         feature_names (list of str): The names of the input features.
-    
+
     Returns:
-        igraph.Graph: 
+        igraph.Graph:
             An igraph tree representation of the decision tree regressor.
         list of str:
             A list of node labels containing the decision rules.
@@ -18,7 +19,7 @@ def create_igraph_tree(dt_regressor, feature_names):
             A list of node sizes, proportional to the number of weighted samples in each node.
         list of float:
             A list of colors representing the predicted value at each node.
-    
+
     Examples:
     >>> from sklearn.tree import DecisionTreeRegressor
     >>> import numpy as np
@@ -27,11 +28,11 @@ def create_igraph_tree(dt_regressor, feature_names):
     >>> X = np.random.randn(100, 2)
     >>> y = np.random.randn(100)
     >>> feature_names = ['feature1', 'feature2']
-    
+
     >>> # Fit a decision tree regressor
     >>> dt_regressor = DecisionTreeRegressor()
     >>> dt_regressor.fit(X, y)
-    
+
     >>> # Create an igraph tree representation
     >>> g, labels, node_sizes, colors = create_igraph_tree(dt_regressor, feature_names)
     """
@@ -56,8 +57,8 @@ def create_igraph_tree(dt_regressor, feature_names):
         right_child_id = children_right[node_id]
 
         if feature[node_id] != -2:
-            decision_true = f'{feature_names[feature[node_id]]} <= {threshold[node_id]:.2f}'
-            decision_false = f'{feature_names[feature[node_id]]} > {threshold[node_id]:.2f}'
+            decision_true = f"{feature_names[feature[node_id]]} <= {threshold[node_id]:.2f}"
+            decision_false = f"{feature_names[feature[node_id]]} > {threshold[node_id]:.2f}"
 
         # Assign the parent's decision to the current node label
         if parent_decision is not None:
@@ -93,7 +94,7 @@ def build_sunburst_data(dt_regressor, feature_names, X, y, weights=None, color_f
 
     Returns:
         list of dict: A list of dictionaries containing the sunburst data for the current node and its children.
-    
+
     Examples:
     >>> from sklearn.tree import DecisionTreeRegressor
     >>> import numpy as np
@@ -116,7 +117,19 @@ def build_sunburst_data(dt_regressor, feature_names, X, y, weights=None, color_f
     if weights is None:
         weights = np.ones_like(y)
 
-    def build_sunburst_data_recursive(node_id, tree, feature_names, X, y, decision_paths, parent=None, parent_feature=None, parent_threshold=None, decision=None, path=[]):
+    def build_sunburst_data_recursive(
+        node_id,
+        tree,
+        feature_names,
+        X,
+        y,
+        decision_paths,
+        parent=None,
+        parent_feature=None,
+        parent_threshold=None,
+        decision=None,
+        path=[],
+    ):
         """
         Args:
             node_id (int): The current node's id.
@@ -139,27 +152,61 @@ def build_sunburst_data(dt_regressor, feature_names, X, y, weights=None, color_f
         else:
             node_color = color_function(node_y_values)
 
-        node_label = "" if parent is None else f"{feature_names[parent_feature]} {'≤' if decision == 'True' else '>'} {parent_threshold:.2f}"
+        node_label = (
+            ""
+            if parent is None
+            else f"{feature_names[parent_feature]} {'≤' if decision == 'True' else '>'} {parent_threshold:.2f}"
+        )
 
-        node_data.append({
-            "id": f"node_{node_id}",
-            "parent": f"node_{parent}" if parent is not None else "",
-            "label": node_label,
-            "value": np.sum(node_weights),
-            "color": node_color,
-            "path": path
-        })
+        node_data.append(
+            {
+                "id": f"node_{node_id}",
+                "parent": f"node_{parent}" if parent is not None else "",
+                "label": node_label,
+                "value": np.sum(node_weights),
+                "color": node_color,
+                "path": path,
+            }
+        )
 
         if tree.children_left[node_id] != -1:
             left_child_id = tree.children_left[node_id]
             right_child_id = tree.children_right[node_id]
 
             new_path = path + [node_label] if len(node_label) > 0 else path
-            node_data.extend(build_sunburst_data_recursive(left_child_id, tree, feature_names, X, y, decision_paths, node_id, tree.feature[node_id], tree.threshold[node_id], 'True', new_path))
-            node_data.extend(build_sunburst_data_recursive(right_child_id, tree, feature_names, X, y, decision_paths, node_id, tree.feature[node_id], tree.threshold[node_id], 'False', new_path))
+            node_data.extend(
+                build_sunburst_data_recursive(
+                    left_child_id,
+                    tree,
+                    feature_names,
+                    X,
+                    y,
+                    decision_paths,
+                    node_id,
+                    tree.feature[node_id],
+                    tree.threshold[node_id],
+                    "True",
+                    new_path,
+                )
+            )
+            node_data.extend(
+                build_sunburst_data_recursive(
+                    right_child_id,
+                    tree,
+                    feature_names,
+                    X,
+                    y,
+                    decision_paths,
+                    node_id,
+                    tree.feature[node_id],
+                    tree.threshold[node_id],
+                    "False",
+                    new_path,
+                )
+            )
 
         return node_data
-    
+
     tree = dt_regressor.tree_
     decision_paths = dt_regressor.decision_path(X)
     return build_sunburst_data_recursive(0, tree, feature_names, X, y, decision_paths)

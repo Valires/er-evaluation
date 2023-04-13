@@ -11,7 +11,7 @@ def compress_memberships(*memberships):
 
     Args:
         series (list): list of membership vectors (Series) to compress
-    
+
     Returns:
         List of Series with int codes for index and values. Index are compatible accross the Series.
 
@@ -31,7 +31,7 @@ def compress_memberships(*memberships):
     compressed.index = pd.Categorical(compressed.index).codes
     for col in compressed.columns:
         compressed[col] = pd.Categorical(compressed[col]).codes
-    
+
     return [compressed[col] for col in compressed.columns]
 
 
