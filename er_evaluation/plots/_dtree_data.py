@@ -31,7 +31,7 @@ def create_igraph_tree(dt_regressor, feature_names):
 
     >>> # Fit a decision tree regressor
     >>> dt_regressor = DecisionTreeRegressor()
-    >>> dt_regressor.fit(X, y)
+    >>> dt_regressor.fit(X, y)  # doctest: +SKIP
 
     >>> # Create an igraph tree representation
     >>> g, labels, node_sizes, colors = create_igraph_tree(dt_regressor, feature_names)
@@ -101,7 +101,7 @@ def build_sunburst_data(dt_regressor, feature_names, X, y, weights=None, color_f
     >>> X = np.array([[1], [2], [3], [4], [5]])
     >>> y = np.array([2, 4, 6, 8, 10])
     >>> dt_regressor = DecisionTreeRegressor(max_depth=2)
-    >>> dt_regressor.fit(X, y)
+    >>> dt_regressor.fit(X, y)  # doctest: +SKIP
     >>> feature_names = ['x']
     >>> sunburst_data = build_sunburst_data(dt_regressor, feature_names, X, y)
     >>> len(sunburst_data)

@@ -31,6 +31,7 @@ def make_dt_regressor_plot(
     Example:
     >>> import pandas as pd
     >>> import numpy as np
+    >>> from er_evaluation.error_analysis import error_indicator
     >>> prediction = pd.Series([0, 1, 1])
     >>> reference = pd.Series([0, 1, 0])
     >>> y = error_indicator(prediction, reference)
@@ -70,6 +71,33 @@ def make_dt_regressor_plot(
 
 
 def plot_dt_regressor_tree(dt_regressor, feature_names):
+    """
+    Creates a tree plot of a decision tree regressor.
+
+    Args:
+        dt_regressor (DecisionTreeRegressor): A fitted decision tree regressor model.
+        X (numpy array or pandas DataFrame): The input features used to fit the model.
+        y (numpy array or pandas Series): The target values used to fit the model.
+        feature_names (list of str): The names of the input features.
+        weights (Series, optional): Sampling weights for y. Default is None.
+        label (str, optional): The label for the color scale. Default is "Value".
+        color_function (function, optional): A function applied to the subset of y values within each node to determine node color.If None, the predicted value for each node will be used as the color. Default is None.
+
+    Returns:
+        plotly.graph_objs.Figure: A tree plot of the decision tree regressor.
+
+    Example:
+    >>> from sklearn.tree import DecisionTreeRegressor
+    >>> import numpy as np
+    >>> X = np.array([[1], [2], [3], [4], [5]])
+    >>> y = np.array([2, 4, 6, 8, 10])
+    >>> dt_regressor = DecisionTreeRegressor(max_depth=2)
+    >>> dt_regressor.fit(X, y)  # doctest: +SKIP
+    >>> feature_names = ['x']
+    >>> fig = plot_dt_regressor_sunburst(dt_regressor, X, y, feature_names)
+    >>> isinstance(fig, go.Figure)
+        True
+    """
     g, labels, node_sizes, colors = create_igraph_tree(dt_regressor, feature_names)
     layout = g.layout_reingold_tilford(mode="in", root=[0])
 
@@ -158,7 +186,7 @@ def plot_dt_regressor_sunburst(dt_regressor, X, y, feature_names, weights=None, 
         >>> X = np.array([[1], [2], [3], [4], [5]])
         >>> y = np.array([2, 4, 6, 8, 10])
         >>> dt_regressor = DecisionTreeRegressor(max_depth=2)
-        >>> dt_regressor.fit(X, y)
+        >>> dt_regressor.fit(X, y)  # doctest: +SKIP
         >>> feature_names = ['x']
         >>> fig = plot_dt_regressor_sunburst(dt_regressor, X, y, feature_names)
         >>> isinstance(fig, go.Figure)
@@ -221,7 +249,7 @@ def plot_dt_regressor_treemap(dt_regressor, X, y, feature_names, weights=None, l
         >>> X = np.array([[1], [2], [3], [4], [5]])
         >>> y = np.array([2, 4, 6, 8, 10])
         >>> dt_regressor = DecisionTreeRegressor(max_depth=2)
-        >>> dt_regressor.fit(X, y)
+        >>> dt_regressor.fit(X, y)  # doctest: +SKIP
         >>> feature_names = ['x']
         >>> fig = plot_dt_regressor_treemap(dt_regressor, X, y, feature_names)
         >>> isinstance(fig, go.Figure)

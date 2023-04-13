@@ -50,7 +50,7 @@ extensions = [
 graphviz_output_format = "svg"
 
 # Use Jupyter Notebook for documentation
-nbsphinx_execute = "never"
+nbsphinx_execute = "cache"
 
 # Specify the format of the cells' outputs that should be included in the output document
 jupyter_execute_notebooks = "cache"

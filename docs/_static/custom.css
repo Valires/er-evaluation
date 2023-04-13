@@ -1,0 +1,5 @@
+/* Hide jupyter notebook cell numbers in the docs */
+div.nbinput .prompt,
+div.nboutput .prompt {
+    display: none;
+}
