@@ -11,7 +11,7 @@ Welcome to the user guide for the ER-Evaluation package, a state-of-the-art tool
    dataprep
 
 ------------
-Overview
+Introduction
 ------------
 
 .. _introduction:

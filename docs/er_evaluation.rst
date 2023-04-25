@@ -12,6 +12,7 @@ API Doc
    metrics
    plots
    summary
+   search
    utils
 
 .. toctree::
@@ -27,4 +28,5 @@ API Doc
    er_evaluation.metrics
    er_evaluation.plots
    er_evaluation.summary
+   er_evaluation.search
    er_evaluation.utils
