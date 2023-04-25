@@ -39,37 +39,6 @@ def _f_score(P, R, beta=1.0):
         return (1 + beta**2) * P * R / D
 
 
-def metrics_table(predictions, references, metrics):
-    """
-    Apply a set of metrics to all combinations of prediction and reference membership vectors.
-
-    Args:
-        predictions (Dict): Dictionary of membership vectors.
-        references (Dict): Dictionary of membership vectors.
-        metrics (Dict): Dictionary of metrics to apply to the prediction and reference pairs.
-
-    Returns:
-        DataFrame: Dataframe with columns "prediction", "reference", "metric", and "value", containing the value of the given metric applied to the corresponding prediction and reference membership vector.
-
-    Examples:
-        >>> predictions = {"prediction_1": pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])}
-        >>> references = {"reference_1": pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])}
-        >>> metrics = {"precision": pairwise_precision, "recall": pairwise_recall}
-        >>> metrics_table(predictions, references, metrics) # doctest: +NORMALIZE_WHITESPACE
-            prediction	    reference	metric	    value
-        0	prediction_1	reference_1	precision	0.4
-        1	prediction_1	reference_1	recall	    0.4
-    """
-    params = expand_grid(prediction=predictions, reference=references, metric=metrics)
-
-    def lambd(pred_key, ref_key, metrics_key):
-        return metrics[metrics_key](predictions[pred_key], references[ref_key])
-
-    params["value"] = params.apply(lambda x: lambd(x["prediction"], x["reference"], x["metric"]), axis=1)
-
-    return params
-
-
 def pairwise_precision(prediction, reference):
     r"""
     Pairwise precision for the inner join of two clusterings.
@@ -571,3 +540,47 @@ def adjusted_rand_score(prediction, reference):
         * NA values are dropped from membership vectors prior to computing the metric.
     """
     return wrap_sklearn_metric(sm.adjusted_rand_score)(prediction, reference)
+
+
+DEFAULT_METRICS = {
+    "Pairwise Precision": pairwise_precision,
+    "Pairwise Recall": pairwise_recall,
+    "Pairwise F1": pairwise_f,
+    "B-Cubed Precision": b_cubed_precision,
+    "B-Cubed Recall": b_cubed_recall,
+    "B-Cubed F1": b_cubed_f,
+    "Cluster Precision": cluster_precision,
+    "Cluster Recall": cluster_recall,
+    "Cluster F1": cluster_f,
+}
+
+
+def metrics_table(predictions, references, metrics=DEFAULT_METRICS):
+    """
+    Apply a set of metrics to all combinations of prediction and reference membership vectors.
+
+    Args:
+        predictions (Dict): Dictionary of membership vectors.
+        references (Dict): Dictionary of membership vectors.
+        metrics (Dict): Dictionary of metrics to apply to the prediction and reference pairs.
+
+    Returns:
+        DataFrame: Dataframe with columns "prediction", "reference", "metric", and "value", containing the value of the given metric applied to the corresponding prediction and reference membership vector.
+
+    Examples:
+        >>> predictions = {"prediction_1": pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])}
+        >>> references = {"reference_1": pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c4"])}
+        >>> metrics = {"precision": pairwise_precision, "recall": pairwise_recall}
+        >>> metrics_table(predictions, references, metrics) # doctest: +NORMALIZE_WHITESPACE
+            prediction	    reference	metric	    value
+        0	prediction_1	reference_1	precision	0.4
+        1	prediction_1	reference_1	recall	    0.4
+    """
+    params = expand_grid(prediction=predictions, reference=references, metric=metrics)
+
+    def lambd(pred_key, ref_key, metrics_key):
+        return metrics[metrics_key](predictions[pred_key], references[ref_key])
+
+    params["value"] = params.apply(lambda x: lambd(x["prediction"], x["reference"], x["metric"]), axis=1)
+
+    return params

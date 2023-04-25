@@ -10,6 +10,4 @@ The ElasticSearch class provides a simple interface to query specific fields of 
 
 from er_evaluation.search.elasticsearch import ElasticSearch
 
-__all__ = [
-    "ElasticSearch"
-]
+__all__ = ["ElasticSearch"]

@@ -198,7 +198,9 @@ def plot_dt_regressor_sunburst(dt_regressor, X, y, feature_names, weights=None, 
             labels=[item["label"] for item in sunburst_data],
             parents=[item["parent"] for item in sunburst_data],
             values=[item["value"] for item in sunburst_data],
-            marker=dict(colors=[item["color"] for item in sunburst_data], colorbar=dict(title=label), colorscale="Blues"),
+            marker=dict(
+                colors=[item["color"] for item in sunburst_data], colorbar=dict(title=label), colorscale="Blues"
+            ),
             hovertemplate="<b>"
             + label
             + ":</b> %{color:.2f}<br><b>Size:</b> %{value}<br><b>Path:</b><br>    %{customdata}<extra></extra>",
@@ -248,7 +250,9 @@ def plot_dt_regressor_treemap(dt_regressor, X, y, feature_names, weights=None, l
             labels=[item["label"] for item in sunburst_data],
             parents=[item["parent"] for item in sunburst_data],
             values=[item["value"] for item in sunburst_data],
-            marker=dict(colors=[item["color"] for item in sunburst_data], colorbar=dict(title=label), colorscale="Blues"),
+            marker=dict(
+                colors=[item["color"] for item in sunburst_data], colorbar=dict(title=label), colorscale="Blues"
+            ),
             hovertemplate="<b>"
             + label
             + ":</b> %{color:.2f}<br><b>Size:</b> %{value}<br><b>Path:</b><br>    %{customdata}<extra></extra>",

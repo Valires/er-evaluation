@@ -24,8 +24,10 @@ sys.path.insert(0, os.path.abspath(".."))
 
 import er_evaluation
 
+
 def setup(app):
-    app.add_css_file('custom.css')
+    app.add_css_file("custom.css")
+
 
 # -- General configuration ---------------------------------------------
 
@@ -72,9 +74,9 @@ templates_path = ["_templates"]
 #
 # source_suffix = ['.rst', '.md']
 source_suffix = {
-    '.rst': 'restructuredtext',
-    '.md': 'markdown',
-    '.myst': 'myst_nb',  # Use the .myst suffix for MyST
+    ".rst": "restructuredtext",
+    ".md": "markdown",
+    ".myst": "myst_nb",  # Use the .myst suffix for MyST
 }
 # The master toctree document.
 master_doc = "index"

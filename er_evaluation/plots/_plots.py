@@ -443,7 +443,7 @@ def plot_cluster_errors(
     return fig
 
 
-def plot_comparison(predictions, metrics=DEFAULT_COMPARISON_METRICS, **kwargs):
+def plot_comparison(predictions, metrics=DEFAULT_COMPARISON_METRICS, color_continuous_scale="Blues", **kwargs):
     """
     Plot metrics computed for all prediction pairs.
 
@@ -473,7 +473,16 @@ def plot_comparison(predictions, metrics=DEFAULT_COMPARISON_METRICS, **kwargs):
     matrix = metrics_matrix(predictions, metrics)
 
     keys = list(predictions.keys())
-    fig = px.imshow(matrix, x=keys, y=keys, facet_col=0, facet_col_wrap=min(len(metrics), 2), aspect="equal", **kwargs)
+    fig = px.imshow(
+        matrix,
+        x=keys,
+        y=keys,
+        facet_col=0,
+        facet_col_wrap=min(len(metrics), 2),
+        aspect="equal",
+        color_continuous_scale=color_continuous_scale,
+        **kwargs,
+    )
     fig.update_layout(title_text="Disambiguation Similarity")
     for i, name in enumerate(metrics.keys()):
         fig.layout.annotations[i].update(text=name, font_size=14)

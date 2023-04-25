@@ -241,7 +241,7 @@ def homonymy_rate(membership, names):
     Compute the homonymy rate of a given clustering with a set of associated names.
 
     Homonymy rate:
-        The homonymy rate is the proportion of clusters which share a name with another cluster.
+        The homonymy rate is the proportion of clusters that share a name with another cluster.
 
     Args:
         membership (Series): Membership vector representation of a clustering.
