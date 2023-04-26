@@ -15,5 +15,6 @@ Welcome to the user guide for the ER-Evaluation package, a state-of-the-art tool
    04-error_analysis
    visualizations
    05-advanced_topics
+   06-data-labeling
 
 .. include:: 00-overview.rst
