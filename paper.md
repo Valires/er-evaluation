@@ -1,5 +1,5 @@
 ---
-title: 'ER-Evaluation: An End-to-End Evaluation Framework for Entity Resolution Systems'
+title: 'ER-Evaluation: End-to-End Evaluation of Entity Resolution Systems'
 tags:
   - Python
   - Entity Resolution
@@ -7,9 +7,8 @@ tags:
 authors:
   - name: Olivier Binette
     orcid: 0000-0001-6009-5206
-    equal-contrib: true
     corresponding: true
-    affiliation: "1" # (Multiple affiliations must be quoted)
+    affiliation: "1"
 affiliations:
  - name: Duke University, USA
    index: 1
@@ -19,30 +18,21 @@ bibliography: paper.bib
 
 # Summary
 
-Entity resolution (ER), also refered to as record linkage and deduplication, is the process of identifying and matching distinct representations of real-world entities across diverse data sources. It is used for data management, cleaning and integration, with numerous important applications including assessing the accuracy of the decennial census, detecting fraud, linking patient data in health care, and extracting relationships in structured and unstructured data. As ER techniques continue to evolve and improve, it is essential to have an efficient and comprehensive evaluation framework to measure their performance and compare different approaches. However, despite the growth of ER research, there is still a need for a unified evaluation framework that can address the challenges associated with the evaluation of ER systems, including accounting for sampling biases and managing class imbalance. Without the use of principled evaluation methodology, the naive use of clustering metrics and toy benchmark datasets has been shown to lead to over-optimistic results, performance rank reversals, and poor system design.
+Entity resolution (ER), also referred to as record linkage and deduplication, is the process of identifying and matching distinct representations of real-world entities across diverse data sources. It plays a crucial role in data management, cleaning, and integration, with applications such as assessing the accuracy of the decennial census, detecting fraud, linking patient data in healthcare, and extracting relationships in structured and unstructured data [@Christen2012; Papadakis2021; @Binette2022a].
 
-ER-Evaluation is a Python 3.7+ package addressing these challenges by implementing all components of a principled evaluation framework for ER systems. It incorporates principled statistical estimators for key performance metrics and summary statistics, error analysis tools, and data labeling tools, and data visualizations. Adopting an entity-centric approach, ER-Evaluation uses disambiguated entity clusters as the foundation for analysis. The package is written in Python with a simple architecture to ensure straightforward portability to other languages and frameworks when needed.
+As ER techniques continue to evolve and improve, it is essential to have an efficient and comprehensive evaluation framework to measure their performance and compare different approaches. Despite the growth of ER research, there remains a need for a unified evaluation framework that can address challenges associated with ER system evaluation, including accounting for sampling biases and managing class imbalances. Otherwise, using naive clustering metrics and toy benchmark datasets without a principled evaluation methodology leads to over-optimistic results, performance rank reversals, and poor system design [@Wang2022; Binette2022b].
 
+ER-Evaluation is a Python 3.7+ package designed to address these challenges by implementing all components of a principled evaluation framework for ER systems. It incorporates principled statistical estimators for key performance metrics and summary statistics, error analysis tools, data labeling tools, and data visualizations. The package is written in Python with a simple architecture, ensuring straightforward portability to other languages and frameworks when necessary.
+
+Additionally, ER-Evaluation adopts a novel entity-centric approach that uses disambiguated entity clusters as the foundation for analysis. This contrasts with traditional evaluation methods based on labeling record pairs [@Marchant2017]. The entity-centric approach streamlines the utilization of existing benchmark datasets and the labeling of new datasets without necessitating complex sampling schemes. Furthermore, it enables the reuse of benchmark datasets at all stages of the evaluation process, including for cluster-level error analysis.
 
 # Statement of need
 
-Entity resolution is a microclustering problem: a particular type of clustering where clusters tend to be small and numerous (up to millions or billions of clusters). As such, researchers typically evaluate the performance of entity resolution systems using performance metrics (precision, recall, b-cubed metrics) on relatively small benchmark datasets. However, this process has been shown to lead to highly biased and over-optimistic performance assessments in ER, leading to preformance rank reversals and poor system design. To address this issue, new entity-centric methodology has been proposed in [XX] to obtain accurate performance metric estimates based on small and possibly biased benchmark datasets. The ER-Evaluation package implements this methodology as well as numerous extensions for a comprehensive, end-to-end evaluation framework. It aims to simplify the comparison of various ER techniques, evaluate their accuracy, and ultimately expedite the development and adoption of high-performing ER systems. Integrating essential components like data preprocessing, error analysis, performance estimation, and visualization functions, ER-Evaluation presents a user-friendly, modular, and expandable interface for researchers and practitioners.
+Entity resolution is a clustering problem characterized by small and numerous clusters (up to millions or billions of clusters). Researchers commonly evaluate the performance of entity resolution systems by computing performance metrics (precision, recall, cluster metrics) on relatively small benchmark datasets. However, this process has been shown to yield highly biased and over-optimistic performance assessments in ER, leading to performance rank reversals and poor system design.
 
-The software is used by PatentsView.org for the evaluation of patent inventor name disambiguation. The original methodology has been published in [XX] and extended methodology is currently being developed in an upcoming article titled "An End-to-End Evaluation Framework for Entity Resolution Systems With Application to Inventor Name Disambiguation".
+To address this issue, a new entity-centric methodology has been proposed in @Binette2022b for obtaining accurate performance metric estimates based on small and potentially biased benchmark datasets. The ER-Evaluation package implements this methodology and numerous extensions to create a comprehensive, end-to-end evaluation framework. It aims to streamline the comparison of diverse ER techniques, assess their accuracy, and ultimately accelerate the development and adoption of high-performing ER systems. By integrating essential components such as data preprocessing, error analysis, performance estimation, and visualization functions, ER-Evaluation offers a user-friendly, modular, and extensible interface for researchers and practitioners.
 
-# Citations
-
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
-
-If you want to cite a software repository URL (e.g. something on GitHub without a preferred
-citation) then you can do it with the example BibTeX entry below for @fidgit.
-
-For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
+The software is currently being used by PatentsView.org for the evaluation of patent inventor name disambiguation [@Binette2022c]. The original methodology has been published in [@Binette2022b], and extended methodology is under development in an upcoming article titled "An End-to-End Evaluation Framework for Entity Resolution Systems With Application to Inventor Name Disambiguation."
 
 # Acknowledgements
 
