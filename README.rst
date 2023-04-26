@@ -58,12 +58,14 @@ In summary, here's how you might use the package.
         ee.plot_summaries(predictions)
 
 .. image:: plot_summaries.png
+   :width: 400
 
 .. code::
 
         ee.plot_comparison(predictions)
 
 .. image:: plot_comparison.png
+   :width: 400
 
 3. Define sampling weights and `estimate performance metrics <https://er-evaluation.readthedocs.io/en/latest/03-estimating_performance.html>`_.
 
@@ -72,6 +74,7 @@ In summary, here's how you might use the package.
         ee.plot_estimates(predictions, {"sample":reference, "weights":"cluster_size"})
 
 .. image:: plot_estimates.png
+   :width: 400
 
 4. Perform `error analysis <https://er-evaluation.readthedocs.io/en/latest/04-error_analysis.html>`_ using cluster-level explanatory features and cluster error metrics.
 
@@ -88,6 +91,7 @@ In summary, here's how you might use the package.
         )
 
 .. image:: plot_decisiontree.png
+   :width: 400
 
 🖼️ Examples
 -----------
