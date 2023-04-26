@@ -47,21 +47,21 @@ The following error metrics, namely the splitting entropy, expected number of ex
     >>> from er_evaluation.error_analysis import (splitting_entropy, expected_extra, expected_missing)
 
     >>> expected_extra(prediction, sample)
-    sample
+    reference
     c1    0.333333
     c2    0.500000
     c4    2.000000
     Name: expected_extra, dtype: float64
 
     >>> expected_missing(prediction, sample)
-    sample
+    reference
     c1    1.333333
     c2    1.000000
     c4    0.000000
     Name: expected_missing, dtype: float64
 
     >>> splitting_entropy(prediction, sample)
-    sample
+    reference
     c1    1.889882
     c2    2.000000
     c4    1.000000
@@ -108,6 +108,7 @@ from er_evaluation.error_analysis._record_error import (
     pred_cluster_sizes_from_table,
     record_error_table,
 )
+from er_evaluation.error_analysis._subgroup_discovery import fit_dt_regressor
 
 __all__ = [
     "count_extra",
@@ -128,6 +129,7 @@ __all__ = [
     "expected_relative_extra_from_table",
     "expected_relative_missing_from_table",
     "expected_size_difference_from_table",
+    "fit_dt_regressor",
     "pred_cluster_sizes_from_table",
     "record_error_table",
 ]

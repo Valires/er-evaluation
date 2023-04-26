@@ -31,12 +31,23 @@ Use the project's `Discussion <https://github.com/OlivierBinette/ER-Evaluation/d
 
       Access detailed documentation for all modules and functions.
 
+.. grid:: 1
+
+    .. grid-item-card::  📖 User Guide
+      :text-align: center
+      :link: userguide
+      :link-type: doc
+      
+      Overview, usage examples, and advanced features of the package.
+
 
 .. toctree::
    :maxdepth: 2
    :hidden:
 
    readme
+   User Guide <userguide>
+   Examples <visualizations>
    er_evaluation
    contributing
    authors

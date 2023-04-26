@@ -24,6 +24,11 @@ sys.path.insert(0, os.path.abspath(".."))
 
 import er_evaluation
 
+
+def setup(app):
+    app.add_css_file("custom.css")
+
+
 # -- General configuration ---------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -33,13 +38,33 @@ import er_evaluation
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
+    "nbsphinx",
     "sphinx.ext.napoleon",
     "sphinx.ext.autosummary",
     "sphinx.ext.viewcode",
     "sphinx_design",
     "sphinx_automodapi.automodapi",
     "sphinx_mdinclude",
+    "sphinx.ext.graphviz",
+    "myst_nb",
 ]
+
+graphviz_output_format = "svg"
+
+# Use Jupyter Notebook for documentation
+nbsphinx_execute = "cache"
+
+# Specify the format of the cells' outputs that should be included in the output document
+jupyter_execute_notebooks = "cache"
+execution_timeout = -1
+
+# To hide the cell numbers in the docs
+html_css_files = [
+    "custom.css",
+]
+
+# Custom CSS file
+html_static_path = ["_static"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -48,8 +73,11 @@ templates_path = ["_templates"]
 # You can specify multiple suffix as a list of string:
 #
 # source_suffix = ['.rst', '.md']
-source_suffix = ".rst"
-
+source_suffix = {
+    ".rst": "restructuredtext",
+    ".md": "markdown",
+    ".myst": "myst_nb",  # Use the .myst suffix for MyST
+}
 # The master toctree document.
 master_doc = "index"
 
@@ -172,7 +200,7 @@ texinfo_documents = [
         "ER-Evaluation Documentation",
         author,
         "er_evaluation",
-        "One line description of project.",
+        "An End-to-End Evaluation Framework for Entity Resolution Systems.",
         "Miscellaneous",
     ),
 ]

@@ -111,7 +111,7 @@ def _parse_weights(sample, weights):
     """
     if isinstance(weights, str):
         if weights == "uniform":
-            return pd.Series(1, index=sample.unique())
+            return pd.Series(1, index=sample.dropna().unique())
         elif weights == "cluster_size":
             return 1 / cluster_sizes(sample)
         else:

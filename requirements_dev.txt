@@ -5,6 +5,8 @@ plotly
 igraph
 scikit-learn
 pyarrow
+ethnicolr
+streamlit
 
 pip
 bump2version
@@ -30,3 +32,7 @@ pydata-sphinx-theme
 sphinx_automodapi
 sphinx_design
 sphinx-mdinclude
+nbsphinx
+pandoc
+myst-nb
+graphviz

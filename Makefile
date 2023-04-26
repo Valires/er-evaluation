@@ -1,4 +1,4 @@
-.PHONY: clean clean-build clean-pyc clean-test coverage dist docs help install lint lint/flake8 lint/black black
+.PHONY: clean clean-build clean-pyc clean-test coverage dist docs docs-clean help install lint lint/flake8 lint/black black
 .DEFAULT_GOAL := help
 
 define BROWSER_PYSCRIPT
@@ -68,9 +68,11 @@ coverage: ## check code coverage quickly with the default Python
 	coverage html
 	$(BROWSER) htmlcov/index.html
 
-docs: ## generate Sphinx HTML documentation, including API docs
+docs-clean: ## Clean Sphinx documentation outputs
 	rm -f -r docs/api
 	$(MAKE) -C docs clean
+
+docs: ## generate Sphinx HTML documentation, including API docs
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html
 	git add docs/api/*

@@ -13,8 +13,8 @@ from er_evaluation.estimators import (
     pairwise_precision_estimator,
     pairwise_recall_estimator,
     summary_estimates_table,
-    pairwise_f_estimator,
 )
+from er_evaluation.estimators._utils import _parse_weights
 from er_evaluation.metrics import (
     cluster_precision,
     cluster_recall,
@@ -28,8 +28,6 @@ from er_evaluation.summary import cluster_hill_number, cluster_sizes_distributio
 DEFAULT_METRICS = {
     "Pairwise precision": pairwise_precision,
     "Pairwise recall": pairwise_recall,
-    "Cluster precision": cluster_precision,
-    "Cluster recall": cluster_recall,
 }
 
 DEFAULT_COMPARISON_METRICS = {
@@ -40,8 +38,6 @@ DEFAULT_COMPARISON_METRICS = {
 DEFAULT_ESTIMATORS = {
     "Pairwise precision": pairwise_precision_estimator,
     "Pairwise recall": pairwise_recall_estimator,
-    "B3 precision": b_cubed_precision_estimator,
-    "B3 recall": b_cubed_recall_estimator,
 }
 
 
@@ -357,7 +353,7 @@ def plot_estimates(
         >>> fig.show() # doctest: +SKIP
     """
     table = estimates_table(predictions, samples_weights={"sample": sample_weights}, estimators=estimators)
-    table["std_2"] = 2*table["std"]
+    table["std_2"] = 2 * table["std"]
 
     if type == "line":
         fig = px.line(
@@ -407,7 +403,7 @@ def plot_cluster_errors(
         x (str, optional): x-axis metric to plot. Defaults to "expected_relative_extra".
         y (str, optional): y-axis metric to plot. Defaults to "expected_relative_missing".
         groupby (Series, optional): Optional Series with grouping values (corresponding to color elements). Should be indexed by cluster identifier, with values corresponding to group assignment.
-        weights (Series, optional): Optional Series with cluster weights. Should be indexed by cluster identifier, with values corresponding to cluster weight.
+        weights (Series, optional): Optional Series with cluster weights. Should be indexed by cluster identifier, with values corresponding to cluster weight. Can also be set to the string "cluster_size" for clusters sampled with probability proportional to size.
         opacity (float, optional): Opacity. Defaults to 0.5.
         **kwargs (optional): Additional arguments to pass to plotly express for plot creation.
 
@@ -423,6 +419,7 @@ def plot_cluster_errors(
     color = None
     if weights is not None:
         size = "weight"
+        weights = _parse_weights(reference, weights)
         weights.name = "weight"
         errors = errors.merge(weights, left_index=True, right_index=True, how="left")
     if groupby is not None:
@@ -446,7 +443,7 @@ def plot_cluster_errors(
     return fig
 
 
-def plot_comparison(predictions, metrics=DEFAULT_COMPARISON_METRICS, **kwargs):
+def plot_comparison(predictions, metrics=DEFAULT_COMPARISON_METRICS, color_continuous_scale="Blues", **kwargs):
     """
     Plot metrics computed for all prediction pairs.
 
@@ -476,7 +473,16 @@ def plot_comparison(predictions, metrics=DEFAULT_COMPARISON_METRICS, **kwargs):
     matrix = metrics_matrix(predictions, metrics)
 
     keys = list(predictions.keys())
-    fig = px.imshow(matrix, x=keys, y=keys, facet_col=0, facet_col_wrap=min(len(metrics), 2), aspect="equal", **kwargs)
+    fig = px.imshow(
+        matrix,
+        x=keys,
+        y=keys,
+        facet_col=0,
+        facet_col_wrap=min(len(metrics), 2),
+        aspect="equal",
+        color_continuous_scale=color_continuous_scale,
+        **kwargs,
+    )
     fig.update_layout(title_text="Disambiguation Similarity")
     for i, name in enumerate(metrics.keys()):
         fig.layout.annotations[i].update(text=name, font_size=14)

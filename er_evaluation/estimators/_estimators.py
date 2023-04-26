@@ -6,13 +6,13 @@ from er_evaluation.data_structures import MembershipVector
 from er_evaluation.error_analysis import (
     record_error_table,
 )
-from er_evaluation.estimators._from_table import (
-    _pairwise_f_estimator_from_table,
-    _cluster_precision_estimator_from_table,
-    _cluster_recall_estimator_from_table,
-    _cluster_f_estimator_from_table,
-    _b_cubed_precision_estimator_from_table,
-    _b_cubed_recall_estimator_from_table,
+from er_evaluation.estimators.from_table import (
+    pairwise_f_estimator_from_table,
+    cluster_precision_estimator_from_table,
+    cluster_recall_estimator_from_table,
+    cluster_f_estimator_from_table,
+    b_cubed_precision_estimator_from_table,
+    b_cubed_recall_estimator_from_table,
 )
 from er_evaluation.estimators._utils import (
     validate_prediction_sample,
@@ -20,7 +20,7 @@ from er_evaluation.estimators._utils import (
     validate_weights,
     ratio_of_means_estimator,
 )
-from er_evaluation.utils import expand_grid, relevant_prediction_subset
+from er_evaluation.utils import expand_grid
 
 
 def _prepare_args(prediction, sample, weights):
@@ -32,56 +32,6 @@ def _prepare_args(prediction, sample, weights):
     weights = weights[weights.index.isin(sample.values)]
 
     return prediction, sample, weights
-
-
-def estimates_table(predictions, samples_weights, estimators):
-    """
-    Create table of estimates applied to all combinations of predictions and (sample, weights) pairs.
-
-    Args:
-        predictions (Dict): Dictionary of membership vectors.
-        samples_weights (Dict): Dictionary of dictionaries of the form {"sample": sample, "weights": weights}, where `sample` is the sample membership vector and `weights` is the pandas Series of sampling weights. See estimators definitions for more information.
-        estimators (Dict): Dictionary of estimator functions. Each estimator is expected to return a pair (estimate, std).
-
-    Returns:
-        DataFrame: Pandas DataFrame with columns "predition", "sample_weights", "estimator", "value", and "std", where value and std are the point estimate and standard deviation estimate for the estimator applied to the given prediction, sample and sampling weights.
-
-    Examples:
-        >>> import pandas as pd
-        >>> from er_evaluation.estimators import *
-        >>> predictions = {"prediction_1": pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])}
-        >>> samples_weights = {"sample_1": {"sample": pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"]), "weights": pd.Series(1, index=["c1", "c2", "c4"])}}
-        >>> estimators = {"precision": pairwise_precision_estimator, "recall": pairwise_recall_estimator}
-        >>> estimates_table(predictions, samples_weights, estimators) # doctest: +NORMALIZE_WHITESPACE
-            prediction	    sample_weights	estimator	value	    std
-        0	prediction_1	sample_1	    precision	0.388889	0.254588
-        1	prediction_1	sample_1	    recall	    0.296875	0.108253
-    """
-    params = expand_grid(
-        prediction=predictions,
-        sample_weights=samples_weights,
-        estimator=estimators,
-    )
-
-    def lambd(pred_key, ref_key, est_key):
-        ests = estimators[est_key](
-            predictions[pred_key],
-            samples_weights[ref_key]["sample"],
-            samples_weights[ref_key]["weights"],
-        )
-
-        return ests
-
-    params[["value", "std"]] = pd.DataFrame(
-        params.apply(
-            lambda x: lambd(x["prediction"], x["sample_weights"], x["estimator"]),
-            axis=1,
-        ).tolist(),
-        index=params.index,
-    )
-
-    return params
-
 
 @ratio_of_means_estimator
 def pairwise_precision_estimator(prediction, sample, weights):
@@ -240,7 +190,7 @@ def pairwise_f_estimator(prediction, sample, weights, beta=1.0):
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    return _pairwise_f_estimator_from_table(error_table, weights, beta)
+    return pairwise_f_estimator_from_table(error_table, weights, beta)
 
 
 def cluster_precision_estimator(prediction, sample, weights):
@@ -272,7 +222,7 @@ def cluster_precision_estimator(prediction, sample, weights):
 
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
     error_table = record_error_table(prediction, sample)
-    return _cluster_precision_estimator_from_table(error_table, weights, len(prediction), prediction.nunique())
+    return cluster_precision_estimator_from_table(error_table, weights, len(prediction), prediction.nunique())
 
 
 def cluster_recall_estimator(prediction, sample, weights):
@@ -301,7 +251,7 @@ def cluster_recall_estimator(prediction, sample, weights):
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    return _cluster_recall_estimator_from_table(error_table, weights)
+    return cluster_recall_estimator_from_table(error_table, weights)
 
 
 def cluster_f_estimator(prediction, sample, weights, beta=1.0):
@@ -335,7 +285,7 @@ def cluster_f_estimator(prediction, sample, weights, beta=1.0):
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    return _cluster_f_estimator_from_table(error_table, weights, len(prediction), prediction.nunique(), beta)
+    return cluster_f_estimator_from_table(error_table, weights, len(prediction), prediction.nunique(), beta)
 
 
 def b_cubed_precision_estimator(prediction, sample, weights):
@@ -365,7 +315,7 @@ def b_cubed_precision_estimator(prediction, sample, weights):
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    return _b_cubed_precision_estimator_from_table(error_table, weights)
+    return b_cubed_precision_estimator_from_table(error_table, weights)
 
 
 def b_cubed_recall_estimator(prediction, sample, weights):
@@ -395,4 +345,63 @@ def b_cubed_recall_estimator(prediction, sample, weights):
     prediction, sample, weights = _prepare_args(prediction, sample, weights)
 
     error_table = record_error_table(prediction, sample)
-    return _b_cubed_recall_estimator_from_table(error_table, weights)
+    return b_cubed_recall_estimator_from_table(error_table, weights)
+
+DEFAULT_ESTIMATORS = {
+    "pairwise_precision": pairwise_precision_estimator,
+    "pairwise_recall": pairwise_recall_estimator,
+    "pairwise_f": pairwise_f_estimator,
+    "cluster_precision": cluster_precision_estimator,
+    "cluster_recall": cluster_recall_estimator,
+    "cluster_f": cluster_f_estimator,
+    "b_cubed_precision": b_cubed_precision_estimator,
+    "b_cubed_recall": b_cubed_recall_estimator,
+}
+
+def estimates_table(predictions, samples_weights, estimators=DEFAULT_ESTIMATORS):
+    """
+    Create table of estimates applied to all combinations of predictions and (sample, weights) pairs.
+
+    Args:
+        predictions (Dict): Dictionary of membership vectors.
+        samples_weights (Dict): Dictionary of dictionaries of the form {"sample": sample, "weights": weights}, where `sample` is the sample membership vector and `weights` is the pandas Series of sampling weights. See estimators definitions for more information.
+        estimators (Dict): Dictionary of estimator functions. Each estimator is expected to return a pair (estimate, std).
+
+    Returns:
+        DataFrame: Pandas DataFrame with columns "predition", "sample_weights", "estimator", "value", and "std", where value and std are the point estimate and standard deviation estimate for the estimator applied to the given prediction, sample and sampling weights.
+
+    Examples:
+        >>> import pandas as pd
+        >>> from er_evaluation.estimators import *
+        >>> predictions = {"prediction_1": pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])}
+        >>> samples_weights = {"sample_1": {"sample": pd.Series(index=[1,2,3,4,5,8], data=["c1", "c1", "c1", "c2", "c2", "c4"]), "weights": pd.Series(1, index=["c1", "c2", "c4"])}}
+        >>> estimators = {"precision": pairwise_precision_estimator, "recall": pairwise_recall_estimator}
+        >>> estimates_table(predictions, samples_weights, estimators) # doctest: +NORMALIZE_WHITESPACE
+            prediction	    sample_weights	estimator	value	    std
+        0	prediction_1	sample_1	    precision	0.388889	0.254588
+        1	prediction_1	sample_1	    recall	    0.296875	0.108253
+    """
+    params = expand_grid(
+        prediction=predictions,
+        sample_weights=samples_weights,
+        estimator=estimators,
+    )
+
+    def lambd(pred_key, ref_key, est_key):
+        ests = estimators[est_key](
+            predictions[pred_key],
+            samples_weights[ref_key]["sample"],
+            samples_weights[ref_key]["weights"],
+        )
+
+        return ests
+
+    params[["value", "std"]] = pd.DataFrame(
+        params.apply(
+            lambda x: lambd(x["prediction"], x["sample_weights"], x["estimator"]),
+            axis=1,
+        ).tolist(),
+        index=params.index,
+    )
+
+    return params

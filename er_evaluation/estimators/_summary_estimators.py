@@ -12,6 +12,18 @@ from er_evaluation.utils import expand_grid
 
 
 def summary_estimates_table(sample, weights, predictions, names=None):
+    """
+    Generate a summary estimates table for the given sample, weights, predictions, and names.
+
+    Args:
+        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string "uniform" for uniform sampling weights, or "cluster_size" for inverse cluster size sampling weights.
+        predictions (Dict): Dictionary of membership vectors.
+        names (pd.Series, optional): Series containing names associated with each cluster element. Used for Name Variation and Homonymy Rate Estimates. Defaults to None.
+
+    Returns:
+        DataFrame: Pandas DataFrame with columns "prediction", "estimate", "value", and "std", where value and std are the point estimate and standard deviation estimate for the estimator applied to the given sample, sampling weights, prediction, and names.
+    """
     estimators = {
         "Matching Rate Estimate": matching_rate_estimator,
         "Avg Cluster Size Estimate": avg_cluster_size_estimator,
@@ -44,6 +56,18 @@ def summary_estimates_table(sample, weights, predictions, names=None):
 
 
 def _prepare_summary_est_args(sample, weights, prediction=None, names=None):
+    """
+    Prepare and validate the arguments for summary estimators.
+
+    Args:
+        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string "uniform" for uniform sampling weights, or "cluster_size" for inverse cluster size sampling weights.
+        prediction (pd.Series, optional): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier. Defaults to None.
+        names (pd.Series, optional): Series containing names associated with each cluster element. Used for Name Variation and Homonymy Rate Estimates. Defaults to None.
+
+    Returns:
+        tuple: Prepared and validated sample, weights, prediction, and names.
+    """
     prediction = MembershipVector(prediction, dropna=True)
     sample = MembershipVector(sample, dropna=True)
 
@@ -63,6 +87,21 @@ def _prepare_summary_est_args(sample, weights, prediction=None, names=None):
 
 @ratio_of_means_estimator
 def matching_rate_estimator(sample, weights, prediction=None, names=None):
+    """
+    Compute the matching rate estimator for the given sample, weights, prediction, and names.
+
+    Matching rate:
+        This is the proportion of elements belonging to clusters of size at least 2.
+
+    Args:
+        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string "uniform" for uniform sampling weights, or "cluster_size" for inverse cluster size sampling weights.
+        prediction (pd.Series, optional): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier. Defaults to None.
+        names (pd.Series, optional): Series containing names associated with each cluster element. Used for Name Variation and Homonymy Rate Estimates. Defaults to None.
+
+    Returns:
+        tuple: Matching rate estimate and standard deviation estimate.
+    """
     sample, weights, prediction, names = _prepare_summary_est_args(sample, weights, prediction, names)
 
     cs = cluster_sizes(sample)
@@ -74,6 +113,18 @@ def matching_rate_estimator(sample, weights, prediction=None, names=None):
 
 @ratio_of_means_estimator
 def avg_cluster_size_estimator(sample, weights, prediction=None, names=None):
+    """
+    Compute the average cluster size estimator for the given sample, weights, prediction, and names.
+
+    Args:
+        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string "uniform" for uniform sampling weights, or "cluster_size" for inverse cluster size sampling weights.
+        prediction (pd.Series, optional): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier. Defaults to None.
+        names (pd.Series, optional): Series containing names associated with each cluster element. Used for Name Variation and Homonymy Rate Estimates. Defaults to None.
+
+    Returns:
+        tuple: Average cluster size estimate and standard deviation estimate.
+    """
     sample, weights, prediction, names = _prepare_summary_est_args(sample, weights, prediction, names)
 
     cs = cluster_sizes(sample)
@@ -85,6 +136,21 @@ def avg_cluster_size_estimator(sample, weights, prediction=None, names=None):
 
 @ratio_of_means_estimator
 def name_variation_estimator(sample, weights, prediction=None, names=None):
+    """
+    Compute the name variation estimator for the given sample, weights, prediction, and names.
+
+    Name variation rate:
+        The name variation rate is the proportion of clusters with name variation within.
+
+    Args:
+        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string "uniform" for uniform sampling weights, or "cluster_size" for inverse cluster size sampling weights.
+        prediction (pd.Series, optional): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier. Defaults to None.
+        names (pd.Series, optional): Series containing names associated with each cluster element. Used for Name Variation and Homonymy Rate Estimates. Defaults to None.
+
+    Returns:
+        tuple: Name variation estimate and standard deviation estimate.
+    """
     sample, weights, prediction, names = _prepare_summary_est_args(sample, weights, prediction, names)
 
     inner = pd.concat({"names": names, "sample": sample}, join="inner", axis=1)
@@ -97,6 +163,21 @@ def name_variation_estimator(sample, weights, prediction=None, names=None):
 
 @ratio_of_means_estimator
 def homonymy_rate_estimator(sample, weights, prediction=None, names=None):
+    """
+    Compute the homonymy rate estimator for the given sample, weights, prediction, and names.
+
+    Homonymy rate:
+        The homonymy rate is the proportion of clusters which share a name with another cluster.
+
+    Args:
+        sample (Series): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier.
+        weights (Series): Pandas Series indexed by cluster identifier and with values corresponding to cluster sampling weights (e.g., inverse sampling probabilities). Can also be the string "uniform" for uniform sampling weights, or "cluster_size" for inverse cluster size sampling weights.
+        prediction (pd.Series, optional): Membership vector indexed by cluster elements and with values corresponding to associated cluster identifier. Defaults to None.
+        names (pd.Series, optional): Series containing names associated with each cluster element. Used for Name Variation and Homonymy Rate Estimates. Defaults to None.
+
+    Returns:
+        tuple: Homonymy rate estimate and standard deviation estimate.
+    """
     sample, weights, prediction, names = _prepare_summary_est_args(sample, weights, prediction, names)
 
     inner = pd.concat({"names": names, "sample": sample}, join="inner", axis=1)

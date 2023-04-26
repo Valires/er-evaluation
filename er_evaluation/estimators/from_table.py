@@ -10,7 +10,7 @@ from er_evaluation.estimators._utils import ratio_of_means_estimator
 
 
 @ratio_of_means_estimator
-def _pairwise_precision_estimator_from_table(error_table, weights):
+def pairwise_precision_estimator_from_table(error_table, weights):
     cs = cluster_sizes_from_table(error_table)
     E_miss = expected_missing_from_table(error_table)
     E_size = expected_size_difference_from_table(error_table)
@@ -22,7 +22,7 @@ def _pairwise_precision_estimator_from_table(error_table, weights):
 
 
 @ratio_of_means_estimator
-def _pairwise_recall_estimator_from_table(error_table, weights):
+def pairwise_recall_estimator_from_table(error_table, weights):
     cs = cluster_sizes_from_table(error_table)
     E_miss = expected_missing_from_table(error_table)
 
@@ -33,7 +33,7 @@ def _pairwise_recall_estimator_from_table(error_table, weights):
 
 
 @ratio_of_means_estimator
-def _pairwise_f_estimator_from_table(error_table, weights, beta=1.0):
+def pairwise_f_estimator_from_table(error_table, weights, beta=1.0):
     cs = cluster_sizes_from_table(error_table)
     E_miss = expected_missing_from_table(error_table)
     E_size = expected_size_difference_from_table(error_table)
@@ -45,7 +45,7 @@ def _pairwise_f_estimator_from_table(error_table, weights, beta=1.0):
 
 
 @ratio_of_means_estimator
-def _cluster_precision_estimator_from_table(error_table, weights, len_prediction, nunique_prediction):
+def cluster_precision_estimator_from_table(error_table, weights, len_prediction, nunique_prediction):
     cs = cluster_sizes_from_table(error_table)
     E_delta = 1 - error_indicator_from_table(error_table)
 
@@ -56,7 +56,7 @@ def _cluster_precision_estimator_from_table(error_table, weights, len_prediction
 
 
 @ratio_of_means_estimator
-def _cluster_recall_estimator_from_table(error_table, weights):
+def cluster_recall_estimator_from_table(error_table, weights):
     E_delta = 1 - error_indicator_from_table(error_table)
 
     N = E_delta * weights
@@ -66,7 +66,7 @@ def _cluster_recall_estimator_from_table(error_table, weights):
 
 
 @ratio_of_means_estimator
-def _cluster_f_estimator_from_table(error_table, weights, len_prediction, nunique_prediction, beta=1.0):
+def cluster_f_estimator_from_table(error_table, weights, len_prediction, nunique_prediction, beta=1.0):
     cs = cluster_sizes_from_table(error_table)
     E_delta = 1 - error_indicator_from_table(error_table)
 
@@ -79,7 +79,7 @@ def _cluster_f_estimator_from_table(error_table, weights, len_prediction, nuniqu
 
 
 @ratio_of_means_estimator
-def _b_cubed_precision_estimator_from_table(error_table, weights):
+def b_cubed_precision_estimator_from_table(error_table, weights):
     E_extra_rel = expected_relative_extra_from_table(error_table)
 
     N = (1 - E_extra_rel) * weights
@@ -89,7 +89,7 @@ def _b_cubed_precision_estimator_from_table(error_table, weights):
 
 
 @ratio_of_means_estimator
-def _b_cubed_recall_estimator_from_table(error_table, weights):
+def b_cubed_recall_estimator_from_table(error_table, weights):
     E_miss_rel = expected_relative_missing_from_table(error_table)
 
     N = (1 - E_miss_rel) * weights

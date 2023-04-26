@@ -12,7 +12,7 @@ The **metrics** module provides a set of functions to compute performance evalua
 - **F-scores**: harmonic mean of precision and recall
 - **B-cubed metrics**: These are defined as a weighted average of mention-level measures of precision and recall.
 
-It is important to note that these metrics are not representative of real-world performance, they only describe the performance for disambiguating the given benchmark dataset. When using these metrics, it is important to use a benchmark dataset that is representative of the population of entities being studied, otherwise, the results may not generalize.
+Note that these metrics are not representative of real-world performance, they only describe the performance for disambiguating the given benchmark dataset. When using these metrics, it is important to use a benchmark dataset that is representative of the population of entities being studied, otherwise, the results may not generalize.
 """
 from er_evaluation.metrics._metrics import (
     adjusted_rand_score,

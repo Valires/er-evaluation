@@ -174,7 +174,7 @@ def expected_extra_from_table(error_table):
 
         >>> from er_evaluation.error_analysis import expected_extra
         >>> expected_extra(prediction, sample)
-        sample
+        reference
         c1    0.333333
         c2    0.500000
         c3    1.000000
@@ -212,7 +212,7 @@ def expected_missing_from_table(error_table):
 
         >>> from er_evaluation.error_analysis import expected_missing
         >>> expected_missing(prediction, sample)
-        sample
+        reference
         c1    1.333333
         c2    1.000000
         c3    0.000000
@@ -250,7 +250,7 @@ def expected_relative_extra_from_table(error_table):
 
         >>> from er_evaluation.error_analysis import expected_relative_extra
         >>> expected_relative_extra(prediction, sample)
-        sample
+        reference
         c1    0.166667
         c2    0.250000
         c3    0.333333
