@@ -21,7 +21,7 @@ To use the package, you need:
 
 .. note::
 
-    - Consult our `data labeling guide <06-data-labeling>`_ for strategies to create reference disambiguations.
+    - Consult our `data labeling guide <06-data-labeling.html>`_ for strategies to create reference disambiguations.
     - Without reference data, only summary statistics can be monitored, and accuracy cannot be determined.
     - Ensure reference data is representative of the entire population or apply sampling weights for accurate performance metrics.
 
@@ -47,16 +47,16 @@ Next Steps
 
 .. _next-steps:
 
-With the package installed, the next step will be to `prepare your data <01-dataprep>`_ for evaluation.
+With the package installed, the next step will be to `prepare your data <01-dataprep.html>`_ for evaluation.
 
 If you would rather skim the guide for an overview of features, we recommend jumping ahead to pages describing:
 
-1. `Summary Statistic monitoring <02-summary_statistics>`_
-2. `Perfomance estimation <03-estimating_performance>`_
-3. `Error Analysis <04-error_analysis>`_
-4. `Visualization Functions <visualizations>`_
+1. `Summary Statistic monitoring <02-summary_statistics.html>`_
+2. `Perfomance estimation <03-estimating_performance.html>`_
+3. `Error Analysis <04-error_analysis.html>`_
+4. `Visualization Functions <visualizations.html>`_
 
-The `Advanced Topics <05-advanced_topics>`_ page discusses computational speedups, inverse probability weighting using estimated propensity scores, error modeling, sensitivity analyses, and the structure of the statistical estimation framework on which the package is based.
+The `Advanced Topics <05-advanced_topics.html>`_ page discusses computational speedups, inverse probability weighting using estimated propensity scores, error modeling, sensitivity analyses, and the structure of the statistical estimation framework on which the package is based.
 
 ------------
 Other Topics

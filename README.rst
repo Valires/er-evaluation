@@ -36,15 +36,63 @@ Or install the development version using:
 
 Please refer to the documentation website `er-evaluation.readthedocs.io <https://er-evaluation.readthedocs.io/en/latest>`_.
 
-🖼️ Examples
------------
+🖼️ Usage Examples
+-----------------
 
-Please refer to the `User Guide <https://er-evaluation.readthedocs.io/en/latest/userguide.html>`_ or our `Visualization Examples <https://er-evaluation.readthedocs.io/en/latest/visualizations.html>`_.
+Please refer to the `User Guide <https://er-evaluation.readthedocs.io/en/latest/userguide.html>`_ or our `Visualization Examples <https://er-evaluation.readthedocs.io/en/latest/visualizations.html>`_ for a complete usage guide.
 
-.. image:: https://raw.githubusercontent.com/Valires/er-evaluation/main/examples.png
-   :width: 800
+In summary, here's how you might use the package.
+
+1. Import your predicted disambiguations and reference benchmark dataset.
+
+.. code::
+
+        import er_evaluation as ee
+
+        predictions, reference = ee.load_pv_disambiguations()
+
+2. Plot `summary statistics <https://er-evaluation.readthedocs.io/en/latest/02-summary_statistics.html>`_ and compare disambiguations.
+
+.. code::
+
+        ee.plot_summaries(predictions)
+
+.. image:: plot_summaries.png
+   :width: 400
+
+.. code::
+
+        ee.plot_comparison(predictions)
+
+.. image:: plot_comparison.png
+   :width: 400
+
+3. Define sampling weights and `estimate performance metrics <https://er-evaluation.readthedocs.io/en/latest/03-estimating_performance.html>`_.
+
+.. code::
+
+        ee.plot_estimates(predictions, {"sample":reference, "weights":"cluster_size"})
+
+.. image:: plot_estimates.png
+   :width: 400
+
+4. Perform `error analysis <https://er-evaluation.readthedocs.io/en/latest/04-error_analysis.html>`_ using cluster-level explanatory features and cluster error metrics.
+
+.. code::
 
 
+        ee.make_dt_regressor_plot(
+                y,
+                weights,
+                features_df,
+                numerical_features,
+                categorical_features,
+                max_depth=3,
+                type="sunburst"
+        )
+
+.. image:: plot_decisiontree.png
+   :width: 400
 
 💭 Development Philosophy
 -------------------------

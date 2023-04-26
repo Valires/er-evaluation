@@ -36,3 +36,5 @@ nbsphinx
 pandoc
 myst-nb
 graphviz
+
+-e .

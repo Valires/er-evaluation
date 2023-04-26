@@ -46,7 +46,7 @@ setup(
     ],
     description="An End-to-End Evaluation Framework for Entity Resolution Systems.",
     install_requires=requirements,
-    license="Commons Clause + GNU Affero General Public License v3",
+    license="GNU Affero General Public License v3",
     long_description=readme + "\n\n" + history,
     include_package_data=True,
     keywords="er_evaluation",
