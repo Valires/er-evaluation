@@ -28,5 +28,6 @@ sphinx:
 # Optionally declare the Python requirements required to build your docs
 python:
    install:
+   - git+https://github.com/OlivierBinette/er-evaluation.git
    - requirements: requirements_dev.txt
    system_packages: true
