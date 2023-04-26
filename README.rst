@@ -93,16 +93,6 @@ In summary, here's how you might use the package.
 .. image:: plot_decisiontree.png
    :width: 400
 
-🖼️ Examples
------------
-
-Please refer to the `User Guide <https://er-evaluation.readthedocs.io/en/latest/userguide.html>`_ or our `Visualization Examples <https://er-evaluation.readthedocs.io/en/latest/visualizations.html>`_.
-
-.. image:: https://raw.githubusercontent.com/Valires/er-evaluation/main/examples.png
-   :width: 800
-
-
-
 💭 Development Philosophy
 -------------------------
 
