@@ -35,4 +35,4 @@ sphinx-mdinclude
 nbsphinx
 pandoc
 myst-nb
-
+graphviz

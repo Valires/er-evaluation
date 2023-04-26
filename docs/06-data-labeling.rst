@@ -14,8 +14,8 @@ Next, make sure to identify a time period (and/or regional period) that you will
 
 Finally, our data labeling methodology has **two dependencies**:
 
-1. You need predicted disambiguation to be used as a starting point. This disambiguation does not have to be perfect, but it will facilitate disambiguation by providing candidate matches to annotators.
-2. You need a search tool to help identify missing elements from disambiguated clusters. The search tool should be able to search entity mentions and aggregate results by disambiguated cluster ID. This can easily be set up using ElasticSearch. Our experimental `search 'er_evaluation.search`_ module provides utilities to this end.
+1. You need a **predicted disambiguation** to be used as a starting point. This disambiguation does not have to be perfect, but it will facilitate disambiguation by providing candidate matches to annotators.
+2. You need a **search tool** to help identify missing elements from disambiguated clusters. The search tool should be able to search entity mentions and aggregate results by disambiguated cluster ID. This can easily be set up using ElasticSearch. Our experimental `search <er_evaluation.search.rst>`_ module provides utilities to this end.
 
 Data Labeling Methodology
 -------------------------

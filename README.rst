@@ -39,7 +39,7 @@ Please refer to the documentation website `er-evaluation.readthedocs.io <https:/
 🖼️ Examples
 -----------
 
-Coming soon.
+Please refer to the `User Guide <https://er-evaluation.readthedocs.io/en/latest/userguide.html>`_ or our `Visualization Examples <https://er-evaluation.readthedocs.io/en/latest/visualizations.html>`_.
 
 .. image:: https://raw.githubusercontent.com/Valires/er-evaluation/main/examples.png
    :width: 800
