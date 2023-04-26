@@ -29,6 +29,5 @@ sphinx:
 python:
    install:
    - pip:
-      - git+https://github.com/OlivierBinette/er-evaluation.git
    - requirements: requirements_dev.txt
    system_packages: true
