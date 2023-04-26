@@ -80,6 +80,7 @@ In summary, here's how you might use the package.
 
 .. code::
 
+
         ee.make_dt_regressor_plot(
                 y,
                 weights,
