@@ -56,32 +56,51 @@ class ElasticSearch:
         return {"query": {"bool": {"should": must_clauses}}}
 
     @staticmethod
-    def _process_aggregations(agg_fields, agg_size=10000):
+    def _process_aggregations(agg_fields, agg_size=10000, _source=None, top_hits_size=5):
         """
         Process the aggregation fields and build an aggregation query for Elasticsearch.
 
         Args:
             agg_fields: A list of fields to aggregate on.
             agg_size: The maximum number of aggregation entries (optional, default: 10000).
+            _source: A list of fields to return for each top hit (optional).
+            top_hits_size: The number of top hits to include for each bucket (optional, default: 5).
+
         Returns:
             A dictionary representing the Elasticsearch aggregation query.
         """
-        def create_nested_agg(field, full_field_path, size):
+        def create_nested_agg(field, full_field_path, size, _source, top_hits_size):
             """Helper function to create nested aggregations"""
             path = field.split('.')
             if len(path) > 1:
                 return {
                     full_field_path: {
                         "nested": {"path": '.'.join(path[:-1])},
-                        "aggs": create_nested_agg('.'.join(path[1:]), full_field_path, size)
+                        "aggs": create_nested_agg('.'.join(path[1:]), full_field_path, size, _source, top_hits_size)
                     }
                 }
             else:
-                return {full_field_path+"_inner": {"terms": {"field": full_field_path, "size": size}}}
+                aggs = {
+                    full_field_path+"_inner": {
+                        "terms": {"field": full_field_path, "size": size},
+                        "aggs": {}
+                    }
+                }
+                if _source is not None:
+                    aggs[full_field_path+"_inner"]["aggs"]["top_hits"] = {
+                        "top_hits": {
+                            "_source": {
+                                "includes": _source
+                            },
+                            "size": top_hits_size
+                        }
+                    }
+
+                return aggs
 
         agg_query = {}
         for agg_field in agg_fields:
-            agg_query.update(create_nested_agg(agg_field, agg_field, agg_size))
+            agg_query.update(create_nested_agg(agg_field, agg_field, agg_size, _source, top_hits_size))
 
         return agg_query
 
@@ -93,6 +112,8 @@ class ElasticSearch:
         fuzziness=2,
         agg_fields=None,
         agg_size=10000,
+        agg_source=None,
+        agg_source_top_hits=5,
         source=None,
         timeout=5,
         max_retries=1,
@@ -107,6 +128,8 @@ class ElasticSearch:
             fuzziness: The fuzziness level for matching (optional, default: 2).
             agg_fields: A list of fields to aggregate on (optional).
             agg_size: The maximum number of aggregation results to return (optional, default: 10000).
+            agg_source: A list of fields to return for each top hit in the aggregations (optional).
+            agg_source_top_hits: The number of top hits to include for each bucket in the aggregations (optional, default: 5).
             source: A list of fields to include in the response (optional).
             timeout: The timeout for the request in seconds (optional, default: 5).
             max_retries: The maximum number of retries for the request (optional, default: 1).
@@ -122,7 +145,7 @@ class ElasticSearch:
             search_query["_source"] = source
 
         if agg_fields:
-            search_query["aggs"] = ElasticSearch._process_aggregations(agg_fields, agg_size)
+            search_query["aggs"] = ElasticSearch._process_aggregations(agg_fields, agg_size, _source=agg_source, top_hits_size=agg_source_top_hits)
 
         headers = ElasticSearch._build_headers(self.api_key)
         return http_post_request(
