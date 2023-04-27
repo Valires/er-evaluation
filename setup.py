@@ -19,6 +19,8 @@ requirements = (
         "igraph",
         "scikit-learn",
         "pyarrow",
+        "urllib3",
+        "requests",
     ],
 )
 
