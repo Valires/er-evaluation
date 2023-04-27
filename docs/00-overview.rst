@@ -56,7 +56,7 @@ If you would rather skim the guide for an overview of features, we recommend jum
 3. `Error Analysis <04-error_analysis.html>`_
 4. `Visualization Functions <visualizations.html>`_
 
-The `Advanced Topics <05-advanced_topics.html>`_ page discusses computational speedups, inverse probability weighting using estimated propensity scores, error modeling, sensitivity analyses, and the structure of the statistical estimation framework on which the package is based.
+The `Advanced Topics <05-advanced_topics.html>`_ page briefly discusses computational speedups, error modeling, and sensitivity analyses.
 
 ------------
 Other Topics
