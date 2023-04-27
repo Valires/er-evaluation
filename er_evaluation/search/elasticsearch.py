@@ -110,6 +110,7 @@ class ElasticSearch:
         index,
         fields,
         fuzziness=2,
+        size=10000,
         agg_fields=None,
         agg_size=10000,
         agg_source=None,
@@ -143,6 +144,8 @@ class ElasticSearch:
         search_query = ElasticSearch._process_query(user_query, fields, fuzziness)
         if source is not None:
             search_query["_source"] = source
+
+        search_query["size"] = size
 
         if agg_fields:
             search_query["aggs"] = ElasticSearch._process_aggregations(agg_fields, agg_size, _source=agg_source, top_hits_size=agg_source_top_hits)
