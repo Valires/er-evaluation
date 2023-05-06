@@ -22,7 +22,7 @@ bibliography: paper.bib
 
 # Summary
 
-Entity resolution (ER), also referred to as record linkage and deduplication, is the process of identifying and matching distinct representations of real-world entities across diverse data sources. It plays a crucial role in data management, cleaning, and integration, with applications such as assessing the accuracy of the decennial census, detecting fraud, linking patient data in healthcare, and extracting relationships in structured and unstructured data [@christen2012; christophides2019; @papadakis2021; @binette2022a].
+Entity resolution (ER), also referred to as record linkage and deduplication, is the process of identifying and matching distinct representations of real-world entities across diverse data sources. It plays a crucial role in data management, cleaning, and integration, with applications such as assessing the accuracy of the decennial census, detecting fraud, linking patient data in healthcare, and extracting relationships in structured and unstructured data [@christen2012; @christophides2019; @papadakis2021; @binette2022a].
 
 As ER techniques continue to evolve and improve, it is essential to have an efficient and comprehensive evaluation framework to measure their performance and compare different approaches. Despite the growth of ER research, there remains a need for a unified evaluation framework that can address challenges associated with ER system evaluation, including accounting for sampling biases and managing class imbalances. Otherwise, using naive clustering metrics and toy benchmark datasets without a principled evaluation methodology generally leads to over-optimistic results, performance rank reversals, and poor system design [@wang2022; @binette2022b].
 
