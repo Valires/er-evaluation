@@ -6,14 +6,12 @@ Introduction
 
 ER-Evaluation is a Python 3.7+ package designed for evaluating the performance of entity resolution (ER) systems. The package implements all components of a comprehensive evaluation process, from understanding characteristics of your ER system and analyzing errors, to estimating and visualizing key performance metrics.
 
-Central to the package are **principled statistical estimators** for performance metrics and summary statistics, taking into account sampling processes and biases. Without those, performance metrics are over-optimistic and not representative of real-world performance, leading to poor system design and poor performance. See `our blog post <https://www.valires.com/post/common-pitfalls-to-avoid-when-estimating-er-performance-metrics>`_ on the topic for more information.
+Central to the package are **principled statistical estimators** for performance metrics and summary statistics, taking into account sampling processes and biases. Without those, performance metrics are generally over-optimistic and not representative of real-world performance, which can lead to performance rank reversals and poor system design. See `our blog post <https://www.valires.com/post/common-pitfalls-to-avoid-when-estimating-er-performance-metrics>`_ on the topic for more information.
 
-Our evaluation tools employ an **entity-centric** approach, using disambiguated entity clusters as the starting point of analysis.
-
-To use the package, you need:
+Our evaluation tools employ an **entity-centric** approach, using disambiguated entity clusters as the starting point of analysis. To use the package, you need:
 
 1. **Prediction(s)**: Predicted entity clusters for a set of records or entity mentions, usually the main output of an ER system.
-2. **Reference/benchmark data**: A trusted benchmark dataset or reference disambiguation for "ground truth" data, typically containing 200 to 400 disambiguated entities.
+2. **Reference/benchmark data**: A trusted benchmark dataset or reference disambiguation for "ground truth" data. In our experience, benchmark datasets including 200 to 400 disambiguated entities are generally sufficient. Our package can handle larger benchmark datasets as well.
 
 .. admonition:: Example
 
@@ -56,7 +54,7 @@ If you would rather skim the guide for an overview of features, we recommend jum
 3. `Error Analysis <04-error_analysis.html>`_
 4. `Visualization Functions <visualizations.html>`_
 
-The `Advanced Topics <05-advanced_topics.html>`_ page discusses computational speedups, inverse probability weighting using estimated propensity scores, error modeling, sensitivity analyses, and the structure of the statistical estimation framework on which the package is based.
+The `Advanced Topics <05-advanced_topics.html>`_ page briefly discusses computational speedups, error modeling, and sensitivity analyses.
 
 ------------
 Other Topics

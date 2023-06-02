@@ -33,6 +33,7 @@ def _prepare_args(prediction, sample, weights):
 
     return prediction, sample, weights
 
+
 @ratio_of_means_estimator
 def pairwise_precision_estimator(prediction, sample, weights):
     r"""
@@ -347,6 +348,7 @@ def b_cubed_recall_estimator(prediction, sample, weights):
     error_table = record_error_table(prediction, sample)
     return b_cubed_recall_estimator_from_table(error_table, weights)
 
+
 DEFAULT_ESTIMATORS = {
     "pairwise_precision": pairwise_precision_estimator,
     "pairwise_recall": pairwise_recall_estimator,
@@ -357,6 +359,7 @@ DEFAULT_ESTIMATORS = {
     "b_cubed_precision": b_cubed_precision_estimator,
     "b_cubed_recall": b_cubed_recall_estimator,
 }
+
 
 def estimates_table(predictions, samples_weights, estimators=DEFAULT_ESTIMATORS):
     """
