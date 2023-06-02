@@ -2,11 +2,13 @@
 Changelog
 =========
 
-Unreleased
-----------
+2.1.0 (June 02, 2022)
+----------------------
 
 * Add sunburst visualization for decision tree regressors
 * Add decision tree regression pipeline for subgroup discovery
+* Add search utilities
+* Prepare submission to JOSS
 
 2.0.0 (March 27, 2022)
 ----------------------
