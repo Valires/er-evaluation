@@ -3,3 +3,7 @@ div.nbinput .prompt,
 div.nboutput .prompt {
     display: none;
 }
+
+.bd-header-announcement__content {
+    width: 100%;
+}

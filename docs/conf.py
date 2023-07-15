@@ -135,6 +135,20 @@ html_theme_options = {
     #    ],
     # Add light/dark mode and documentation version switcher:
     "navbar_end": ["navbar-icon-links"],
+    "announcement":
+"""
+<div style="display: flex; justify-content: space-between;">
+    <a> </a>
+    <a href='https://github.com/valire/er-evaluation/stargazers'>
+        ⭐ <b>Star on Github</b>
+    </a>
+    </a>
+    <a href='https://forms.gle/UedBnr73xsw9RHYL7'>
+        🎤 <b>Give Feedback</b>
+    </a>
+    <a> </a>
+</div>
+"""
 }
 
 html_last_updated_fmt = "%b %d, %Y"
