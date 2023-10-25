@@ -48,14 +48,15 @@ setup(
     ],
     description="An End-to-End Evaluation Framework for Entity Resolution Systems.",
     install_requires=requirements,
+    extras_require={
+        'test': requirements + test_requirements
+    },
     license="GNU Affero General Public License v3",
     long_description=readme + "\n\n" + history,
     include_package_data=True,
     keywords="er_evaluation",
     name="ER-Evaluation",
     packages=find_packages(include=["er_evaluation", "er_evaluation.*"]),
-    test_suite="tests",
-    tests_require=test_requirements,
     url="https://github.com/OlivierBinette/er_evaluation",
     version="2.1.0",
     zip_safe=False,
