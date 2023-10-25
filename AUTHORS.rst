@@ -5,6 +5,9 @@ Credits
 Project Lead
 ------------
 
-* Olivier Binette (http://github.com/OlivierBinette)
+* [Olivier Binette](http://github.com/OlivierBinette)
 
-.. mdinclude:: CONTRIBUTORS.md
+Contributors
+------------
+
+* [Youngsoo Baek](https://github.com/ybaek) - Research, Ideas, & Feedback

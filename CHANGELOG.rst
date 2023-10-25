@@ -2,7 +2,7 @@
 Changelog
 =========
 
-2.1.0 (June 02, 2022)
+2.1.0 (June 02, 2023)
 ----------------------
 
 * Add sunburst visualization for decision tree regressors
@@ -10,7 +10,7 @@ Changelog
 * Add search utilities
 * Prepare submission to JOSS
 
-2.0.0 (March 27, 2022)
+2.0.0 (March 27, 2023)
 ----------------------
 
 * Improve documentation

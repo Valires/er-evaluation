@@ -11,7 +11,10 @@ Central to the package are **principled statistical estimators** for performance
 Our evaluation tools employ an **entity-centric** approach, using disambiguated entity clusters as the starting point of analysis. To use the package, you need:
 
 1. **Prediction(s)**: Predicted entity clusters for a set of records or entity mentions, usually the main output of an ER system.
-2. **Reference/benchmark data**: A trusted benchmark dataset or reference disambiguation for "ground truth" data. In our experience, benchmark datasets including 200 to 400 disambiguated entities are generally sufficient. Our package can handle larger benchmark datasets as well.
+    - You can a single clustering or you can compare multiple clustering results.
+2. **Reference/benchmark data**: A sample of resolved entities, usually from a trusted benchmark dataset or from data labeling.
+    - Note that each entity/cluster in the reference dataset should be *complete*, i.e. it should be fully resolve and not exclude any record or mention.
+    - In our experience, benchmark datasets including 200 to 400 disambiguated entities are generally sufficient.
 
 .. admonition:: Example
 
@@ -22,7 +25,6 @@ Our evaluation tools employ an **entity-centric** approach, using disambiguated 
     - Consult our `data labeling guide <06-data-labeling.html>`_ for strategies to create reference disambiguations.
     - Without reference data, only summary statistics can be monitored, and accuracy cannot be determined.
     - Ensure reference data is representative of the entire population or apply sampling weights for accurate performance metrics.
-
 
 With predictions and reference data available, you can install the package and begin evaluation.
 

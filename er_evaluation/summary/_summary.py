@@ -277,7 +277,7 @@ def homonymy_rate(membership, names):
     )
     merged["diff"] = merged.total_count - merged.cluster_count
 
-    return (merged.groupby("membership").agg({"diff": max}) > 0).mean().values[0]
+    return (merged.groupby("membership").agg({"diff": "max"}) > 0).mean().values[0]
 
 
 def name_variation_rate(membership, names):

@@ -12,38 +12,29 @@ Before getting started with data labeling, make sure you have a clear operationa
 
 Next, make sure to identify a time period (and/or regional period) that you will focus on. Your data labeling should be done with respect to a well-defined scope.
 
-Finally, our data labeling methodology has **two dependencies**:
-
-1. You need a **predicted disambiguation** to be used as a starting point. This disambiguation does not have to be perfect, but it will facilitate disambiguation by providing candidate matches to annotators.
-2. You need a **search tool** to help identify missing elements from disambiguated clusters. The search tool should be able to search entity mentions and aggregate results by disambiguated cluster ID. This can easily be set up using ElasticSearch. Our experimental `search <er_evaluation.search.rst>`_ module provides utilities to this end.
-
 Data Labeling Methodology
 -------------------------
 
-Benchmark datasets used with **ER-Evaluation** need to satisfy two criteria:
+Benchmark datasets used with **ER-Evaluation** need to satisfy one main criteria:
 
-1. Entity clusters should be **complete**: Ensure that no relevant entity mention is omitted within the targeted time period. This means all mentions of a specific entity are included in the dataset.
-2. Associated sampling weights: Assign weights to the entity clusters, ensuring the representativeness of the data. This can be done using random sampling or probabilities proportional to cluster sizes.
+- Entity clusters should be **complete**: Ensure that no relevant entity mention is omitted. This means all mentions of a specific entity are included in the dataset.
 
-To achieve these two goals, we recommend the methodology described below.
+To achieve this goal, we recommend the methodology described below.
 
-1. Randomly sample an entity mention.
-2. Identify all predicted clusters that contain matches to the sampled entity mention. This can be done using the pre-requisite search tool.
-3. Review the contents of the identified predicted clusters to remove all non-matching elements.
-4. The result of step (3) is the "true" cluster for the sampled entity mention. Repeat step (1) - (3) until the desired sample size is achieved.
+1. Randomly sample a single record.
+2. Manually identify all other records that match the sampled record. We recommend doing this using a search tool, or by using a spreadsheet containing data for the block to which the sampled record belongs.
+3. The result of step (2) is the "true" cluster for the sampled entity mention. Repeat step (1) - (2) until the desired sample size is achieved.
 
 .. note::
+    Sampling records at random leads to clusters sampled with **probability proportional to size**. Use the `weights="cluster_size"` argument when prompted to provide sampling weights.
 
-    You can use probability sampling in step (1). In practice, we find that sampling entity mentions uniformly at random (i.e., sampling clusters with probability proportional to their size) is cost-efficient for most applications.
+.. note::
+    More sophisticated methodology can be used to speed up the data labeling process:
+    - You can use ElasticSearch to help identify records that match the sampled record.
+    - You can use a predicted clustering to help identify match candidates for the sampled record.
+    - You can use a probabilistic matching algorithm to estimate match probabilities for each record in the block, and then rank records by their match probabilities to help identify match candidates for the sampled record.
+    - You can use probability sampling, such as stratified sampling, to improve the efficiency of the data labeling process in view of the performance metrics that you want to estimate.
 
-Quality Control
-^^^^^^^^^^^^^^^
-
-To validate the quality of hand-disambiguations, you can use the following quality control measures:
-
-- Verify that the sampled entity mention is part of the cluster resulting from step (3).
-- Confirm that all mention IDs in the hand-disambiguated cluster are valid.
-- Review the list of unique entity names in the disambiguated clusters. Any name that obviously do not match the sampled mention name should be identified and flagged as an error.
 
 Additional Considerations
 -------------------------
@@ -61,7 +52,7 @@ To improve accuracy in data labeling, using multiple annotators can help reduce 
 Use Validation Data and Quality Control
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Validation data is a subset of the dataset that has already been labeled and is considered to be highly reliable. Using validation data can help identify errors and inconsistencies in the labeling process. It can also help identify cases where there is disagreement among annotators, and improve the overall accuracy of the labeling process. You can also validate the quality of the labeled data through quality control measures, such as reviewing labeled data for obvious errors.
+Validation data is a subset of the dataset that has already been labeled and is considered to be highly reliable. Using validation data can help identify errors and inconsistencies in the labeling process. It can also help identify cases where there is disagreement among annotators, and improve the overall accuracy of the labeling process. You can also validate the quality of the labeled data through quality control measures, such as reviewing labeled data for obvious errors and obvious non-matches that may have been introduced by mistake.
 
 Monitor Inter-Annotator Agreement
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

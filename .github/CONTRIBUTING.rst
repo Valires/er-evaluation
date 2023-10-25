@@ -77,13 +77,10 @@ Ready to contribute? Here's how to set up `er_evaluation` for local development.
    Now you can make your changes locally.
 
 5. When you're done making changes, check that your changes pass flake8 and the
-   tests, including testing other Python versions with tox::
+   tests.
 
     $ flake8 er_evaluation tests
     $ pytest
-    $ tox
-
-   To get flake8 and tox, just pip install them into your virtualenv.
 
 6. Commit your changes and push your branch to GitHub::
 
@@ -116,9 +113,8 @@ Deploying
 
 A reminder for the maintainers on how to deploy.
 Make sure all your changes are committed (including an entry in CHANGELOG.rst).
-Then run::
+Update version number if needed.
 
-$ bump2version patch # possible: major / minor / patch
 $ git push
 $ git push --tags
 $ make release

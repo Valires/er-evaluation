@@ -28,7 +28,7 @@ class ElasticSearch:
         return headers
 
     @staticmethod
-    def _process_query(user_query, fields, fuzziness=2):
+    def process_query(user_query, fields, fuzziness=2):
         """
         Process the user's query and build a search query for Elasticsearch.
 
@@ -141,7 +141,7 @@ class ElasticSearch:
         Raises:
             HTTPError: If the request fails.
         """
-        search_query = ElasticSearch._process_query(user_query, fields, fuzziness)
+        search_query = ElasticSearch.process_query(user_query, fields, fuzziness)
         if source is not None:
             search_query["_source"] = source
 

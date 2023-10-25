@@ -13,7 +13,17 @@
 🔍 ER-Evaluation: An End-to-End Evaluation Framework for Entity Resolution Systems
 ==================================================================================
 
-**ER-Evaluation** is a Python package for the evaluation of entity resolution (ER) systems. It provides data structure definitions, summary statistics, visualizations, error analysis tools, and statistically principled performance estimators.
+`**ER-Evaluation** <https://er-evaluation.readthedocs.io/en/latest>`_ is a Python package for the evaluation of entity resolution (ER) systems.
+
+It provides an *entity-centric* approach to evaluation. Given a sample of resolved clusters/entities, it provides: 
+
+* *summary statistics*, such as average cluster size, matching rate, homonymy rate, and name variation rate.
+* *comparison statistics* between entity resolutions, such as proportion of links from one which is also in the other, and vice-versa.
+* *performance estimates* with uncertainty quantification, such as precision, recall, and F1 score estimates, as well as B-cubed and cluster metric estimates.
+* *error analysis*, such as cluster-level error metrics and analysis tools to find root cause of errors.
+* convenience *visualization tools*.
+
+For more information on how to resolve a sample of entities for evaluation and model training, please refer to our `data labeling guide <https://er-evaluation.readthedocs.io/en/latest/06-data-labeling.html>`_.
 
 💻 Installation
 ---------------
@@ -25,7 +35,6 @@ Install the released version from PyPI using:
     pip install er-evaluation
 
 Or install the development version using:
-
 .. code:: bash
 
     pip install git+https://github.com/Valires/er-evaluation.git
@@ -43,7 +52,7 @@ Please refer to the `User Guide <https://er-evaluation.readthedocs.io/en/latest/
 
 In summary, here's how you might use the package.
 
-1. Import your predicted disambiguations and reference benchmark dataset.
+1. Import your predicted disambiguations and reference benchmark dataset. The benchmark dataset should contain a sample of disambiguated entities.
 
 .. code::
 
@@ -57,14 +66,14 @@ In summary, here's how you might use the package.
 
         ee.plot_summaries(predictions)
 
-.. image:: plot_summaries.png
+.. image:: media/plot_summaries.png
    :width: 400
 
 .. code::
 
         ee.plot_comparison(predictions)
 
-.. image:: plot_comparison.png
+.. image:: media/plot_comparison.png
    :width: 400
 
 3. Define sampling weights and `estimate performance metrics <https://er-evaluation.readthedocs.io/en/latest/03-estimating_performance.html>`_.
@@ -73,7 +82,7 @@ In summary, here's how you might use the package.
 
         ee.plot_estimates(predictions, {"sample":reference, "weights":"cluster_size"})
 
-.. image:: plot_estimates.png
+.. image:: media/plot_estimates.png
    :width: 400
 
 4. Perform `error analysis <https://er-evaluation.readthedocs.io/en/latest/04-error_analysis.html>`_ using cluster-level explanatory features and cluster error metrics.
@@ -91,7 +100,7 @@ In summary, here's how you might use the package.
                 type="sunburst"
         )
 
-.. image:: plot_decisiontree.png
+.. image:: media/plot_decisiontree.png
    :width: 400
 
 💭 Development Philosophy
@@ -106,7 +115,7 @@ Please acknowledge the publications below if you use ER-Evaluation:
 
 - Binette, Olivier. (2022). ER-Evaluation: An End-to-End Evaluation Framework for Entity Resolution Systems. Available online at `github.com/Valires/ER-Evaluation <https://github.com/Valires/ER-Evaluation>`_
 - Binette, Olivier, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan, Christina Jones. (2022). Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org. arXiv e-prints: `arxiv:2210.01230 <https://arxiv.org/abs/2210.01230>`_
-- Upcoming: "A Statistical Evaluation Framework for Black-Box Entity Resolution Systems With Application to Inventor Name Disambiguation"
+- Upcoming: "An End-to-End Framework for the Evaluation of Entity Resolution Systems With Application to Inventor Name Disambiguation"
 
 📝 Public License
 -----------------

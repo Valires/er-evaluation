@@ -1,10 +1,41 @@
 # Development environment for ER-Evaluation
-
 name: er-evaluation
 
 dependencies:
   - python=3.10
   - pip>=22
+  - graphviz
   - pip:
-    - -r requirements_dev.txt
+    - pandas
+    - numpy
+    - scipy
+    - plotly
+    - igraph
+    - scikit-learn
+    - pyarrow
+    - ethnicolr
+    - streamlit
+    - wheel
+    - watchdog
+    - flake8
+    - tox
+    - coverage
+    - Sphinx==5
+    - twine
+    - pytest
+    - pyhamcrest
+    - testbook
+    - jupyter
+    - ipykernel
+    - ipython
+    - black
+    - isort
+    - pydata-sphinx-theme
+    - sphinx_automodapi
+    - sphinx_design
+    - sphinx-mdinclude
+    - nbsphinx
+    - pandoc
+    - myst-nb
+    - graphviz
     - -e .
