@@ -23,6 +23,5 @@ jobs:
         run: tox -e py
       - name: Doctest modules
         run: |
-          pip install -r requirements_dev.txt
-          pip install -e .
+          pip install -e .[test]
           pytest --doctest-modules --ignore-glob=examples/*
