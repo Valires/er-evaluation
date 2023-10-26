@@ -49,6 +49,7 @@ Quick links
    User Guide <userguide>
    Examples <visualizations>
    er_evaluation
+   authors
 
 Indices and tables
 ==================
