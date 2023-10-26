@@ -23,4 +23,4 @@ jobs:
         
       - name: Pytest
         run: |
-          pytest .
+          pytest tests

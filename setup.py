@@ -52,7 +52,7 @@ setup(
     include_package_data=True,
     keywords="er_evaluation",
     name="ER-Evaluation",
-    packages=find_packages(include=["er_evaluation", "er_evaluation.*"]),
+    packages=find_packages(),
     url="https://github.com/OlivierBinette/er_evaluation",
     version="2.1.0",
     zip_safe=False,
