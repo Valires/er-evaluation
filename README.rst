@@ -116,6 +116,6 @@ Please acknowledge the publications below if you use ER-Evaluation:
 - Upcoming: "An End-to-End Framework for the Evaluation of Entity Resolution Systems With Application to Inventor Name Disambiguation"
 
 Public License
------------------
+--------------
 
 * `GNU Affero General Public License v3 <https://www.gnu.org/licenses/agpl-3.0.en.html>`_

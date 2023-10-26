@@ -3,7 +3,7 @@ Changelog
 =========
 
 2.2.0 (October 26, 2023)
-----------------------
+------------------------
 * Streamline package structure
 * Additional tests
 * Improved documentation
