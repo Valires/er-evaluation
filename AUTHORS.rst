@@ -10,7 +10,9 @@ Project Lead
 Contributors
 ------------
 
-* https://github.com/ybaek - Research, Ideas, & Feedback
+* Jerome P. Reiter (Duke University) - research, Ideas, & Feedback
+* https://github.com/ybaek (Duke University) - Research, Ideas, & Feedback
+
 
 How to Cite
 -----------

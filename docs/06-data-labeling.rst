@@ -26,10 +26,11 @@ To achieve this goal, we recommend the methodology described below.
 3. The result of step (2) is the "true" cluster for the sampled entity mention. Repeat step (1) - (2) until the desired sample size is achieved.
 
 .. note::
-    Sampling records at random leads to clusters sampled with **probability proportional to size**. Use the `weights="cluster_size"` argument when prompted to provide sampling weights.
+    Sampling records at random leads to clusters sampled with **probability proportional to size**. Use the `weights="cluster_size"` argument when prompted to provide appropriate sampling weights.
 
 .. note::
     More sophisticated methodology can be used to speed up the data labeling process:
+
     - You can use ElasticSearch to help identify records that match the sampled record.
     - You can use a predicted clustering to help identify match candidates for the sampled record.
     - You can use a probabilistic matching algorithm to estimate match probabilities for each record in the block, and then rank records by their match probabilities to help identify match candidates for the sampled record.

@@ -12,11 +12,11 @@ Our evaluation tools employ an **entity-centric approach,** using a sample of fu
 
 - **Prediction(s):** Predicted clusters for a set of records or entity mentions, usually the main output of an ER system.
 
-  - You can have a single output or you can compare multiple clustering results.
+  - You can have a single outp  ut or you can compare multiple clustering results.
 - **Reference/benchmark data:** A sample of fully-resolved entities, usually from a trusted benchmark dataset or from data labeling.
 
   - Each entity/cluster in the reference dataset should be *complete*, i.e. it should be fully resolved and it should not exclude any record or mention.
-  - In our experience, benchmark datasets including 200 to 400 resolved entities are generally sufficient.
+  - In our experience, benchmark datasets of around 400 resolved entities are generally sufficient for accurate performance estimates.
 
 .. admonition:: Example
 
@@ -45,7 +45,7 @@ Throughout this user guide and the documentation of the package, we use the foll
 
 For more information on entity resolution, we refer the reader to [Binette & Steorts (2022)](https://www.science.org/doi/10.1126/sciadv.abi8021) and [Christophides et al. (2019)](https://arxiv.org/abs/1905.06397).
 
-We recommend `Splink <https://github.com/moj-analytical-services/splink>`_ as a state-of-the-art large-scale entity resolution software. The splink team provides a large list of `tutorials <https://moj-analytical-services.github.io/splink/demos/tutorials/00_Tutorial_Introduction.html>`_ and `training materials <https://moj-analytical-services.github.io/splink/topic_guides/topic_guides_index.html>`_ on their website. The book `"Hands-On Entity Resolution" <https://www.oreilly.com/library/view/hands-on-entity-resolution/9781098148478/>`_ provides an introduction to entity resolution with Splink.
+We recommend `Splink <https://github.com/moj-analytical-services/splink>`_ as a state-of-the-art large-scale entity resolution software. The Splink team provides a large list of `tutorials <https://moj-analytical-services.github.io/splink/demos/tutorials/00_Tutorial_Introduction.html>`_ and `training materials <https://moj-analytical-services.github.io/splink/topic_guides/topic_guides_index.html>`_ on their website. The book `"Hands-On Entity Resolution" <https://www.oreilly.com/library/view/hands-on-entity-resolution/9781098148478/>`_ provides an introduction to entity resolution with Splink.
 
 ------------
 Installation
