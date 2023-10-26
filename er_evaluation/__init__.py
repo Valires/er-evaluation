@@ -1,4 +1,4 @@
-__version__ = "2.1.0"
+__version__ = "2.2.0"
 
 import er_evaluation.data_structures
 import er_evaluation.datasets

@@ -55,6 +55,6 @@ setup(
     name="ER-Evaluation",
     packages=find_packages(),
     url="https://github.com/OlivierBinette/er_evaluation",
-    version="2.1.0",
+    version="2.2.0",
     zip_safe=False,
 )
