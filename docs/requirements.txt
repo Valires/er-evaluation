@@ -1,0 +1,10 @@
+graphviz
+Sphinx==5
+pydata-sphinx-theme
+sphinx_automodapi
+sphinx_design
+sphinx-mdinclude
+nbsphinx
+pandoc
+myst-nb
+graphviz
