@@ -21,6 +21,14 @@ jobs:
           pip install -e .[test]
           pytest --doctest-modules --ignore-glob=examples/*
         
-      - name: Pytest
+      - name: Pytest  
         run: |
+          pytest
+
+      - name: Distribution tests
+        run: |
+          python setup.py sdist bdist_wheel
+          python -m venv dist_test_env
+          source dist_test_env/bin/activate
+          pip install dist/*.whl
           pytest tests

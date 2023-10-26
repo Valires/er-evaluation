@@ -27,6 +27,7 @@ test_requirements = [
     "testbook",
     "jupyter",
     "pyhamcrest",
+    "wheel",
 ]
 
 setup(
