@@ -35,7 +35,6 @@ docs-clean: ## Clean Sphinx documentation outputs
 docs: ## generate Sphinx HTML documentation, including API docs
 	cp -r media/ docs/
 	$(MAKE) -C docs html
-	git add docs/api/*
 
 release: dist ## package and upload a release
 	twine upload dist/*

@@ -15,7 +15,7 @@
 
 `ER-Evaluation <https://er-evaluation.readthedocs.io/en/latest>`_ is a Python package for the evaluation of entity resolution (ER) systems.
 
-It provides an **entity-centric** approach to evaluation. Given a sample of resolved clusters/entities, it provides: 
+It provides an **entity-centric** approach to evaluation. Given a sample of resolved entities, it provides: 
 
 * **summary statistics**, such as average cluster size, matching rate, homonymy rate, and name variation rate.
 * **comparison statistics** between entity resolutions, such as proportion of links from one which is also in the other, and vice-versa.
