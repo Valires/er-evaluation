@@ -9,10 +9,6 @@
         :target: https://er-evaluation.readthedocs.io/en/latest/?version=latest
         :alt: Documentation Status
 
-.. raw:: html
-
-   <div style="padding-top:20px;"></div>
-
 🔍 ER-Evaluation: An End-to-End Evaluation Framework for Entity Resolution Systems
 ===================================================================================
 
