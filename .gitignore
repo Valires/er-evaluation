@@ -1,3 +1,6 @@
+# readthedocs is configured to generate those files.
+docs/api/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

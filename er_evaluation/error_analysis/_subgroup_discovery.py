@@ -2,7 +2,6 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.pipeline import Pipeline
-from sklearn.tree import DecisionTreeRegressor
 from sklearn.impute import SimpleImputer
 
 

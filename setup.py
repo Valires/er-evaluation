@@ -11,22 +11,23 @@ with open("CHANGELOG.rst") as history_file:
     history = history_file.read()
 
 requirements = [
-        "pandas",
-        "numpy",
-        "scipy",
-        "plotly",
-        "igraph",
-        "scikit-learn",
-        "pyarrow",
-        "urllib3",
-        "requests",
-    ]
+    "pandas",
+    "numpy",
+    "scipy",
+    "plotly",
+    "igraph",
+    "scikit-learn",
+    "pyarrow",
+    "urllib3",
+    "requests",
+]
 
 test_requirements = [
     "pytest>=3",
     "testbook",
     "jupyter",
     "pyhamcrest",
+    "wheel",
 ]
 
 setup(
@@ -46,16 +47,14 @@ setup(
     ],
     description="An End-to-End Evaluation Framework for Entity Resolution Systems.",
     install_requires=requirements,
-    extras_require={
-        'test': requirements + test_requirements
-    },
+    extras_require={"test": requirements + test_requirements},
     license="GNU Affero General Public License v3",
     long_description=readme + "\n\n" + history,
     include_package_data=True,
     keywords="er_evaluation",
     name="ER-Evaluation",
-    packages=find_packages(include=["er_evaluation", "er_evaluation.*"]),
+    packages=find_packages(),
     url="https://github.com/OlivierBinette/er_evaluation",
-    version="2.1.0",
+    version="2.2.0",
     zip_safe=False,
 )

@@ -8,7 +8,7 @@ class ElasticSearch:
     Note:
         The class supports fields with up to one nested level. The use of higher levels of nesting has not yet been tested.
     """
-    
+
     def __init__(self, base_url, api_key=None):
         """
         Initialize the ElasticSearch client with a base URL and an optional API key.
@@ -44,7 +44,12 @@ class ElasticSearch:
             """Helper function to create nested queries"""
             path = field.split(".")
             if len(path) > 1:
-                return {"nested": {"path": path[0], "query": create_nested_query(".".join(path[1:]), full_field_path, query)}}
+                return {
+                    "nested": {
+                        "path": path[0],
+                        "query": create_nested_query(".".join(path[1:]), full_field_path, query),
+                    }
+                }
             else:
                 return {"match": {full_field_path: query}}
 
@@ -69,31 +74,22 @@ class ElasticSearch:
         Returns:
             A dictionary representing the Elasticsearch aggregation query.
         """
+
         def create_nested_agg(field, full_field_path, size, _source, top_hits_size):
             """Helper function to create nested aggregations"""
-            path = field.split('.')
+            path = field.split(".")
             if len(path) > 1:
                 return {
                     full_field_path: {
-                        "nested": {"path": '.'.join(path[:-1])},
-                        "aggs": create_nested_agg('.'.join(path[1:]), full_field_path, size, _source, top_hits_size)
+                        "nested": {"path": ".".join(path[:-1])},
+                        "aggs": create_nested_agg(".".join(path[1:]), full_field_path, size, _source, top_hits_size),
                     }
                 }
             else:
-                aggs = {
-                    full_field_path+"_inner": {
-                        "terms": {"field": full_field_path, "size": size},
-                        "aggs": {}
-                    }
-                }
+                aggs = {full_field_path + "_inner": {"terms": {"field": full_field_path, "size": size}, "aggs": {}}}
                 if _source is not None:
-                    aggs[full_field_path+"_inner"]["aggs"]["top_hits"] = {
-                        "top_hits": {
-                            "_source": {
-                                "includes": _source
-                            },
-                            "size": top_hits_size
-                        }
+                    aggs[full_field_path + "_inner"]["aggs"]["top_hits"] = {
+                        "top_hits": {"_source": {"includes": _source}, "size": top_hits_size}
                     }
 
                 return aggs
@@ -125,7 +121,7 @@ class ElasticSearch:
         Args:
             user_query: The user's query string.
             index: The index to search in.
-            fields: A list of fields to search in. 
+            fields: A list of fields to search in.
             fuzziness: The fuzziness level for matching (optional, default: 2).
             agg_fields: A list of fields to aggregate on (optional).
             agg_size: The maximum number of aggregation results to return (optional, default: 10000).
@@ -148,7 +144,9 @@ class ElasticSearch:
         search_query["size"] = size
 
         if agg_fields:
-            search_query["aggs"] = ElasticSearch._process_aggregations(agg_fields, agg_size, _source=agg_source, top_hits_size=agg_source_top_hits)
+            search_query["aggs"] = ElasticSearch._process_aggregations(
+                agg_fields, agg_size, _source=agg_source, top_hits_size=agg_source_top_hits
+            )
 
         headers = ElasticSearch._build_headers(self.api_key)
         return http_post_request(

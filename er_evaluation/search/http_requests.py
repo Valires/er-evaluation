@@ -6,7 +6,7 @@ from urllib3.util import Retry
 def create_http_session(max_retries, backoff_factor, status_forcelist):
     """
     Create an HTTP session with a custom retry strategy.
-    
+
     Args:
         max_retries: The maximum number of retries for the request.
         backoff_factor: A factor to use for the backoff algorithm.

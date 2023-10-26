@@ -88,9 +88,9 @@ def pairwise_precision_estimator(prediction, sample, weights):
     K = prediction.isin(inner.prediction)
 
     def lambd(x):
-        I = inner.prediction.index.isin(x.index)
-        J = prediction[K].isin(inner.prediction[I])
-        A = inner.prediction[I].value_counts(sort=False).sort_index().values
+        index = inner.prediction.index.isin(x.index)
+        J = prediction[K].isin(inner.prediction[index])
+        A = inner.prediction[index].value_counts(sort=False).sort_index().values
         B = prediction[K][J].value_counts(sort=False).sort_index().values
         return np.sum(A * (B - A))
 

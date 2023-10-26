@@ -126,8 +126,8 @@ def relevant_prediction_subset(prediction, sample):
     prediction = MembershipVector(prediction)
     sample = MembershipVector(sample)
 
-    I = prediction.index.isin(sample.index)
-    J = prediction.isin(prediction[I].values)
+    index = prediction.index.isin(sample.index)
+    J = prediction.isin(prediction[index].values)
 
     relevant_prediction = prediction[J]
     if len(relevant_prediction) == 0:

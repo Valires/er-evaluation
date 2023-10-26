@@ -65,7 +65,7 @@ class MembershipVector(pd.Series):
                     logging.info("Membership vector contains NA values.")
             else:
                 logging.critical(f"Invalid membership vector: {self}")
-                raise ValueError(f"Invalid membership vector: {self}")
+                raise ValueError(f"Invalid membership vector: {self}. Check for duplicated or NA index values.")
 
         if dropna:
             self.dropna(inplace=True)
@@ -133,8 +133,8 @@ def ismembership(obj):
     if isinstance(obj, pd.Series):
         return all(
             [
-                obj.index.has_duplicates == False,
-                obj.index.hasnans == False,
+                obj.index.has_duplicates is False,
+                obj.index.hasnans is False,
             ]
         )
     else:
@@ -313,10 +313,13 @@ def clusters_to_pairs(clusters):
                 Accessed online on November 1, 2022.
                 https://carlostgameiro.medium.com/fast-pairwise-combinations-in-numpy-c29b977c33e2
         """
-        I = np.stack(np.triu_indices(len(c), k=1), axis=-1)
-        return c[I]
+        index = np.stack(np.triu_indices(len(c), k=1), axis=-1)
+        return c[index]
 
-    return np.row_stack([single_cluster_to_pairs(c) for c in clusters.values()])
+    if len(clusters) == 0:
+        return np.zeros(shape=(0, 2))
+    else:
+        return np.row_stack([single_cluster_to_pairs(c) for c in clusters.values()])
 
 
 def clusters_to_membership(clusters):
