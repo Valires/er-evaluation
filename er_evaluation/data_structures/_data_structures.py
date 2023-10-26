@@ -65,7 +65,7 @@ class MembershipVector(pd.Series):
                     logging.info("Membership vector contains NA values.")
             else:
                 logging.critical(f"Invalid membership vector: {self}")
-                raise ValueError(f"Invalid membership vector: {self}")
+                raise ValueError(f"Invalid membership vector: {self}. Check for duplicated or NA index values.")
 
         if dropna:
             self.dropna(inplace=True)

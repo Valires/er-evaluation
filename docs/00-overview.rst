@@ -8,17 +8,19 @@ ER-Evaluation is a Python 3.7+ package designed for evaluating the performance o
 
 Central to the package are **principled statistical estimators** for performance metrics and summary statistics, taking into account sampling processes and biases. Without those, performance metrics are generally over-optimistic and not representative of real-world performance, which can lead to performance rank reversals and poor system design. See `our blog post <https://www.valires.com/post/common-pitfalls-to-avoid-when-estimating-er-performance-metrics>`_ on the topic for more information.
 
-Our evaluation tools employ an **entity-centric** approach, using a sample of fully-resolved entities as the starting point of analysis. To use the package, you need:
+Our evaluation tools employ an **entity-centric approach,** using a sample of fully-resolved entities as the starting point of analysis. To use the package, you need:
 
-1. **Prediction(s)**: Predicted clusters for a set of records or entity mentions, usually the main output of an ER system.
-    - You can a single clustering or you can compare multiple clustering results.
-2. **Reference/benchmark data**: A sample of fully-resolved entities, usually from a trusted benchmark dataset or from data labeling.
-    - Note that each entity/cluster in the reference dataset should be *complete*, i.e. it should be fully resolved and it should not exclude any record or mention.
-    - In our experience, benchmark datasets including 200 to 400 resolved entities are generally sufficient.
+- **Prediction(s):** Predicted clusters for a set of records or entity mentions, usually the main output of an ER system.
+
+  - You can have a single output or you can compare multiple clustering results.
+- **Reference/benchmark data:** A sample of fully-resolved entities, usually from a trusted benchmark dataset or from data labeling.
+
+  - Each entity/cluster in the reference dataset should be *complete*, i.e. it should be fully resolved and it should not exclude any record or mention.
+  - In our experience, benchmark datasets including 200 to 400 resolved entities are generally sufficient.
 
 .. admonition:: Example
 
-    Consider a customer relationship management (CRM) system with individual customer records, including duplicate entries. An entity resolution system consolidates customer records, producing **predicted clusters**. To assess accuracy, a set of verified customer record clusters (a **reference disambiguation**) is needed.
+    Consider a customer relationship management (CRM) system with individual customer records, including duplicate entries. An entity resolution system consolidates customer records, producing **predicted clusters**. Each predicted cluster is meant to represent a single customer. To assess accuracy, a set of verified customer record clusters (a **reference disambiguation**) is needed.
 
 .. note::
 
@@ -43,7 +45,7 @@ Throughout this user guide and the documentation of the package, we use the foll
 
 For more information on entity resolution, we refer the reader to [Binette & Steorts (2022)](https://www.science.org/doi/10.1126/sciadv.abi8021) and [Christophides et al. (2019)](https://arxiv.org/abs/1905.06397).
 
-[Splink](https://github.com/moj-analytical-services/splink) is state-of-the-art large-scale entity resolution software.
+We recommend `Splink <https://github.com/moj-analytical-services/splink>`_ as a state-of-the-art large-scale entity resolution software. The splink team provides a large list of `tutorials <https://moj-analytical-services.github.io/splink/demos/tutorials/00_Tutorial_Introduction.html>`_ and `training materials <https://moj-analytical-services.github.io/splink/topic_guides/topic_guides_index.html>`_ on their website. The book `"Hands-On Entity Resolution" <https://www.oreilly.com/library/view/hands-on-entity-resolution/9781098148478/>`_ provides an introduction to entity resolution with Splink.
 
 ------------
 Installation
