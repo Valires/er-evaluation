@@ -19,10 +19,9 @@
 #
 import os
 import sys
+import er_evaluation
 
 sys.path.insert(0, os.path.abspath(".."))
-
-import er_evaluation
 
 
 def setup(app):
@@ -135,8 +134,7 @@ html_theme_options = {
     #    ],
     # Add light/dark mode and documentation version switcher:
     "navbar_end": ["navbar-icon-links"],
-    "announcement":
-"""
+    "announcement": """
 <div style="display: flex; justify-content: space-between;">
     <a> </a>
     <a href='https://github.com/valire/er-evaluation/stargazers'>
@@ -148,7 +146,7 @@ html_theme_options = {
     </a>
     <a> </a>
 </div>
-"""
+""",
 }
 
 html_last_updated_fmt = "%b %d, %Y"

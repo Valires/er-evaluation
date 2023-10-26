@@ -24,14 +24,14 @@ def error_metrics_from_table(error_table):
 
     Examples
         >>> prediction = pd.Series(index=[1,2,3,4,5,6,7,8], data=[1,1,2,3,2,4,4,4])
-        >>> sample = pd.Series(index=[1,2,3,4,5,6,7, 8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c3"])
+        >>> sample = pd.Series(index=[1,2,3,4,5,6,7,8], data=["c1", "c1", "c1", "c2", "c2", "c3", "c3", "c3"])
         >>> error_table = record_error_table(prediction, sample)
         >>> error_metrics_from_table(prediction, sample)  # doctest: +SKIP
         expected_extra	expected_relative_extra	expected_missing	expected_relative_missing	error_indicator
         reference
         c1	0.333333	0.166667	1.333333	0.444444	1
         c2	0.500000	0.250000	1.000000	0.500000	1
-        c3	1.000000	0.333333	0.000000	0.000000	0
+        c3	0.000000	0.000000	0.000000	0.000000	0
     """
     return pd.concat(
         [

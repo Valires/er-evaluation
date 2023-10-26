@@ -11,16 +11,16 @@ with open("CHANGELOG.rst") as history_file:
     history = history_file.read()
 
 requirements = [
-        "pandas",
-        "numpy",
-        "scipy",
-        "plotly",
-        "igraph",
-        "scikit-learn",
-        "pyarrow",
-        "urllib3",
-        "requests",
-    ]
+    "pandas",
+    "numpy",
+    "scipy",
+    "plotly",
+    "igraph",
+    "scikit-learn",
+    "pyarrow",
+    "urllib3",
+    "requests",
+]
 
 test_requirements = [
     "pytest>=3",
@@ -46,9 +46,7 @@ setup(
     ],
     description="An End-to-End Evaluation Framework for Entity Resolution Systems.",
     install_requires=requirements,
-    extras_require={
-        'test': requirements + test_requirements
-    },
+    extras_require={"test": requirements + test_requirements},
     license="GNU Affero General Public License v3",
     long_description=readme + "\n\n" + history,
     include_package_data=True,

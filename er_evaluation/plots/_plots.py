@@ -7,8 +7,6 @@ from plotly.subplots import make_subplots
 from er_evaluation.data_structures import MembershipVector
 from er_evaluation.error_analysis import error_metrics
 from er_evaluation.estimators import (
-    b_cubed_precision_estimator,
-    b_cubed_recall_estimator,
     estimates_table,
     pairwise_precision_estimator,
     pairwise_recall_estimator,
@@ -16,8 +14,6 @@ from er_evaluation.estimators import (
 )
 from er_evaluation.estimators._utils import _parse_weights
 from er_evaluation.metrics import (
-    cluster_precision,
-    cluster_recall,
     metrics_table,
     pairwise_precision,
     pairwise_recall,
@@ -250,7 +246,6 @@ def add_ests_to_summaries(fig, predictions, sample, weights, names=None):
     fig.update_traces(selector=0, showlegend=True)
     for k, (i, j, estimate) in enumerate(plots):
         dat = params.query(f"estimate == '{estimate}'")
-        n = len(dat)
         fig.add_trace(
             go.Scatter(
                 name="estimate",

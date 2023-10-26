@@ -18,5 +18,9 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Doctest modules
         run: |
-          pip install -e .[test]
+          pip install .[test]
           pytest --doctest-modules --ignore-glob=examples/*
+        
+      - name: Pytest
+        run: |
+          pytest .
