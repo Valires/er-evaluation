@@ -49,8 +49,6 @@ Use the project's `Discussion <https://github.com/OlivierBinette/ER-Evaluation/d
    User Guide <userguide>
    Examples <visualizations>
    er_evaluation
-   contributing
-   authors
 
 Indices and tables
 ==================

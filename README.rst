@@ -13,15 +13,15 @@
 🔍 ER-Evaluation: An End-to-End Evaluation Framework for Entity Resolution Systems
 ==================================================================================
 
-`**ER-Evaluation** <https://er-evaluation.readthedocs.io/en/latest>`_ is a Python package for the evaluation of entity resolution (ER) systems.
+`ER-Evaluation <https://er-evaluation.readthedocs.io/en/latest>`_ is a Python package for the evaluation of entity resolution (ER) systems.
 
-It provides an *entity-centric* approach to evaluation. Given a sample of resolved clusters/entities, it provides: 
+It provides an **entity-centric** approach to evaluation. Given a sample of resolved clusters/entities, it provides: 
 
-* *summary statistics*, such as average cluster size, matching rate, homonymy rate, and name variation rate.
-* *comparison statistics* between entity resolutions, such as proportion of links from one which is also in the other, and vice-versa.
-* *performance estimates* with uncertainty quantification, such as precision, recall, and F1 score estimates, as well as B-cubed and cluster metric estimates.
-* *error analysis*, such as cluster-level error metrics and analysis tools to find root cause of errors.
-* convenience *visualization tools*.
+* **summary statistics**, such as average cluster size, matching rate, homonymy rate, and name variation rate.
+* **comparison statistics** between entity resolutions, such as proportion of links from one which is also in the other, and vice-versa.
+* **performance estimates** with uncertainty quantification, such as precision, recall, and F1 score estimates, as well as B-cubed and cluster metric estimates.
+* **error analysis**, such as cluster-level error metrics and analysis tools to find root cause of errors.
+* convenience **visualization tools**.
 
 For more information on how to resolve a sample of entities for evaluation and model training, please refer to our `data labeling guide <https://er-evaluation.readthedocs.io/en/latest/06-data-labeling.html>`_.
 
@@ -88,7 +88,6 @@ In summary, here's how you might use the package.
 4. Perform `error analysis <https://er-evaluation.readthedocs.io/en/latest/04-error_analysis.html>`_ using cluster-level explanatory features and cluster error metrics.
 
 .. code::
-
 
         ee.make_dt_regressor_plot(
                 y,
