@@ -9,10 +9,6 @@
         :target: https://er-evaluation.readthedocs.io/en/latest/?version=latest
         :alt: Documentation Status
 
-.. raw:: html
-
-   <div style="padding-top:20px;"></div>
-
 🔍 ER-Evaluation: An End-to-End Evaluation Framework for Entity Resolution Systems
 ===================================================================================
 
@@ -120,6 +116,6 @@ Please acknowledge the publications below if you use ER-Evaluation:
 - Upcoming: "An End-to-End Framework for the Evaluation of Entity Resolution Systems With Application to Inventor Name Disambiguation"
 
 Public License
------------------
+--------------
 
 * `GNU Affero General Public License v3 <https://www.gnu.org/licenses/agpl-3.0.en.html>`_
