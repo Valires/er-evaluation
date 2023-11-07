@@ -11,56 +11,64 @@
 }
 
 @article{binette2022b,
-    author = {Binette, Olivier and York, Sokhna A and Hickerson, Emma and Baek, Youngsoo and Madhavan, Sarvo and Jones, Christina},
-    journal = {arXiv e-prints},
+    author = {Olivier Binette, Sokhna A York, Emma Hickerson, Youngsoo Baek, Sarvo Madhavan and Christina Jones},
     title = {Estimating the Performance of Entity Resolution Algorithms: Lessons Learned Through PatentsView.org},
-    year = {2022}
+    journal = {The American Statistician},
+    volume = {77},
+    number = {4},
+    pages = {370-380},
+    year = {2023},
+    publisher = {Taylor & Francis},
+    doi = {10.1080/00031305.2023.2191664}
 }
 
 @article{binette2022c,
     author = {Binette, Olivier and Madhavan, Sarvo and Butler, Jack and Card, Beth Anne and Melluso, Emily and Jones, Christina},
     journal = {arXiv e-prints},
     title = {{PatentsView-Evaluation}: {E}valuation Datasets and Tools to Advance Research on Inventor Name Disambiguation},
-    year = {2023}
+    year = {2023},
+    note = {arxiv:2301.03591},
+    doi = { 10.48550/arXiv.2301.03591}
 }
 
-@article{wang2022,
-    archivePrefix = {arXiv},
-    arxivId = {2205.05889},
-    author = {Wang, Tianshu and Lin, Hongyu and Fu, Cheng and Han, Xianpei and Sun, Le and Xiong, Feiyu and Chen, Hui and Lu, Minlong and Zhu, Xiuwen},
-    eprint = {2205.05889},
-    mendeley-groups = {ER Evaluation},
-    title = {Bridging the Gap Between Reality and Ideality of Entity Matching: A Revisiting and Benchmark Re-Construction},
-    note={arxiv:2205.05889},
-    year = {2022}
+@inproceedings{wang2022,
+  title     = {Bridging the Gap between Reality and Ideality of Entity Matching: A Revisting and Benchmark Re-Constrcution},
+  author    = {Wang, Tianshu and Lin, Hongyu and Fu, Cheng and Han, Xianpei and Sun, Le and Xiong, Feiyu and Chen, Hui and Lu, Minlong and Zhu, Xiuwen},
+  booktitle = {Proceedings of the Thirty-First International Joint Conference on Artificial Intelligence, {IJCAI-22}},
+  publisher = {International Joint Conferences on Artificial Intelligence Organization},
+  editor    = {Lud De Raedt},
+  pages     = {3978--3984},
+  year      = {2022},
+  month     = {7},
+  note      = {Main Track},
+  doi       = {10.24963/ijcai.2022/552},
+  url       = {https://doi.org/10.24963/ijcai.2022/552},
 }
 
 @book{christen2012,
-	address = {Berlin Heidelberg},
-	series = {Data-{Centric} {Systems} and {Applications}},
-	title = {Data Matching: Concepts and Techniques for Record Linkage, Entity Resolution, and Duplicate Detection},
-	shorttitle = {Data {Matching}},
-	language = {en},
-	publisher = {Springer-Verlag},
-	author = {Christen, Peter},
-	year = {2012},
-	pages = {270}
+author = {Christen, Peter},
+title = {Data Matching: Concepts and Techniques for Record Linkage, Entity Resolution, and Duplicate Detection},
+year = {2012},
+isbn = {3642311636},
+publisher = {Springer Publishing Company, Incorporated},
 }
 
 @article{marchant2017,
-    archivePrefix = {arXiv},
-    arxivId = {1703.00617},
-    author = {Marchant, Neil G. and Rubinstein, Benjamin I.P.},
-    doi = {10.14778/3137628.3137642},
-    eprint = {1703.00617},
-    issn = {21508097},
-    journal = {Proceedings of the VLDB Endowment},
-    mendeley-groups = {ER Evaluation,ER Evaluation/estimator},
-    number = {11},
-    pages = {1322--1333},
-    title = {{In search of an entity resolution OASIS: Optimal asymptotic sequential importance sampling}},
+    author = {Marchant, Neil G. and Rubinstein, Benjamin I. P.},
+    title = {In Search of an Entity Resolution OASIS: Optimal Asymptotic Sequential Importance Sampling},
+    year = {2017},
+    issue_date = {August 2017},
+    publisher = {VLDB Endowment},
     volume = {10},
-    year = {2017}
+    number = {11},
+    issn = {2150-8097},
+    url = {https://doi.org/10.14778/3137628.3137642},
+    doi = {10.14778/3137628.3137642},
+    abstract = {Entity resolution (ER) presents unique challenges for evaluation methodology. While crowdsourcing platforms acquire ground truth, sound approaches to sampling must drive labelling efforts. In ER, extreme class imbalance between matching and non-matching records can lead to enormous labelling requirements when seeking statistically consistent estimates for rigorous evaluation. This paper addresses this important challenge with the OASIS algorithm: a sampler and F-measure estimator for ER evaluation. OASIS draws samples from a (biased) instrumental distribution, chosen to ensure estimators with optimal asymptotic variance. As new labels are collected OASIS updates this instrumental distribution via a Bayesian latent variable model of the annotator oracle, to quickly focus on unlabelled items providing more information. We prove that resulting estimates of F-measure, precision, recall converge to the true population values. Thorough comparisons of sampling methods on a variety of ER datasets demonstrate significant labelling reductions of up to 83\% without loss to estimate accuracy.},
+    journal = {Proc. VLDB Endow.},
+    month = {aug},
+    pages = {1322–1333},
+    numpages = {12}
 }
 
 @book{papadakis2021,
@@ -69,7 +77,6 @@
   pages={1--170},
   year={2021},
   publisher={Morgan \& Claypool Publishers},
-  address={}
 }
 
 @article{christophides2019,
