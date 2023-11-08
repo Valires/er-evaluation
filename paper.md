@@ -36,7 +36,7 @@ Entity resolution is a clustering problem characterized by small and numerous cl
 
 To address this issue, a new entity-centric methodology has been proposed in @binette2022b for obtaining accurate performance metric estimates based on small and potentially biased benchmark datasets. The ER-Evaluation package implements this methodology and numerous extensions to create a comprehensive, end-to-end evaluation framework. It aims to streamline the comparison of diverse ER techniques, assess their accuracy, and ultimately accelerate the development and adoption of high-performing ER systems. By integrating essential components such as data preprocessing, error analysis, performance estimation, and visualization functions, ER-Evaluation offers a user-friendly, modular, and extensible interface for researchers and practitioners.
 
-The software is currently being used by PatentsView.org for the evaluation of patent inventor name disambiguation [@binette2022c]. The original methodology has been published in [@binette2022b], and extended methodology is under development in an upcoming article titled "An End-to-End Evaluation Framework for Entity Resolution Systems With Application to Inventor Name Disambiguation."
+The software is currently being used by PatentsView.org for the evaluation of patent inventor name disambiguation [@binette2022c]. The original methodology has been published in @binette2022b and extended methodology is under development in an upcoming article [@binette2023].
 
 # Acknowledgements
 
