@@ -2,6 +2,10 @@
 Changelog
 =========
 
+2.2.1 (November 8, 2023)
+------------------------
+* Small fixes to paper and documentation.
+
 2.2.0 (October 26, 2023)
 ------------------------
 * Streamline package structure

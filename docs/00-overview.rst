@@ -43,7 +43,7 @@ Throughout this user guide and the documentation of the package, we use the foll
 - The output of an entity resolution system is a **predicted clustering,** i.e. an attempt at correctly clustering records/mentions according to the entity to which they refer. There may be errors in the predicted clustering, e.g. records/mentions may be incorrectly clustered together or split into multiple clusters.
 - A **reference** dataset, or a set of **ground truth** clusters, is a clustering of mentions/records that is assumed to be correct.
 
-For more information on entity resolution, we refer the reader to [Binette & Steorts (2022)](https://www.science.org/doi/10.1126/sciadv.abi8021) and [Christophides et al. (2019)](https://arxiv.org/abs/1905.06397).
+For more information on entity resolution, we refer the reader to `Binette & Steorts (2022) <https://www.science.org/doi/10.1126/sciadv.abi8021>`_ and `Christophides et al. (2019) <https://arxiv.org/abs/1905.06397>`_.
 
 We recommend `Splink <https://github.com/moj-analytical-services/splink>`_ as a state-of-the-art large-scale entity resolution software. The Splink team provides a large list of `tutorials <https://moj-analytical-services.github.io/splink/demos/tutorials/00_Tutorial_Introduction.html>`_ and `training materials <https://moj-analytical-services.github.io/splink/topic_guides/topic_guides_index.html>`_ on their website. The book `"Hands-On Entity Resolution" <https://www.oreilly.com/library/view/hands-on-entity-resolution/9781098148478/>`_ provides an introduction to entity resolution with Splink.
 
