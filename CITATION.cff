@@ -1,0 +1,38 @@
+cff-version: "1.2.0"
+authors:
+- family-names: Binette
+  given-names: Olivier
+  orcid: "https://orcid.org/0000-0001-6009-5206"
+- family-names: Reiter
+  given-names: Jerome P.
+  orcid: "https://orcid.org/0000-0002-8374-3832"
+contact:
+- family-names: Binette
+  given-names: Olivier
+  orcid: "https://orcid.org/0000-0001-6009-5206"
+doi: 10.5281/zenodo.10086102
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+  - family-names: Binette
+    given-names: Olivier
+    orcid: "https://orcid.org/0000-0001-6009-5206"
+  - family-names: Reiter
+    given-names: Jerome P.
+    orcid: "https://orcid.org/0000-0002-8374-3832"
+  date-published: 2023-11-11
+  doi: 10.21105/joss.05619
+  issn: 2475-9066
+  issue: 91
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 5619
+  title: "ER-Evaluation: End-to-End Evaluation of Entity Resolution
+    Systems"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.05619"
+  volume: 8
+title: "ER-Evaluation: End-to-End Evaluation of Entity Resolution
+  Systems"
