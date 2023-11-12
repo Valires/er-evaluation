@@ -1,13 +1,19 @@
 
 .. image:: https://github.com/Valires/er-evaluation/actions/workflows/python-package.yaml/badge.svg
         :target: https://github.com/Valires/er-evaluation/actions/workflows/python-package.yaml
+        :alt: Github Action workflow status and link.
 
 .. image:: https://badge.fury.io/py/er-evaluation.svg
         :target: https://badge.fury.io/py/er-evaluation
+        :alt: PyPI release badge and link.
 
 .. image:: https://readthedocs.org/projects/er-evaluation/badge/?version=latest
         :target: https://er-evaluation.readthedocs.io/en/latest/?version=latest
-        :alt: Documentation Status
+        :alt: Documentation status badge and link.
+
+.. image:: https://joss.theoj.org/papers/10.21105/joss.05619/status.svg
+       :target: https://doi.org/10.21105/joss.05619
+       :alt: Journal of Open Source Software publication badge and link.
 
 🔍 ER-Evaluation: An End-to-End Evaluation Framework for Entity Resolution Systems
 ===================================================================================
