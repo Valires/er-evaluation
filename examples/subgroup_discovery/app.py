@@ -1,9 +1,12 @@
 import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
-from data_prep import categorical_features, features_df, numerical_features, pred, reference
+from data_prep import (categorical_features, features_df, numerical_features,
+                       pred, reference)
 
-from er_evaluation.error_analysis import error_indicator, expected_relative_extra, expected_relative_missing
+from er_evaluation.error_analysis import (error_indicator,
+                                          expected_relative_extra,
+                                          expected_relative_missing)
 from er_evaluation.estimators._utils import _parse_weights
 from er_evaluation.plots import make_dt_regressor_plot
 

@@ -47,18 +47,14 @@ Additionally, you can provide a set of names associated with each cluster elemen
     #  'homonymy_rate': 0.5,
     #  'name_variation_rate': 0.5}
 """
-from er_evaluation.summary._summary import (
-    average_cluster_size,
-    cluster_hill_number,
-    cluster_sizes,
-    cluster_sizes_distribution,
-    homonymy_rate,
-    matching_rate,
-    name_variation_rate,
-    number_of_clusters,
-    number_of_links,
-    summary_statistics,
-)
+from er_evaluation.summary._summary import (average_cluster_size,
+                                            cluster_hill_number, cluster_sizes,
+                                            cluster_sizes_distribution,
+                                            homonymy_rate, matching_rate,
+                                            name_variation_rate,
+                                            number_of_clusters,
+                                            number_of_links,
+                                            summary_statistics)
 
 __all__ = [
     "average_cluster_size",

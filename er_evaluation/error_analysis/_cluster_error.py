@@ -4,15 +4,10 @@ from scipy.special import comb
 
 from er_evaluation.data_structures import MembershipVector
 from er_evaluation.error_analysis._record_error import (
-    error_indicator_from_table,
-    error_metrics_from_table,
-    expected_extra_from_table,
-    expected_missing_from_table,
-    expected_relative_extra_from_table,
-    expected_relative_missing_from_table,
-    expected_size_difference_from_table,
-    record_error_table,
-)
+    error_indicator_from_table, error_metrics_from_table,
+    expected_extra_from_table, expected_missing_from_table,
+    expected_relative_extra_from_table, expected_relative_missing_from_table,
+    expected_size_difference_from_table, record_error_table)
 from er_evaluation.utils import relevant_prediction_subset
 
 

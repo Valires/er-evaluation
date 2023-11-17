@@ -4,20 +4,15 @@ from scipy.special import comb
 
 from er_evaluation.data_structures import MembershipVector
 from er_evaluation.error_analysis import record_error_table
-from er_evaluation.estimators._utils import (
-    _parse_weights,
-    ratio_of_means_estimator,
-    validate_prediction_sample,
-    validate_weights,
-)
+from er_evaluation.estimators._utils import (_parse_weights,
+                                             ratio_of_means_estimator,
+                                             validate_prediction_sample,
+                                             validate_weights)
 from er_evaluation.estimators.from_table import (
     b_cubed_precision_estimator_from_table,
-    b_cubed_recall_estimator_from_table,
-    cluster_f_estimator_from_table,
+    b_cubed_recall_estimator_from_table, cluster_f_estimator_from_table,
     cluster_precision_estimator_from_table,
-    cluster_recall_estimator_from_table,
-    pairwise_f_estimator_from_table,
-)
+    cluster_recall_estimator_from_table, pairwise_f_estimator_from_table)
 from er_evaluation.utils import expand_grid
 
 

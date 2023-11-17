@@ -2,6 +2,7 @@ import pandas as pd
 
 from er_evaluation.data_structures import compress_memberships
 
+
 def test_keep_na_values_in_index():
     series1 = pd.Series(index=[-1, 0, 4, 7], data=[pd.NA, 1, 2, 3])
     series2 = pd.Series(index=[1, 0, 4, 8], data=[1, pd.NA, 2, 3])
@@ -9,4 +10,3 @@ def test_keep_na_values_in_index():
 
     assert cs1.isna().sum() == 3
     assert cs2.isna().sum() == 3
-

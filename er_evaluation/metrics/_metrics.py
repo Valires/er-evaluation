@@ -6,12 +6,10 @@ import sklearn.metrics as sm
 from scipy.special import comb
 
 from er_evaluation.data_structures import MembershipVector
-from er_evaluation.error_analysis import (
-    error_indicator,
-    expected_relative_extra_from_table,
-    expected_relative_missing_from_table,
-    record_error_table,
-)
+from er_evaluation.error_analysis import (error_indicator,
+                                          expected_relative_extra_from_table,
+                                          expected_relative_missing_from_table,
+                                          record_error_table)
 from er_evaluation.summary import number_of_links
 from er_evaluation.utils import expand_grid
 

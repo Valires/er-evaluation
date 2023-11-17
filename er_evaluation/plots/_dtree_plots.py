@@ -2,7 +2,8 @@ import numpy as np
 import plotly.graph_objects as go
 
 from er_evaluation.error_analysis import fit_dt_regressor
-from er_evaluation.plots._dtree_data import build_sunburst_data, create_igraph_tree
+from er_evaluation.plots._dtree_data import (build_sunburst_data,
+                                             create_igraph_tree)
 
 
 def make_dt_regressor_plot(

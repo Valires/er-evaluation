@@ -1,6 +1,7 @@
 import pandas as pd
 
-from er_evaluation.error_analysis import error_metrics_from_table, record_error_table
+from er_evaluation.error_analysis import (error_metrics_from_table,
+                                          record_error_table)
 
 
 def test_error_metrics_from_table():
