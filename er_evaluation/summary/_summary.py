@@ -5,6 +5,7 @@ from scipy.special import comb
 from er_evaluation.data_structures import MembershipVector
 from er_evaluation.error_analysis import expected_extra, expected_missing
 
+
 def summary_statistics(membership, names=None):
     r"""
     Compute canonical set of summary statistics.

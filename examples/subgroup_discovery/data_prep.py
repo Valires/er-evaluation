@@ -1,7 +1,8 @@
-import ethnicolr
-import pandas as pd
 from statistics import mode
+
+import ethnicolr
 import numpy as np
+import pandas as pd
 
 from er_evaluation.datasets import load_pv_data, load_pv_disambiguations
 

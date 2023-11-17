@@ -4,11 +4,14 @@ from scipy.special import comb
 
 from er_evaluation.data_structures import MembershipVector
 from er_evaluation.error_analysis._record_error import (
+    error_indicator_from_table,
     error_metrics_from_table,
+    expected_extra_from_table,
+    expected_missing_from_table,
+    expected_relative_extra_from_table,
     expected_relative_missing_from_table,
     expected_size_difference_from_table,
     record_error_table,
-    error_indicator_from_table,
 )
 from er_evaluation.utils import relevant_prediction_subset
 
@@ -199,15 +202,8 @@ def expected_extra(prediction, sample):
     prediction = MembershipVector(prediction, dropna=True)
     sample = MembershipVector(sample, dropna=True)
 
-    sample = sample[sample.index.isin(prediction.index)]
-
-    result = count_extra(prediction, sample)
-    sizes = sample.groupby(sample).size()
-
-    result = result / sizes
-    result.rename("expected_extra", inplace=True)
-
-    return result
+    error_table = record_error_table(prediction, sample)
+    return expected_extra_from_table(error_table)
 
 
 def expected_relative_extra(prediction, sample):
@@ -248,38 +244,8 @@ def expected_relative_extra(prediction, sample):
     prediction = MembershipVector(prediction, dropna=True)
     sample = MembershipVector(sample, dropna=True)
 
-    sample = sample[sample.index.isin(prediction.index)]
-
-    relevant_predictions = relevant_prediction_subset(prediction, sample)
-
-    outer = pd.concat(
-        {"prediction": relevant_predictions, "reference": sample},
-        axis=1,
-        copy=False,
-        join="outer",
-    )
-
-    def lambd(sample_cluster):
-        # Number of elements within sampled cluster split across predicted clusters:
-        p = pd.value_counts(sample_cluster)
-        # Number of elements within predicted clusters (restricted to current sampled cluster):
-        u = outer.prediction.value_counts()[p.index].values
-
-        n_links = np.sum(p * (u - p)) + np.sum(comb(u, 2))
-
-        if n_links == 0:
-            return 0
-
-        return np.sum(p * (u - p) / u)
-
-    outer.groupby("reference").agg(lambd)
-
-    result = outer.groupby("reference").agg(lambd).prediction
-    sizes = sample.groupby(sample).size()
-    result = result / sizes
-    result.rename("expected_relative_extra", inplace=True)
-
-    return result
+    error_table = record_error_table(prediction, sample)
+    return expected_relative_extra_from_table(error_table)
 
 
 def count_missing(prediction, sample):
@@ -381,15 +347,8 @@ def expected_missing(prediction, sample):
     prediction = MembershipVector(prediction, dropna=True)
     sample = MembershipVector(sample, dropna=True)
 
-    sample = sample[sample.index.isin(prediction.index)]
-
-    result = count_missing(prediction, sample)
-    sizes = sample.groupby(sample).size()
-
-    result = result / sizes
-    result.rename("expected_missing", inplace=True)
-
-    return result
+    error_table = record_error_table(prediction, sample)
+    return expected_missing_from_table(error_table)
 
 
 def expected_relative_missing(prediction, sample):

@@ -57,10 +57,10 @@ Graph
 """
 from er_evaluation.data_structures._data_structures import (
     MembershipVector,
-    compress_memberships,
     clusters_to_graph,
     clusters_to_membership,
     clusters_to_pairs,
+    compress_memberships,
     graph_to_clusters,
     graph_to_membership,
     graph_to_pairs,

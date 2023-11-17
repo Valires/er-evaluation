@@ -13,12 +13,7 @@ from er_evaluation.estimators import (
     summary_estimates_table,
 )
 from er_evaluation.estimators._utils import _parse_weights
-from er_evaluation.metrics import (
-    metrics_table,
-    pairwise_precision,
-    pairwise_recall,
-    pairwise_f,
-)
+from er_evaluation.metrics import metrics_table, pairwise_f, pairwise_precision, pairwise_recall
 from er_evaluation.summary import cluster_hill_number, cluster_sizes_distribution, summary_statistics
 
 DEFAULT_METRICS = {

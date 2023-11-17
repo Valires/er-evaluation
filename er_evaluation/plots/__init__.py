@@ -1,6 +1,12 @@
 """
 Helper Plots and Visualizations
 """
+from er_evaluation.plots._dtree_plots import (
+    make_dt_regressor_plot,
+    plot_dt_regressor_sunburst,
+    plot_dt_regressor_tree,
+    plot_dt_regressor_treemap,
+)
 from er_evaluation.plots._fairness import plot_performance_disparities
 from er_evaluation.plots._plots import (
     add_ests_to_summaries,
@@ -12,12 +18,6 @@ from er_evaluation.plots._plots import (
     plot_estimates,
     plot_metrics,
     plot_summaries,
-)
-from er_evaluation.plots._dtree_plots import (
-    plot_dt_regressor_sunburst,
-    plot_dt_regressor_treemap,
-    make_dt_regressor_plot,
-    plot_dt_regressor_tree,
 )
 
 __all__ = [
