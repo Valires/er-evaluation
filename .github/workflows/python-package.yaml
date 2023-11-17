@@ -11,20 +11,15 @@ jobs:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Doctest modules
+      - name: Pytest
         run: |
-          pip install -e .[test]
+          pip install .[test]
           pytest --doctest-modules --ignore-glob=examples/*
-        
-      - name: Pytest  
-        run: |
-          pytest
-
       - name: Distribution tests
         run: |
           python setup.py sdist bdist_wheel
