@@ -3,7 +3,7 @@ import pandas as pd
 from scipy.special import comb
 
 from er_evaluation.data_structures import MembershipVector
-
+from er_evaluation.error_analysis import expected_extra, expected_missing
 
 def summary_statistics(membership, names=None):
     r"""
@@ -256,28 +256,7 @@ def homonymy_rate(membership, names):
         >>> homonymy_rate(membership, names)
         0.5
     """
-    membership = MembershipVector(membership)
-    assert isinstance(names, pd.Series)
-    assert all(membership.index.isin(names.index))
-
-    df = pd.concat(
-        {"membership": membership, "name": names},
-        axis=1,
-        join="inner",
-        copy=False,
-    )
-
-    names_count = df.name.groupby(df.name).count().reset_index(name="total_count")
-    name_count_per_cluster = df.groupby(["name", "membership"]).size().reset_index(name="cluster_count")
-    merged = name_count_per_cluster.merge(
-        names_count,
-        on="name",
-        copy=False,
-        validate="m:1",
-    )
-    merged["diff"] = merged.total_count - merged.cluster_count
-
-    return (merged.groupby("membership").agg({"diff": "max"}) > 0).mean().values[0]
+    return (expected_extra(names, membership) > 0).mean()
 
 
 def name_variation_rate(membership, names):
@@ -300,15 +279,4 @@ def name_variation_rate(membership, names):
         >>> name_variation_rate(membership, names)
         0.5
     """
-    membership = MembershipVector(membership)
-    assert isinstance(names, pd.Series)
-    assert all(membership.index.isin(names.index))
-
-    joined = pd.concat(
-        {"membership": membership, "name": names},
-        axis=1,
-        join="inner",
-        copy=False,
-    )
-
-    return (joined.groupby("membership").nunique() > 1).mean().values[0]
+    return (expected_missing(names, membership) > 0).mean()

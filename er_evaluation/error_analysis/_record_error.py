@@ -187,7 +187,7 @@ def expected_extra_from_table(error_table):
 
 def expected_missing_from_table(error_table):
     """
-    Compute expected missin elements from record error table.
+    Compute expected missing elements from record error table.
 
     See :meth:`er_evaluation.error_analysis.expected_missing`.
 
@@ -264,7 +264,7 @@ def expected_relative_extra_from_table(error_table):
 
 def expected_relative_missing_from_table(error_table):
     """
-    Compute expected relative missin elements from record error table.
+    Compute expected relative missing elements from record error table.
 
     See :meth:`er_evaluation.error_analysis.expected_relative_missing`.
 

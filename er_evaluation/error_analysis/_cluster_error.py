@@ -56,7 +56,7 @@ def error_metrics(prediction, sample):
 
 def count_extra(prediction, sample):
     r"""
-    Count the number of extraneous elements to sampled clusters.
+    Count the number of extraneous elements in sampled clusters.
 
     Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the count of extraneous elements for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the counts of extraneous elements.
 
@@ -163,7 +163,7 @@ def expected_size_difference(prediction, sample):
 
 def expected_extra(prediction, sample):
     r"""
-    Expected number of extraneous elements to records in sampled clusters.
+    Expected number of extraneous elements in sampled clusters.
 
     Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the expected number of extraneous elements for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of extraneous elements.
 
@@ -212,7 +212,7 @@ def expected_extra(prediction, sample):
 
 def expected_relative_extra(prediction, sample):
     r"""
-    Expected relative number of extraneous elements to records in sampled clusters.
+    Expected relative number of extraneous elements in sampled clusters.
 
     Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the expected number of relative extraneous elements for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of relative extraneous elements.
 
@@ -284,7 +284,7 @@ def expected_relative_extra(prediction, sample):
 
 def count_missing(prediction, sample):
     r"""
-    Count the number of missin elements to sampled clusters.
+    Count the number of missing elements in sampled clusters.
 
     Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the count of missin elements for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the counts of missin elements.
 
@@ -347,7 +347,7 @@ def count_missing(prediction, sample):
 
 def expected_missing(prediction, sample):
     r"""
-    Expected number of missin elements to records in sampled clusters.
+    Expected number of missing elements in sampled clusters.
 
     Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the expected relative number of missin elements for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected number of missin elements.
 
@@ -394,7 +394,7 @@ def expected_missing(prediction, sample):
 
 def expected_relative_missing(prediction, sample):
     r"""
-    Expected relative number of missin elements to records in sampled clusters.
+    Expected relative number of missing elements in sampled clusters.
 
     Given a predicted disambiguation ``prediction`` and a sample of true clusters ``sample``, both represented as membership vectors, this functions returns the expected number of missin elements for each true cluster. This is a pandas Series indexed by true cluster identifier and with values corresponding to the expected relative number of missin elements.
 
