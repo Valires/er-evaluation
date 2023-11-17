@@ -28,9 +28,9 @@ def compress_memberships(*memberships):
         Name: 0, dtype: int8
     """
     compressed = pd.concat(memberships, axis=1)
-    compressed.index = np.where(compressed.index.isna(), np.nan, pd.Categorical(compressed.index).codes)
+    compressed.index = pd.Categorical(compressed.index).codes
     for col in compressed.columns:
-        compressed[col] = pd.Categorical(compressed[col]).codes
+        compressed[col] = np.where(compressed[col].isna(), np.nan, pd.Categorical(compressed[col]).codes)
 
     return [compressed[col] for col in compressed.columns]
 
