@@ -85,29 +85,15 @@ From the record error table, the cluster error metrics can be computed. The func
 The key advantage of working with the record error table is that it allows sensitivity analyses to be performed. Since all cluster error metrics and representative performance estimators can be computed directly from the record error table, uncertainty regarding error rates can be propagated from the record error table into cluster error metrics and into performance estimates.
 """
 from er_evaluation.error_analysis._cluster_error import (
-    count_extra,
-    count_missing,
-    error_indicator,
-    error_metrics,
-    expected_extra,
-    expected_missing,
-    expected_relative_extra,
-    expected_relative_missing,
-    expected_size_difference,
-    splitting_entropy,
-)
+    count_extra, count_missing, error_indicator, error_metrics, expected_extra,
+    expected_missing, expected_relative_extra, expected_relative_missing,
+    expected_size_difference, splitting_entropy)
 from er_evaluation.error_analysis._record_error import (
-    cluster_sizes_from_table,
-    error_indicator_from_table,
-    error_metrics_from_table,
-    expected_extra_from_table,
-    expected_missing_from_table,
-    expected_relative_extra_from_table,
-    expected_relative_missing_from_table,
-    expected_size_difference_from_table,
-    pred_cluster_sizes_from_table,
-    record_error_table,
-)
+    cluster_sizes_from_table, error_indicator_from_table,
+    error_metrics_from_table, expected_extra_from_table,
+    expected_missing_from_table, expected_relative_extra_from_table,
+    expected_relative_missing_from_table, expected_size_difference_from_table,
+    pred_cluster_sizes_from_table, record_error_table)
 from er_evaluation.error_analysis._subgroup_discovery import fit_dt_regressor
 
 __all__ = [

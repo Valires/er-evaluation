@@ -1,11 +1,9 @@
-from er_evaluation.error_analysis import (
-    cluster_sizes_from_table,
-    error_indicator_from_table,
-    expected_missing_from_table,
-    expected_relative_extra_from_table,
-    expected_relative_missing_from_table,
-    expected_size_difference_from_table,
-)
+from er_evaluation.error_analysis import (cluster_sizes_from_table,
+                                          error_indicator_from_table,
+                                          expected_missing_from_table,
+                                          expected_relative_extra_from_table,
+                                          expected_relative_missing_from_table,
+                                          expected_size_difference_from_table)
 from er_evaluation.estimators._utils import ratio_of_means_estimator
 
 

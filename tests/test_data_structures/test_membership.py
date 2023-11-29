@@ -1,12 +1,10 @@
-import pytest
-import pandas as pd
 import numpy as np
-from er_evaluation.data_structures import (
-    ismembership,
-    MembershipVector,
-    membership_to_pairs,
-    membership_to_clusters,
-)
+import pandas as pd
+import pytest
+
+from er_evaluation.data_structures import (MembershipVector, ismembership,
+                                           membership_to_clusters,
+                                           membership_to_pairs)
 from er_evaluation.datasets import load_pv_disambiguations
 
 predictions, reference = load_pv_disambiguations()
