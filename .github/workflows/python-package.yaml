@@ -18,7 +18,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Pytest
         run: |
-          pip install .[test]
+          pip install -e .[test]
           pytest --doctest-modules --ignore-glob=examples/*
 
       - name: Wheel distribution tests
