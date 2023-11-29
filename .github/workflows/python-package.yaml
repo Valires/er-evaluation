@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
 
     steps:
       - uses: actions/checkout@v3
@@ -16,16 +16,12 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Doctest modules
+      - name: Pytest
         run: |
-          pip install -e .[test]
+          pip install .[test]
           pytest --doctest-modules --ignore-glob=examples/*
-        
-      - name: Pytest  
-        run: |
-          pytest
 
-      - name: Distribution tests
+      - name: Wheel distribution tests
         run: |
           python setup.py sdist bdist_wheel
           python -m venv dist_test_env
