@@ -16,22 +16,22 @@ def compress_memberships(*memberships):
         List of Series with int codes for index and values. Index are compatible accross the Series.
 
     Examples:
-        >>> membership = pd.Series(["c1", "c1", "c1", "c2", "c2", "c3"], index=[0,1,2,3,4,5])
+        >>> membership = pd.Series([None, "c1", "c1", "c2", "c2", "c3"], index=[0,1,2,3,4,5])
         >>> compressed, = compress_memberships(membership)
         >>> compressed
-        0    0
-        1    0
-        2    0
-        3    1
-        4    1
-        5    2
-        Name: 0, dtype: int8
+        0    NaN
+        1    0.0
+        2    0.0
+        3    1.0
+        4    1.0
+        5    2.0
+        Name: 0, dtype: float64
     """
     compressed = pd.concat(memberships, axis=1)
-    compressed.index = pd.Categorical(compressed.index).codes
     for col in compressed.columns:
-        compressed[col] = pd.Categorical(compressed[col]).codes
-
+        codes = pd.Categorical(compressed[col]).codes
+        compressed[col] = np.where(compressed[col].isna(), np.nan, codes)
+    
     return [compressed[col] for col in compressed.columns]
 
 
