@@ -1,8 +1,8 @@
-from sklearn.tree import DecisionTreeRegressor
 from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.tree import DecisionTreeRegressor
 
 
 def fit_dt_regressor(

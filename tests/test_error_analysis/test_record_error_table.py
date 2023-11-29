@@ -1,8 +1,8 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 
-from er_evaluation.error_analysis import record_error_table
 from er_evaluation.datasets import load_rldata10000_disambiguations
+from er_evaluation.error_analysis import record_error_table
 
 predictions, reference = load_rldata10000_disambiguations()
 

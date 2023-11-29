@@ -18,23 +18,14 @@ The **metrics** module provides a set of functions to compute common comparison 
 - Records with NA cluster identifier in the reference or predicted clusterings are dropped.
 - The metrics in this module do not provide representative performance estimates. They are only useful for comparing two clusterings, such as a. For representative performance estimates, see the :mod:`er_evaluation.estimators` module.
 """
-from er_evaluation.metrics._metrics import (
-    adjusted_rand_score,
-    b_cubed_f,
-    b_cubed_precision,
-    b_cubed_recall,
-    cluster_completeness,
-    cluster_f,
-    cluster_homogeneity,
-    cluster_precision,
-    cluster_recall,
-    cluster_v_measure,
-    metrics_table,
-    pairwise_f,
-    pairwise_precision,
-    pairwise_recall,
-    rand_score,
-)
+from er_evaluation.metrics._metrics import (adjusted_rand_score, b_cubed_f,
+                                            b_cubed_precision, b_cubed_recall,
+                                            cluster_completeness, cluster_f,
+                                            cluster_homogeneity,
+                                            cluster_precision, cluster_recall,
+                                            cluster_v_measure, metrics_table,
+                                            pairwise_f, pairwise_precision,
+                                            pairwise_recall, rand_score)
 
 __all__ = [
     "adjusted_rand_score",

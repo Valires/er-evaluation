@@ -14,24 +14,18 @@ To address these issues, we use performance estimators based on a weighted sampl
 
 **Note:** In order to obtain representative performance estimators, the set of predicted clusters given as an argument to estimator functions should cover the entire population of interest. Typically, this set of predicted clusters will be much larger than the set of sampled clusters.
 """
-from er_evaluation.estimators._estimators import (
-    b_cubed_precision_estimator,
-    b_cubed_recall_estimator,
-    cluster_f_estimator,
-    cluster_precision_estimator,
-    cluster_recall_estimator,
-    estimates_table,
-    pairwise_f_estimator,
-    pairwise_precision_estimator,
-    pairwise_recall_estimator,
-)
+from er_evaluation.estimators._estimators import (b_cubed_precision_estimator,
+                                                  b_cubed_recall_estimator,
+                                                  cluster_f_estimator,
+                                                  cluster_precision_estimator,
+                                                  cluster_recall_estimator,
+                                                  estimates_table,
+                                                  pairwise_f_estimator,
+                                                  pairwise_precision_estimator,
+                                                  pairwise_recall_estimator)
 from er_evaluation.estimators._summary_estimators import (
-    avg_cluster_size_estimator,
-    homonymy_rate_estimator,
-    matching_rate_estimator,
-    name_variation_estimator,
-    summary_estimates_table,
-)
+    avg_cluster_size_estimator, homonymy_rate_estimator,
+    matching_rate_estimator, name_variation_estimator, summary_estimates_table)
 
 __all__ = [
     "b_cubed_precision_estimator",

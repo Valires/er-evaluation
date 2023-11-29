@@ -1,13 +1,11 @@
 import pandas as pd
 
-from er_evaluation.estimators._utils import (
-    ratio_of_means_estimator,
-    validate_prediction_sample,
-    _parse_weights,
-    validate_weights,
-)
-from er_evaluation.summary import cluster_sizes
 from er_evaluation.data_structures import MembershipVector
+from er_evaluation.estimators._utils import (_parse_weights,
+                                             ratio_of_means_estimator,
+                                             validate_prediction_sample,
+                                             validate_weights)
+from er_evaluation.summary import cluster_sizes
 from er_evaluation.utils import expand_grid
 
 

@@ -31,7 +31,7 @@ def compress_memberships(*memberships):
     for col in compressed.columns:
         codes = pd.Categorical(compressed[col]).codes
         compressed[col] = np.where(compressed[col].isna(), np.nan, codes)
-    
+
     return [compressed[col] for col in compressed.columns]
 
 

@@ -56,25 +56,11 @@ Graph
         └─3─┘       5
 """
 from er_evaluation.data_structures._data_structures import (
-    MembershipVector,
-    compress_memberships,
-    clusters_to_graph,
-    clusters_to_membership,
-    clusters_to_pairs,
-    graph_to_clusters,
-    graph_to_membership,
-    graph_to_pairs,
-    isclusters,
-    isgraph,
-    ismembership,
-    ispairs,
-    membership_to_clusters,
-    membership_to_graph,
-    membership_to_pairs,
-    pairs_to_clusters,
-    pairs_to_graph,
-    pairs_to_membership,
-)
+    MembershipVector, clusters_to_graph, clusters_to_membership,
+    clusters_to_pairs, compress_memberships, graph_to_clusters,
+    graph_to_membership, graph_to_pairs, isclusters, isgraph, ismembership,
+    ispairs, membership_to_clusters, membership_to_graph, membership_to_pairs,
+    pairs_to_clusters, pairs_to_graph, pairs_to_membership)
 
 __all__ = [
     "compress_memberships",

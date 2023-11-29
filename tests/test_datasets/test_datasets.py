@@ -1,14 +1,12 @@
-import pytest
 import pandas as pd
+import pytest
+
 from er_evaluation.data_structures import ismembership
-from er_evaluation.datasets import (
-    load_pv_data,
-    load_pv_disambiguations,
-    load_rldata10000,
-    load_rldata10000_disambiguations,
-    load_rldata500,
-    load_rldata500_disambiguations,
-)
+from er_evaluation.datasets import (load_pv_data, load_pv_disambiguations,
+                                    load_rldata500,
+                                    load_rldata500_disambiguations,
+                                    load_rldata10000,
+                                    load_rldata10000_disambiguations)
 
 pv_data = load_pv_data()
 pv_predictions, pv_reference = load_pv_disambiguations()

@@ -2,8 +2,8 @@
 Changelog
 =========
 
-Unreleased
-----------
+2.3.0 (November 29, 2023)
+-------------------------
 
 * Fix handling of NaN values in `compress_memberships()`
 
