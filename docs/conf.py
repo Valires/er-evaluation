@@ -138,7 +138,7 @@ html_theme_options = {
     "announcement": """
 <div style="display: flex; justify-content: space-between;">
     <a> </a>
-    <a href='https://github.com/valire/er-evaluation/stargazers'>
+    <a href='https://github.com/valires/er-evaluation/stargazers'>
         ⭐ <b>Star on Github</b>
     </a>
     </a>
